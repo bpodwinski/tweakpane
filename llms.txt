@@ -1,0 +1,372 @@
+# Tweakpane
+
+> Tweakpane is a compact, dependency-free UI library (TypeScript/JS) for creating parameter panels: sliders, color pickers, folders, tabs, monitors, buttons. This file is a self-contained reference for an AI agent that needs to add Tweakpane UI to a project, exactly as a human developer would, without guessing API signatures.
+
+All snippets below are copied from real source/doc files in this repo (not invented). File paths are given so a human or agent can verify against source.
+
+## Install & basic setup
+
+```sh
+npm install --save tweakpane
+# Type defs used during development (peer dep of the public types):
+npm install --save-dev @tweakpane/core
+```
+
+```js
+import {Pane} from 'tweakpane';
+
+const pane = new Pane(); // appends itself to document.body
+```
+
+```js
+const pane = new Pane({
+	container: document.getElementById('gui'), // mount point instead of body
+	title: 'Parameters',                        // adds a title bar (collapsible)
+	expanded: true,                              // initial expanded state of that title bar
+});
+```
+
+Browser/CDN, no build step:
+```html
+<script type="module">
+  import {Pane} from 'https://cdn.jsdelivr.net/npm/tweakpane@4/dist/tweakpane.min.js';
+</script>
+```
+
+`pane.dispose()` removes the pane's DOM and listeners. `pane.element` is the root `HTMLElement`.
+
+## Core mental model
+
+Everything you add to a `Pane` (or a `Folder`/`TabPage`) is a **Blade**. There are two blade families used 95% of the time:
+
+- **Bindings** (`addBinding`) — bind a property of a plain JS object to a control; the control type is inferred from the value's JS type, and can be overridden with params.
+- **Structural blades** (`addButton`, `addFolder`, `addTab`, `addBlade`) — buttons, containers, and free-standing controls not bound to an object property.
+
+`Pane` extends `FolderApi` (via `RootApi`), so a `Pane` has every method a `Folder` has. `TabPageApi` also has the same add* methods. This means folders/tabs/panes are interchangeable containers.
+
+## Adding bindings — `addBinding(object, key, params?)`
+
+```js
+const PARAMS = {
+	factor: 123,
+	title: 'hello',
+	color: '#ff0055',
+	position: {x: 0, y: 0},
+	speed: 0.5,
+};
+
+pane.addBinding(PARAMS, 'factor');
+pane.addBinding(PARAMS, 'title');
+pane.addBinding(PARAMS, 'color');
+pane.addBinding(PARAMS, 'position');
+```
+
+The control type is inferred from `typeof PARAMS[key]` (number → text/slider, string → text, boolean → checkbox, `{x,y}`/`{x,y,z}`/`{x,y,z,w}` → point control, string that looks like a hex/rgba color or object with `r,g,b(,a)` → color picker).
+
+### Common params (all binding types)
+```ts
+interface BindingParams {
+	disabled?: boolean;
+	hidden?: boolean;
+	index?: number;   // insertion position
+	label?: string;   // override the displayed label (defaults to the key name)
+	tag?: string;
+	view?: string;    // force a specific view, e.g. 'color', 'text', 'graph'
+}
+```
+
+### Number
+```ts
+interface NumberInputParams {
+	format?: (value: number) => string;
+	keyScale?: number;       // scale for arrow-key stepping
+	max?: number; min?: number;   // presence of BOTH turns the control into a slider
+	pointerScale?: number;   // scale for pointer-drag stepping
+	step?: number;
+	options?: {text: string; value: number}[] | {[text: string]: number}; // turns it into a dropdown
+}
+```
+```js
+pane.addBinding(PARAMS, 'value', {label: 'slider', min: 0, max: 100});
+pane.addBinding(PARAMS, 'speed', {step: 0.1});
+pane.addBinding(PARAMS, 'quality', {options: {low: 0, medium: 50, high: 100}});
+pane.addBinding(PARAMS, 'value', {format: (v) => v.toFixed(6), label: 'k'});
+```
+Slider binding returns a `SliderInputBindingApi` with extra `.min`/`.max` getters/setters. Dropdown binding returns a `ListInputBindingApi` with `.options`.
+
+### String
+```ts
+interface StringInputParams {
+	options?: {text: string; value: string}[] | {[text: string]: string};
+}
+```
+```js
+pane.addBinding(PARAMS, 'hex', {view: 'text'}); // force plain text, disable color-string auto-detection
+```
+
+### Boolean
+```ts
+interface BooleanInputParams {
+	options?: {text: string; value: boolean}[] | {[text: string]: boolean}; // dropdown instead of checkbox
+}
+```
+
+### Color
+Works on: a hex/rgba **string** value, a numeric value (needs `color:` or `view: 'color'` to be recognized), or an `{r,g,b(,a)}` **object** value.
+```ts
+interface ColorInputParams {
+	color?: {alpha?: boolean; type?: 'int' | 'float'}; // 'int' = 0-255 components, 'float' = 0-1
+	expanded?: boolean;   // start with the picker open inline
+	picker?: 'inline' | 'popup';
+}
+```
+```js
+pane.addBinding(PARAMS, 'background', {view: 'color'});       // force a numeric value to be a color
+pane.addBinding(PARAMS, 'tint', {color: {alpha: true}});
+pane.addBinding(PARAMS, 'overlay', {color: {type: 'float'}});
+pane.addBinding(PARAMS, 'key', {expanded: true, picker: 'inline'});
+```
+
+### Point2d / Point3d / Point4d
+Value shape `{x,y}` / `{x,y,z}` / `{x,y,z,w}`. Each axis accepts the same params as a number (`min`, `max`, `step`, ...); `y` additionally accepts `inverted`.
+```js
+pane.addBinding(PARAMS, 'value', {label: 'offset', x: {step: 20}, y: {min: 0, max: 100}});
+pane.addBinding(PARAMS, 'value', {label: 'offset', y: {inverted: true}});
+```
+Point2d also accepts `expanded?: boolean` and `picker?: 'inline' | 'popup'` (2D pad picker).
+
+### Monitors (read-only, `readonly: true`)
+```ts
+interface BaseMonitorParams {
+	bufferSize?: number; // how many samples to remember (default 1, or 64 for a graph)
+	interval?: number;   // ms between reads, for live-changing values (e.g. Date.now())
+	readonly: true;
+}
+// number monitor adds: format?, max?, min?, rows?   (view: 'graph' draws a line graph)
+// string monitor adds: multiline?, rows?
+// boolean monitor adds: rows?
+```
+```js
+pane.addBinding(SHARED_PARAMS, 'wave', {view: 'graph', readonly: true, min: -1, max: 1, label: 'graph'});
+pane.addBinding(SHARED_PARAMS, 'wave', {readonly: true, bufferSize: 10});
+pane.addBinding(SHARED_PARAMS, 'time', {readonly: true, interval: 1000});
+pane.addBinding(PARAMS, 'log', {readonly: true, multiline: true, rows: 5});
+```
+
+## Structural blades
+
+```ts
+interface ButtonParams { title: string; label?: string; disabled?, hidden?, index? }
+interface FolderParams { title: string; expanded?: boolean; disabled?, hidden?, index? }
+interface TabParams   { pages: {title: string}[]; disabled?, hidden?, index? }
+```
+```js
+const folder = pane.addFolder({title: 'Settings', expanded: true});
+folder.addBinding(PARAMS, 'factor');
+
+const btn = pane.addButton({title: 'Increment', label: 'counter'});
+btn.on('click', () => { /* ... */ });
+
+const tab = pane.addTab({pages: [{title: 'Parameters'}, {title: 'Advanced'}]});
+tab.pages[0].addBinding(PARAMS, 'seed');
+tab.addPage({title: 'More'});
+```
+Any container (`Pane`, `FolderApi`, `TabPageApi`) also has:
+- `add(bladeApi, index?)` / `remove(bladeApi)` — move/attach an existing blade API
+- `refresh()` — force the UI to re-read bound values (call after mutating a bound object outside Tweakpane)
+- `.children` — array of child `BladeApi`
+
+### `addBlade` — free-standing (non-object-bound) controls
+```js
+pane.addBlade({view: 'slider', label: 'brightness', min: 0, max: 1, value: 0.5});
+pane.addBlade({view: 'text', label: 'name', value: 'sketch-01', parse: (v) => String(v)});
+const list = pane.addBlade({
+	view: 'list', label: 'scene', value: 'LDG',
+	options: [{text: 'loading', value: 'LDG'}, {text: 'menu', value: 'MNU'}, {text: 'field', value: 'FLD'}],
+});
+list.on('change', (ev) => { console.log(ev.value); });
+pane.addBlade({view: 'separator'});
+```
+Built into the `tweakpane` package: `view: 'slider' | 'list' | 'text' | 'separator' | 'tab'` (folder/button/tab also work via `addBlade` with the matching params). Third-party plugins (e.g. `@tweakpane/plugin-essentials`) add more `view` values such as `'fpsgraph'`, `'radiogrid'`, `'cubicbezier'` — see Plugins below.
+
+## Events
+
+```ts
+class TpChangeEvent<T> { readonly value: T; readonly last: boolean; readonly target; } // last=true = drag/edit finished
+class TpMouseEvent    { readonly native: MouseEvent; readonly target; }
+class TpFoldEvent      { readonly expanded: boolean; readonly target; }
+class TpTabSelectEvent { readonly index: number; readonly target; }
+```
+```js
+pane.addBinding(PARAMS, 'value', {min: 0, max: 100}).on('change', (ev) => {
+	PARAMS.log = ev.value.toFixed(2);
+	if (ev.last) { /* user released the slider / blurred the field */ }
+});
+
+pane.on('change', (ev) => { /* fires for ANY descendant binding change */ });
+pane.on('fold', (ev) => { /* folder/pane collapsed or expanded */ });
+
+const button = pane.addButton({title: 'Go'});
+button.on('click', (ev) => { /* ev.native is the raw MouseEvent */ });
+
+const tab = pane.addTab({pages: [{title: 'A'}, {title: 'B'}]});
+tab.on('select', (ev) => { console.log('active tab index', ev.index); });
+```
+`off(eventName, handler)` removes a listener, same signature as `on`.
+
+## Enable/disable, show/hide
+
+Every `BladeApi` (bindings, buttons, folders, tabs, panes...) has:
+```js
+const b = pane.addBinding(PARAMS, 'input');
+b.disabled = true;   // greys out / blocks interaction, keeps it visible
+b.hidden = true;      // removes it from layout entirely
+b.dispose();           // permanently removes it
+```
+
+## Save / load state
+
+There is no `exportPreset`/`importPreset` API. Use `exportState()` / `importState()`, available on `Pane`, any `FolderApi`, `TabPageApi`, or individual blade:
+```js
+const state = pane.exportState();          // plain JSON-serializable object
+localStorage.setItem('pane', JSON.stringify(state));
+
+pane.importState(JSON.parse(localStorage.getItem('pane')));
+```
+Typical pattern: export on every `'change'` event to persist live, import once at startup.
+
+## Writing a custom plugin
+
+Tweakpane's built-in controls and third-party packages (`@tweakpane/plugin-essentials`, `@tweakpane/plugin-camerakit`, ...) all use the same public plugin API from `@tweakpane/core`. A plugin bundle is registered with `pane.registerPlugin(bundle)` before it's used.
+
+### Registering an existing plugin package
+```js
+import {Pane} from 'tweakpane';
+import * as EssentialsPlugin from '@tweakpane/plugin-essentials';
+
+const pane = new Pane();
+pane.registerPlugin(EssentialsPlugin);
+
+const fpsGraph = pane.addBlade({view: 'fpsgraph', label: 'fps'});
+pane.addBinding({size: 's'}, 'size', {
+	view: 'radiogrid',
+	groupName: 'size',
+	size: [3, 1],
+	cells: (x) => ({title: ['S', 'M', 'L'][x], value: ['s', 'm', 'l'][x]}),
+});
+```
+
+### Writing your own input-binding plugin (minimal, verified pattern)
+```ts
+// plugin.ts
+import {BaseInputParams, BindingTarget, createPlugin, InputBindingPlugin} from '@tweakpane/core';
+import {CounterController} from './controller';
+
+type CounterParams = BaseInputParams; // extend with your own custom params here
+
+export const CounterInputPlugin: InputBindingPlugin<number, number, CounterParams> = createPlugin({
+	id: 'counter',
+	type: 'input',
+	accept(value, params) {
+		if (typeof value !== 'number') return null;
+		if (params.view !== 'counter') return null; // gate on an explicit `view` so it doesn't hijack plain numbers
+		return {initialValue: value, params};
+	},
+	binding: {
+		reader: () => (value) => Number(value),
+		writer: () => (target, value) => { target.write(value); },
+	},
+	controller(args) {
+		return new CounterController(args.document, {value: args.value, viewProps: args.viewProps});
+	},
+});
+```
+```ts
+// controller.ts
+import {Value, ValueController, ViewProps} from '@tweakpane/core';
+import {CounterView} from './view';
+
+export class CounterController implements ValueController<number, CounterView> {
+	public readonly value: Value<number>;
+	public readonly view: CounterView;
+	public readonly viewProps: ViewProps;
+
+	constructor(doc: Document, config: {value: Value<number>; viewProps: ViewProps}) {
+		this.value = config.value;
+		this.viewProps = config.viewProps;
+		this.view = new CounterView(doc, {value: config.value, viewProps: this.viewProps});
+		this.view.buttonElement.addEventListener('click', () => {
+			this.value.rawValue += 1;
+		});
+	}
+}
+```
+`view.ts` builds plain DOM (a wrapping `div`, a value preview, a `+` button) — no framework involved, matches Tweakpane's own view files.
+
+```ts
+// bundle.ts
+import {TpPluginBundle} from '@tweakpane/core';
+import {CounterInputPlugin} from './plugin';
+
+export const CounterPluginBundle: TpPluginBundle = {
+	id: 'counter',
+	plugins: [CounterInputPlugin],
+	css: `.tp-counter { /* ... */ }`, // injected once into <head> on first registerPlugin call
+};
+```
+```js
+pane.registerPlugin(CounterPluginBundle);
+pane.addBinding({count: 0}, 'count', {view: 'counter'});
+```
+
+### Plugin type signatures (for reference when writing `accept`/`controller`/`api`)
+```ts
+interface BladePlugin<P> {
+	type: 'blade';
+	accept(params: Record<string, unknown>): {params: P} | null;
+	controller(args: {blade; document; params: P; viewProps}): BladeController;
+	api(args: {controller; pool}): BladeApi | null;
+}
+interface InputBindingPlugin<In, Ex, P> {
+	type: 'input';
+	accept(exValue: unknown, params: Record<string, unknown>): {initialValue: Ex; params: P} | null;
+	binding: {
+		reader(args): (v: unknown) => In;
+		constraint?(args): Constraint<In>;
+		equals?(v1: In, v2: In): boolean;
+		writer(args): (target: BindingTarget, v: In) => void;
+	};
+	controller(args): ValueController<In>;
+	api?(args): InputBindingApi<In, Ex> | null;
+}
+interface MonitorBindingPlugin<T, P> {
+	type: 'monitor';
+	accept(exValue: unknown, params: Record<string, unknown>): {initialValue: T; params: P} | null;
+	binding: {reader(args): (v: unknown) => T; defaultBufferSize?(params: P): number};
+	controller(args): BufferedValueController<T>;
+	api?(args): MonitorBindingApi<T> | null;
+}
+```
+A `TpPluginBundle` is `{id, css?, plugin: TpPlugin}` or `{id, css?, plugins: TpPlugin[]}`. `createPlugin(def)` just stamps a `core` version field onto your plugin object — always wrap plugin definitions with it.
+
+## Gotchas for agents generating Tweakpane code
+
+- `addInput`/`addMonitor` are the pre-v4 method names — **v4 uses `addBinding` for both** (direction is inferred from `readonly: true`). Don't emit `addInput`/`addMonitor` for Tweakpane 4.x.
+- A number only becomes a slider when **both** `min` and `max` are given; `step` alone does not.
+- Forcing `view: 'color'` is required to treat a *numeric* bound value as a color; strings/objects are auto-detected.
+- `options` on any input type turns it into a dropdown/list regardless of the base type.
+- There's no built-in preset API — build save/load on top of `exportState()`/`importState()`.
+- Third-party plugin `view` values (`'fpsgraph'`, `'radiogrid'`, `'cubicbezier'`, etc.) only work after `pane.registerPlugin(...)` — using the `view` string without registering silently falls back to the default control (or fails `accept()` and errors).
+- Package is ESM only (`"type": "module"`); there is no CommonJS build.
+
+## Key source files (this repo, for verification)
+
+- `packages/tweakpane/src/main/ts/index.ts` — full public export list
+- `packages/tweakpane/src/main/ts/pane/pane.ts` — `Pane` class, `registerPlugin`
+- `packages/core/src/blade/folder/api/folder.ts` — `addBinding`/`addFolder`/`addButton`/`addTab`/`addBlade`
+- `packages/core/src/common/params.ts`, `packages/core/src/blade/common/api/params.ts` — every params interface
+- `packages/core/src/input-binding/*/plugin.ts`, `packages/core/src/monitor-binding/*/plugin.ts` — built-in binding plugins
+- `packages/tweakpane/src/main/ts/blade/{slider,list,text,separator}/plugin.ts` — built-in raw blades
+- `packages/core/src/blade/plugin.ts`, `input-binding/plugin.ts`, `monitor-binding/plugin.ts`, `plugin/plugin.ts` — plugin authoring interfaces
+- `packages/tweakpane/src/doc/ts/plugins/counter/` — full working custom-plugin example
+- `packages/tweakpane/src/doc/ts/route/*.ts` — every usage snippet above is adapted from here
