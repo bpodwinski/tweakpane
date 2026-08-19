@@ -17,6 +17,25 @@ npm run setup   # builds core, then tweakpane — required before tweakpane will
 ```
 `tweakpane` resolves `@tweakpane/core` through a build alias, so a stale/missing `core` build breaks everything downstream. Rebuild core after touching `packages/core/src`.
 
+## Dev workflow — every code change must be visually verified
+
+Editing controller/view code (`packages/core/src/blade/**`, `packages/core/src/input-binding/**`, `packages/core/src/monitor-binding/**`, or anything under `packages/tweakpane/src/main/ts`) is not done until it has been **exercised in an actual browser**, not just type-checked. Unit tests cover logic, not DOM/pointer/CSS behavior — and several real bugs in this repo (see e.g. issue #658, checkbox `mousedown`/text-selection) only show up when a control is actually clicked/dragged in a live page.
+
+Loop:
+
+1. Rebuild what you touched:
+   - `packages/core/src` changed → `npm run build` in `packages/core`
+   - `packages/tweakpane/src/main/ts` changed → the dev watcher picks it up automatically (see step 2)
+2. Start (or reuse) the dev server: `npm start` in `packages/tweakpane` — serves the doc site on `http://localhost:8080` with live rebuild/watch of both the bundle and the doc pages. Leave it running across iterations instead of restarting it each time.
+3. Verify in a real browser using the **chrome-devtools** or **playwright** MCP tools (either is fine — chrome-devtools gives console/network/performance introspection, playwright is the simpler default for basic click/drag checks):
+   - Navigate to the relevant doc page (e.g. `http://localhost:8080/#/input-bindings/` for a binding change).
+   - Interact with the actual control you changed: click, drag a slider, open a color picker, etc. — reproduce the golden path *and* the specific edge case you fixed.
+   - Check the browser console for errors/warnings (`list_console_messages` / `browser_console_messages`) — a silent JS exception is easy to miss otherwise.
+   - Take a screenshot or snapshot when the change is visual (layout, styling, new control) so it can be reviewed.
+4. Only after the manual/MCP browser check passes, run `npm run lint` and `npm run test --workspaces` (or the scoped per-package equivalents) to confirm nothing else broke.
+
+Don't claim a UI fix is done from reading the diff alone — reproduce the original bug in the browser first, then confirm the fix resolves it there.
+
 ## Commands (run per-package or with `--workspaces` from root)
 
 - `npm run lint` — static only (eslint + scss check), no test execution
