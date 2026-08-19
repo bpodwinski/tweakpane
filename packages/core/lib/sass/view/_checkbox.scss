@@ -4,6 +4,7 @@
 	&_l {
 		display: block;
 		position: relative;
+		user-select: none;
 	}
 	&_i {
 		@extend %tp-resetUserAgent;
