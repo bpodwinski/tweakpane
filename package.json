@@ -28,7 +28,7 @@
     "lint": "(cd packages/core && npm run lint) && (cd packages/tweakpane && npm run lint)",
     "setup": "run-s setup:core setup:tweakpane",
     "setup:core": "(cd packages/core && npm run build)",
-    "setup:tweakpane": "(cd packages/tweakpane && npm run build)"
+    "setup:tweakpane": "(cd packages/tweakpane && npm run main:build)"
   },
   "devDependencies": {
     "@types/assert": "^1.5.4",
