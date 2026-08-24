@@ -22,6 +22,13 @@ interface Config<T> {
 	value: Value<T>;
 }
 
+// Native <input type="radio"> `name` grouping is global to the whole document, not
+// scoped to a component instance. Without a per-instance prefix, two RadioGridController
+// instances sharing the same `groupName` (e.g. on different tab pages) would fight over
+// the same native radio group, and only the most recently checked one would visually
+// stay checked (https://github.com/tweakpane/plugin-essentials/issues/23).
+let nextInstanceId = 0;
+
 export class RadioGridController<T> implements ValueController<T, PlainView> {
 	public readonly size: [number, number];
 	public readonly value: Value<T>;
@@ -35,11 +42,13 @@ export class RadioGridController<T> implements ValueController<T, PlainView> {
 
 		this.size = config.size;
 
+		const inputName = `radiogrid-${nextInstanceId++}-${config.groupName}`;
+
 		const [w, h] = this.size;
 		for (let y = 0; y < h; y++) {
 			for (let x = 0; x < w; x++) {
 				const bc = new RadioController(doc, {
-					name: config.groupName,
+					name: inputName,
 					props: ValueMap.fromObject<RadioPropsObject>({
 						...config.cellConfig(x, y),
 					}),
