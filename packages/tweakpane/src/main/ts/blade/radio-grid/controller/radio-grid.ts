@@ -47,15 +47,16 @@ export class RadioGridController<T> implements ValueController<T, PlainView> {
 		const [w, h] = this.size;
 		for (let y = 0; y < h; y++) {
 			for (let x = 0; x < w; x++) {
+				const cell = config.cellConfig(x, y);
 				const bc = new RadioController(doc, {
 					name: inputName,
 					props: ValueMap.fromObject<RadioPropsObject>({
-						...config.cellConfig(x, y),
+						...cell,
 					}),
 					viewProps: ViewProps.create(),
 				});
 				this.cellCs_.push(bc);
-				this.cellValues_.push(config.cellConfig(x, y).value);
+				this.cellValues_.push(cell.value);
 			}
 		}
 
