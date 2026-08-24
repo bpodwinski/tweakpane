@@ -1,8 +1,7 @@
 # Tweakpane
 ![CI](https://github.com/cocopon/tweakpane/workflows/CI/badge.svg)
-[![Coverage Status](https://coveralls.io/repos/github/cocopon/tweakpane/badge.svg)](https://coveralls.io/github/cocopon/tweakpane)
+[![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bpodwinski/c4ed268357a3d741d67b9d4eb0ac6256/raw/tweakpane-coverage.json)](https://github.com/bpodwinski/tweakpane/actions)
 [![npm version](https://badge.fury.io/js/tweakpane.svg)](https://badge.fury.io/js/tweakpane)
-[![Coverage (fork)](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bpodwinski/c4ed268357a3d741d67b9d4eb0ac6256/raw/tweakpane-coverage.json)](https://github.com/bpodwinski/tweakpane/actions)
 
 ![cover](https://user-images.githubusercontent.com/602961/146529897-38829c6f-56df-46f6-81fe-d65fb2027eaa.png)
 
