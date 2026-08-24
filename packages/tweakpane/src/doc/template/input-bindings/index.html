@@ -455,5 +455,61 @@ pane.addBinding(PARAMS, 'color', {
 		</div>
 	</div>
 </div>
+
+
+<h2 id="radiogrid"><a href="#radiogrid">Radio grid</a></h2>
+<p>
+	<a href="{{ root }}api/classes/RadioGridApi.html">API</a>
+</p>
+<p>A grid of radio buttons bound to a value, useful for picking from a small fixed set of options laid out in 2D. Built into this fork by default — no <code>registerPlugin()</code> needed.</p>
+<div class="main_media">
+	<div class="demo">
+		<div class="demo_code">
+			<div class="codeBlock"><pre><code class="js">const PARAMS = {
+  scale: 25,
+};
+
+const pane = new Pane();
+pane.addBinding(PARAMS, 'scale', {
+  <strong>view</strong>: <strong>'radiogrid'</strong>,
+  <strong>groupName</strong>: 'scale',
+  <strong>size</strong>: [3, 2],
+  <strong>cells</strong>: (x, y) => {
+    const scales = [10, 20, 25, 50, 75, 100];
+    return {
+      title: `${scales[y * 3 + x]}%`,
+      value: scales[y * 3 + x],
+    };
+  },
+});</code></pre></div>
+		</div>
+		<div class="demo_result">
+			<div class="paneContainer" data-pane-radiogrid></div>
+		</div>
+	</div>
+</div>
+
+
+<h2 id="interval"><a href="#interval">Interval</a></h2>
+<p>A range with two independent handles, bound to a plain object with <code>min</code>/<code>max</code> properties. Built into this fork by default.</p>
+<div class="main_media">
+	<div class="demo">
+		<div class="demo_code">
+			<div class="codeBlock"><pre><code class="js">const PARAMS = {
+  <strong>range: {min: 16, max: 48}</strong>,
+};
+
+const pane = new Pane();
+pane.addBinding(PARAMS, 'range', {
+  min: 0,
+  max: 100,
+  step: 1,
+});</code></pre></div>
+		</div>
+		<div class="demo_result">
+			<div class="paneContainer" data-pane-interval></div>
+		</div>
+	</div>
+</div>
 {% endblock %}
 

@@ -3,7 +3,6 @@ import {Pane, TpPluginBundle} from 'tweakpane';
 import {selectContainer} from '../util.js';
 
 declare const TweakpaneCamerakitPlugin: TpPluginBundle;
-declare const TweakpaneEssentialsPlugin: TpPluginBundle;
 
 export function initPlugins() {
 	const markerToFnMap: {
@@ -14,10 +13,11 @@ export function initPlugins() {
 				interval: {min: 16, max: 48},
 				radiogrid: 25,
 			};
+			// NOTE: these components are now built into this fork by default,
+			// no pane.registerPlugin() call needed.
 			const pane = new Pane({
 				container: container,
 			});
-			pane.registerPlugin(TweakpaneEssentialsPlugin);
 
 			// Bindings
 			const fi = pane.addFolder({

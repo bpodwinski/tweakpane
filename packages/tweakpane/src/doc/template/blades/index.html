@@ -148,4 +148,87 @@ pane.addBlade({
 		</div>
 	</div>
 </div>
+
+
+<h2 id="buttongrid"><a href="#buttongrid">Button grid</a></h2>
+<p>
+	<a href="{{ root }}api/interfaces/ButtonGridBladeParams.html">Parameters</a> | <a href="{{ root }}api/classes/ButtonGridApi.html">API</a>
+</p>
+<p>A grid of buttons, useful for directional pads or quick-pick controls. Built into this fork by default — no <code>registerPlugin()</code> needed.</p>
+<div class="main_media">
+	<div class="demo">
+		<div class="demo_code">
+			<div class="codeBlock"><pre><code class="js">const pane = new Pane();
+pane.addBlade({
+  <strong>view</strong>: <strong>'buttongrid'</strong>,
+  <strong>size</strong>: [3, 3],
+  <strong>cells</strong>: (x, y) => ({
+    title: [
+      ['NW', 'N', 'NE'],
+      ['W', '*', 'E'],
+      ['SW', 'S', 'SE'],
+    ][y][x],
+  }),
+  label: 'nav',
+});</code></pre></div>
+		</div>
+		<div class="demo_result">
+			<div class="paneContainer" data-pane-buttongrid></div>
+		</div>
+	</div>
+</div>
+
+
+<h2 id="cubicbezier"><a href="#cubicbezier">Cubic bezier</a></h2>
+<p>
+	<a href="{{ root }}api/interfaces/CubicBezierBladeParams.html">Parameters</a> | <a href="{{ root }}api/classes/CubicBezierApi.html">API</a>
+</p>
+<p>An editable cubic-bezier easing curve picker, handy for animation easing values. Built into this fork by default.</p>
+<div class="main_media">
+	<div class="demo">
+		<div class="demo_code">
+			<div class="codeBlock"><pre><code class="js">const pane = new Pane();
+pane.addBlade({
+  <strong>view</strong>: <strong>'cubicbezier'</strong>,
+  <strong>value</strong>: [0.5, 0, 0.5, 1],
+  expanded: true,
+  label: 'easing',
+  picker: 'inline',
+});</code></pre></div>
+		</div>
+		<div class="demo_result">
+			<div class="paneContainer" data-pane-cubicbezier></div>
+		</div>
+	</div>
+</div>
+
+
+<h2 id="fpsgraph"><a href="#fpsgraph">FPS graph</a></h2>
+<p>
+	<a href="{{ root }}api/interfaces/FpsGraphBladeParams.html">Parameters</a> | <a href="{{ root }}api/classes/FpsGraphBladeApi.html">API</a>
+</p>
+<p>A rolling graph of frames-per-second — wrap your render loop with <code>begin()</code>/<code>end()</code>. Built into this fork by default.</p>
+<div class="main_media">
+	<div class="demo">
+		<div class="demo_code">
+			<div class="codeBlock"><pre><code class="js">const pane = new Pane();
+const fpsGraph = pane.addBlade({
+  <strong>view</strong>: <strong>'fpsgraph'</strong>,
+  label: 'fpsgraph',
+  rows: 2,
+}) as FpsGraphBladeApi;
+
+function render() {
+  <strong>fpsGraph.begin()</strong>;
+  // Rendering
+  <strong>fpsGraph.end()</strong>;
+  requestAnimationFrame(render);
+}
+render();</code></pre></div>
+		</div>
+		<div class="demo_result">
+			<div class="paneContainer" data-pane-fpsgraph></div>
+		</div>
+	</div>
+</div>
 {% endblock %}

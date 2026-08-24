@@ -187,7 +187,51 @@ const list = pane.addBlade({
 list.on('change', (ev) => { console.log(ev.value); });
 pane.addBlade({view: 'separator'});
 ```
-Built into the `tweakpane` package: `view: 'slider' | 'list' | 'text' | 'separator' | 'tab'` (folder/button/tab also work via `addBlade` with the matching params). Third-party plugins (e.g. `@tweakpane/plugin-essentials`) add more `view` values such as `'fpsgraph'`, `'radiogrid'`, `'cubicbezier'` — see Plugins below.
+Built into the `tweakpane` package: `view: 'slider' | 'list' | 'text' | 'separator' | 'tab'` (folder/button/tab also work via `addBlade` with the matching params).
+
+## Built-in "essentials" components (this fork only)
+
+This fork vendors `@tweakpane/plugin-essentials` as native built-in components — **no `pane.registerPlugin(...)` call needed**, unlike upstream Tweakpane where these require installing and registering that package separately. Source: `packages/tweakpane/src/main/ts/blade/{button-grid,cubic-bezier,fps-graph,interval,radio-grid}/`. Docs: `/blades/#buttongrid`, `/blades/#cubicbezier`, `/blades/#fpsgraph`, `/input-bindings/#radiogrid`, `/input-bindings/#interval`.
+
+```js
+// Button grid — addBlade, view: 'buttongrid'
+pane.addBlade({
+	view: 'buttongrid',
+	size: [3, 3],            // [columns, rows]
+	cells: (x, y) => ({title: `${x},${y}`}),
+	label: 'nav',
+});
+
+// Cubic bezier — addBlade, view: 'cubicbezier'
+pane.addBlade({
+	view: 'cubicbezier',
+	value: [0.5, 0, 0.5, 1], // [x1, y1, x2, y2]
+	expanded: true,           // start with the curve editor open
+	picker: 'inline',         // 'inline' | 'popup'
+	label: 'easing',
+});
+
+// FPS graph — addBlade, view: 'fpsgraph'; returns FpsGraphBladeApi with begin()/end()
+const fpsGraph = pane.addBlade({view: 'fpsgraph', label: 'fps', rows: 2}); // as FpsGraphBladeApi in TS
+function render() {
+	fpsGraph.begin();
+	// ...render work...
+	fpsGraph.end();
+	requestAnimationFrame(render);
+}
+
+// Radio grid — addBinding, view: 'radiogrid' (bind to any scalar value present in `cells`)
+pane.addBinding(PARAMS, 'scale', {
+	view: 'radiogrid',
+	groupName: 'scale',       // radio <input> group name, must be unique per instance
+	size: [3, 2],
+	cells: (x, y) => ({title: `${[10, 20, 25, 50, 75, 100][y * 3 + x]}%`, value: [10, 20, 25, 50, 75, 100][y * 3 + x]}),
+});
+
+// Interval — addBinding, auto-detected from a plain {min, max} value shape (no `view` needed)
+const PARAMS2 = {range: {min: 16, max: 48}};
+pane.addBinding(PARAMS2, 'range', {min: 0, max: 100, step: 1}); // min/max/step here constrain the whole range
+```
 
 ## Events
 
@@ -237,23 +281,17 @@ Typical pattern: export on every `'change'` event to persist live, import once a
 
 ## Writing a custom plugin
 
-Tweakpane's built-in controls and third-party packages (`@tweakpane/plugin-essentials`, `@tweakpane/plugin-camerakit`, ...) all use the same public plugin API from `@tweakpane/core`. A plugin bundle is registered with `pane.registerPlugin(bundle)` before it's used.
+Tweakpane's built-in controls and third-party packages (`@tweakpane/plugin-camerakit`, ...) all use the same public plugin API from `@tweakpane/core`. A plugin bundle is registered with `pane.registerPlugin(bundle)` before it's used. (`@tweakpane/plugin-essentials` is the one common exception in this fork — its components are vendored in as built-ins, see above, no registration needed.)
 
 ### Registering an existing plugin package
 ```js
 import {Pane} from 'tweakpane';
-import * as EssentialsPlugin from '@tweakpane/plugin-essentials';
+import * as CamerakitPlugin from '@tweakpane/plugin-camerakit';
 
 const pane = new Pane();
-pane.registerPlugin(EssentialsPlugin);
+pane.registerPlugin(CamerakitPlugin);
 
-const fpsGraph = pane.addBlade({view: 'fpsgraph', label: 'fps'});
-pane.addBinding({size: 's'}, 'size', {
-	view: 'radiogrid',
-	groupName: 'size',
-	size: [3, 1],
-	cells: (x) => ({title: ['S', 'M', 'L'][x], value: ['s', 'm', 'l'][x]}),
-});
+pane.addBinding({flen: 55}, 'flen', {view: 'cameraring', series: 0});
 ```
 
 ### Writing your own input-binding plugin (minimal, verified pattern)
@@ -356,7 +394,7 @@ A `TpPluginBundle` is `{id, css?, plugin: TpPlugin}` or `{id, css?, plugins: TpP
 - Forcing `view: 'color'` is required to treat a *numeric* bound value as a color; strings/objects are auto-detected.
 - `options` on any input type turns it into a dropdown/list regardless of the base type.
 - There's no built-in preset API — build save/load on top of `exportState()`/`importState()`.
-- Third-party plugin `view` values (`'fpsgraph'`, `'radiogrid'`, `'cubicbezier'`, etc.) only work after `pane.registerPlugin(...)` — using the `view` string without registering silently falls back to the default control (or fails `accept()` and errors).
+- Third-party plugin `view` values only work after `pane.registerPlugin(...)` — using the `view` string without registering silently falls back to the default control (or fails `accept()` and errors). `'fpsgraph'`, `'radiogrid'`, `'cubicbezier'`, `'buttongrid'` are the exception **in this fork**: they're built-in (see "Built-in essentials components" above), no registration needed. On unmodified upstream Tweakpane, they'd still require `@tweakpane/plugin-essentials` + `registerPlugin`.
 - Package is ESM only (`"type": "module"`); there is no CommonJS build.
 
 ## Key source files (this repo, for verification)
@@ -367,6 +405,8 @@ A `TpPluginBundle` is `{id, css?, plugin: TpPlugin}` or `{id, css?, plugins: TpP
 - `packages/core/src/common/params.ts`, `packages/core/src/blade/common/api/params.ts` — every params interface
 - `packages/core/src/input-binding/*/plugin.ts`, `packages/core/src/monitor-binding/*/plugin.ts` — built-in binding plugins
 - `packages/tweakpane/src/main/ts/blade/{slider,list,text,separator}/plugin.ts` — built-in raw blades
+- `packages/tweakpane/src/main/ts/blade/{button-grid,cubic-bezier,fps-graph,interval,radio-grid}/` — built-in essentials (vendored, this fork only)
+- `packages/tweakpane/src/main/ts/pane/pane.ts` `setUpDefaultPlugins_()` — the actual list of what's registered by default
 - `packages/core/src/blade/plugin.ts`, `input-binding/plugin.ts`, `monitor-binding/plugin.ts`, `plugin/plugin.ts` — plugin authoring interfaces
 - `packages/tweakpane/src/doc/ts/plugins/counter/` — full working custom-plugin example
 - `packages/tweakpane/src/doc/ts/route/*.ts` — every usage snippet above is adapted from here

@@ -11,7 +11,17 @@ import {
 	ViewProps,
 } from '@tweakpane/core';
 
+import {ButtonGridBladePlugin} from '../blade/button-grid/plugin.js';
+import {CubicBezierBladePlugin} from '../blade/cubic-bezier/plugin.js';
+import {FpsGraphBladePlugin} from '../blade/fps-graph/plugin.js';
+import {IntervalInputPlugin} from '../blade/interval/plugin.js';
 import {ListBladePlugin} from '../blade/list/plugin.js';
+import {RadioGridBladePlugin} from '../blade/radio-grid/blade-plugin.js';
+import {
+	RadioGruidBooleanInputPlugin,
+	RadioGruidNumberInputPlugin,
+	RadioGruidStringInputPlugin,
+} from '../blade/radio-grid/input-plugin.js';
 import {RootApi} from '../blade/root/api/root.js';
 import {RootController} from '../blade/root/controller/root.js';
 import {SeparatorBladePlugin} from '../blade/separator/plugin.js';
@@ -121,7 +131,15 @@ export class Pane extends RootApi {
 			// NOTE: This string literal will be replaced with the default CSS by Rollup at the compilation time
 			css: '__css__',
 			plugins: [
+				ButtonGridBladePlugin,
+				CubicBezierBladePlugin,
+				FpsGraphBladePlugin,
+				IntervalInputPlugin,
 				ListBladePlugin,
+				RadioGridBladePlugin,
+				RadioGruidBooleanInputPlugin,
+				RadioGruidNumberInputPlugin,
+				RadioGruidStringInputPlugin,
 				SeparatorBladePlugin,
 				SliderBladePlugin,
 				TabBladePlugin,

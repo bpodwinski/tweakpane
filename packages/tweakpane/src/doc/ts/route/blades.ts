@@ -1,4 +1,4 @@
-import {ListBladeApi, Pane, TextBladeApi} from 'tweakpane';
+import {FpsGraphBladeApi, ListBladeApi, Pane, TextBladeApi} from 'tweakpane';
 
 import {selectContainer} from '../util.js';
 
@@ -79,6 +79,52 @@ export function initBlades() {
 			pane.addButton({title: 'Next'});
 			pane.addBlade({view: 'separator'});
 			pane.addButton({title: 'Reset'});
+		},
+		buttongrid(container) {
+			const pane = new Pane({
+				container: container,
+			});
+			pane.addBlade({
+				view: 'buttongrid',
+				size: [3, 3],
+				cells: (x: number, y: number) => ({
+					title: [
+						['NW', 'N', 'NE'],
+						['W', '*', 'E'],
+						['SW', 'S', 'SE'],
+					][y][x],
+				}),
+				label: 'nav',
+			});
+		},
+		cubicbezier(container) {
+			const pane = new Pane({
+				container: container,
+			});
+			pane.addBlade({
+				view: 'cubicbezier',
+				value: [0.5, 0, 0.5, 1],
+
+				expanded: true,
+				label: 'easing',
+				picker: 'inline',
+			});
+		},
+		fpsgraph(container) {
+			const pane = new Pane({
+				container: container,
+			});
+			const fpsGraph = pane.addBlade({
+				view: 'fpsgraph',
+				label: 'fpsgraph',
+				rows: 2,
+			}) as FpsGraphBladeApi;
+			function render() {
+				fpsGraph.begin();
+				fpsGraph.end();
+				requestAnimationFrame(render);
+			}
+			render();
 		},
 	};
 	Object.keys(markerToFnMap).forEach((marker) => {

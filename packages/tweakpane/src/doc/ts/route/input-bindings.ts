@@ -357,6 +357,33 @@ export function initInputBindings() {
 				w: copt,
 			});
 		},
+		radiogrid: (container) => {
+			const PARAMS = {scale: 25};
+			const scales = [10, 20, 25, 50, 75, 100];
+			const pane = new Pane({
+				container: container,
+			});
+			pane.addBinding(PARAMS, 'scale', {
+				view: 'radiogrid',
+				groupName: 'scale',
+				size: [3, 2],
+				cells: (x: number, y: number) => ({
+					title: `${scales[y * 3 + x]}%`,
+					value: scales[y * 3 + x],
+				}),
+			});
+		},
+		interval: (container) => {
+			const PARAMS = {range: {min: 16, max: 48}};
+			const pane = new Pane({
+				container: container,
+			});
+			pane.addBinding(PARAMS, 'range', {
+				min: 0,
+				max: 100,
+				step: 1,
+			});
+		},
 	};
 	Object.keys(markerToFnMap).forEach((marker) => {
 		const initFn = markerToFnMap[marker];
