@@ -407,6 +407,17 @@ export function initInputBindings() {
 				expanded: true,
 			});
 		},
+		rotationkeys: (container) => {
+			const PARAMS = {euler: {_x: 0, _y: 0, _z: 0}};
+			const pane = new Pane({
+				container: container,
+			});
+			pane.addBinding(PARAMS, 'euler', {
+				view: 'rotation',
+				rotationMode: 'euler',
+				keys: {x: '_x', y: '_y', z: '_z'},
+			});
+		},
 	};
 	Object.keys(markerToFnMap).forEach((marker) => {
 		const initFn = markerToFnMap[marker];

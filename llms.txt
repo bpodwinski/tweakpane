@@ -193,7 +193,7 @@ Built into the `tweakpane` package: `view: 'slider' | 'list' | 'text' | 'separat
 
 This fork vendors third-party plugins as native built-in components — **no `pane.registerPlugin(...)` call needed**, unlike upstream Tweakpane where each of these would require installing and registering a separate package. Two sources are vendored so far:
 - `@tweakpane/plugin-essentials` → `packages/tweakpane/src/main/ts/blade/{button-grid,cubic-bezier,fps-graph,interval,radio-grid}/`. Docs: `/blades/#buttongrid`, `/blades/#cubicbezier`, `/blades/#fpsgraph`, `/input-bindings/#radiogrid`, `/input-bindings/#interval`.
-- `@0b5vr/tweakpane-plugin-rotation` → `packages/tweakpane/src/main/ts/blade/rotation/`. Docs: `/input-bindings/#rotation`.
+- `@0b5vr/tweakpane-plugin-rotation` → `packages/tweakpane/src/main/ts/blade/rotation/`. Docs: `/input-bindings/#rotation`. This fork also adds two params not present upstream: `keys` (remap bound property names) and `pointerScale` (gizmo drag sensitivity) — see below.
 
 ```js
 // Button grid — addBlade, view: 'buttongrid'
@@ -247,6 +247,16 @@ pane.addBinding({quat: {x: 0, y: 0, z: 0, w: 1}}, 'quat', {
 	// rotationMode: 'quaternion' is implied when omitted
 	picker: 'inline',   // 'inline' | 'popup', optional, 'popup' by default
 	expanded: true,      // optional, false by default
+});
+
+// Fork-only additions (not in upstream @0b5vr/tweakpane-plugin-rotation), added to fix
+// https://github.com/0b5vr/tweakpane-plugin-rotation/issues/1 :
+pane.addBinding({euler: {_x: 0, _y: 0, _z: 0}}, 'euler', {
+	view: 'rotation',
+	rotationMode: 'euler',
+	keys: {x: '_x', y: '_y', z: '_z'},   // remap bound property names, e.g. for engines
+	                                        // where x/y/z are setters with side effects
+	pointerScale: 0.3,                     // scale gizmo drag sensitivity, default 1 (lower = less sensitive)
 });
 ```
 

@@ -33,6 +33,7 @@ Loop:
    - Check the browser console for errors/warnings (`list_console_messages` / `browser_console_messages`) — a silent JS exception is easy to miss otherwise.
    - Take a screenshot or snapshot when the change is visual (layout, styling, new control) so it can be reviewed.
 4. Only after the manual/MCP browser check passes, run `npm run lint` and `npm run test --workspaces` (or the scoped per-package equivalents) to confirm nothing else broke.
+5. If the change adds or modifies a public-facing feature (a new/changed `view`, param, blade, binding, or built-in vendored component) — update **both** [llms.txt](llms.txt) (the machine-readable API reference — see its own gotchas/built-in-components sections) **and** the doc site (`packages/tweakpane/src/doc/`, see the `tweakpane-doc-page` skill for the exact Nunjucks + route-TS conventions) before considering the change done. A feature that works but isn't documented in both places is unfinished — this has been missed more than once in this repo's history.
 
 Don't claim a UI fix is done from reading the diff alone — reproduce the original bug in the browser first, then confirm the fix resolves it there.
 
@@ -85,3 +86,4 @@ No CONTRIBUTING.md, no enforced conventional-commits. Existing style: short impe
 - Don't skip rebuilding `core` after editing it — `tweakpane` will silently use a stale build.
 - Don't drop the `.js` extension on relative imports.
 - Don't bypass the Blade/API/Controller/View split for new UI features "to save time" — it's load-bearing for the plugin system.
+- Don't ship a new/changed public feature without updating `llms.txt` and the doc site in the same change — see Dev workflow step 5.

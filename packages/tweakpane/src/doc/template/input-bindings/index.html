@@ -555,5 +555,38 @@ pane.addBinding(PARAMS, 'quat', {
 		</div>
 	</div>
 </div>
+<p>If the bound object exposes its axes under different property names (e.g. an engine where <code>x</code>/<code>y</code>/<code>z</code> are setters with side effects, and the raw backing fields are <code>_x</code>/<code>_y</code>/<code>_z</code>), remap them with <code>keys</code> so the plugin reads/writes the right properties:</p>
+<div class="main_media">
+	<div class="demo">
+		<div class="demo_code">
+			<div class="codeBlock"><pre><code class="js">const PARAMS = {
+  euler: {_x: 0, _y: 0, _z: 0},
+};
+
+const pane = new Pane();
+pane.addBinding(PARAMS, 'euler', {
+  view: 'rotation',
+  rotationMode: 'euler',
+  <strong>keys</strong>: <strong>{x: '_x', y: '_y', z: '_z'}</strong>,
+});</code></pre></div>
+		</div>
+		<div class="demo_result">
+			<div class="paneContainer" data-pane-rotationkeys></div>
+		</div>
+	</div>
+</div>
+<p><code>pointerScale</code> scales how far the gizmo pad needs to be dragged for a full rotation (default <code>1</code>) — lower it if the drag feels too sensitive:</p>
+<div class="main_media">
+	<div class="demo">
+		<div class="demo_code">
+			<div class="codeBlock"><pre><code class="js">pane.addBinding(PARAMS, 'euler', {
+  view: 'rotation',
+  rotationMode: 'euler',
+  <strong>pointerScale</strong>: <strong>0.3</strong>, // less sensitive drag
+});</code></pre></div>
+		</div>
+		<div class="demo_chip">feel</div>
+	</div>
+</div>
 {% endblock %}
 
