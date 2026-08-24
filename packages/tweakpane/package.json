@@ -33,6 +33,7 @@
     "build": "run-s main:build doc:build",
     "clean": "rimraf .nyc_output dist docs test tweakpane.tgz tweakpane-*.tgz tweakpane-*.zip test-module/node_modules",
     "coverage": "nyc --reporter=none --extension \".ts\" --exclude \"**/*-test.ts\" npm run main:test:ts:dynamic",
+    "coverage:badge": "npx c8 --reporter=json-summary --reports-dir=.c8-badge --exclude \"**/*-test.ts\" npm run main:test:ts:dynamic",
     "format": "run-p main:format doc:format",
     "doc:build": "run-p doc:build:*",
     "doc:build:scss": "mkdirp docs/assets && sass src/doc/sass/bundle.scss | postcss --config postcss.config.js > docs/assets/bundle.css",

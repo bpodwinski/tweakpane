@@ -1,6 +1,8 @@
 name: CI
 on:
   pull_request:
+  push:
+    branches: [main]
   release:
     types: [released]
 jobs:
@@ -21,3 +23,22 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path-to-lcov: ./coverage/lcov.info
+
+      # Recomputes coverage with c8 (nyc doesn't instrument these ESM-loaded
+      # test files reliably) and publishes it as a dynamic README badge via a
+      # Gist, so the badge stays in sync on every push to main without
+      # depending on a third-party coverage service being fully wired up.
+      - name: Compute coverage badge
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        id: coverage_badge
+        run: npm run coverage:badge
+      - name: Publish coverage badge
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: c4ed268357a3d741d67b9d4eb0ac6256
+          filename: tweakpane-coverage.json
+          label: coverage
+          message: ${{ steps.coverage_badge.outputs.coverage }}
+          color: ${{ steps.coverage_badge.outputs.color }}
