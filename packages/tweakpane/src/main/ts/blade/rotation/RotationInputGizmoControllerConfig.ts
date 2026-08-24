@@ -6,4 +6,5 @@ export interface RotationInputGizmoControllerConfig {
 	value: Value<Rotation>;
 	viewProps: ViewProps;
 	pickerLayout: PickerLayout;
+	pointerScale: number;
 }

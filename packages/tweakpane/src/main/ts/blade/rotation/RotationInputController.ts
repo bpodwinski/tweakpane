@@ -75,6 +75,7 @@ export class RotationInputController implements Controller<RotationInputView> {
 			value: this.value,
 			viewProps: this.viewProps,
 			pickerLayout: config.pickerLayout,
+			pointerScale: config.pointerScale,
 		});
 		gizmoC.view.allFocusableElements.forEach((elem) => {
 			elem.addEventListener('blur', this.onPopupChildBlur_);

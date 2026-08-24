@@ -18,6 +18,7 @@ import {Euler} from './Euler.js';
 import {parseEuler} from './parseEuler.js';
 import {parseEulerOrder} from './parseEulerOrder.js';
 import {parseEulerUnit} from './parseEulerUnit.js';
+import {parseRotationKeys} from './parseRotationKeys.js';
 import {RotationInputController} from './RotationInputController.js';
 import type {RotationInputPluginEulerParams} from './RotationInputPluginEulerParams.js';
 
@@ -42,6 +43,8 @@ export const RotationInputPluginEuler: InputBindingPlugin<
 			z: p.optional.custom(parsePointDimensionParams),
 			order: p.optional.custom(parseEulerOrder),
 			unit: p.optional.custom(parseEulerUnit),
+			keys: p.optional.custom(parseRotationKeys),
+			pointerScale: p.optional.number,
 		}));
 
 		return result
@@ -50,6 +53,7 @@ export const RotationInputPluginEuler: InputBindingPlugin<
 						exValue,
 						result.order ?? 'XYZ',
 						result.unit ?? 'rad',
+						result.keys,
 					),
 					params: result,
 			  }
@@ -59,7 +63,12 @@ export const RotationInputPluginEuler: InputBindingPlugin<
 	binding: {
 		reader({params}) {
 			return (exValue: unknown): Euler => {
-				return parseEuler(exValue, params.order ?? 'XYZ', params.unit ?? 'rad');
+				return parseEuler(
+					exValue,
+					params.order ?? 'XYZ',
+					params.unit ?? 'rad',
+					params.keys,
+				);
 			};
 		},
 
@@ -77,11 +86,11 @@ export const RotationInputPluginEuler: InputBindingPlugin<
 			});
 		},
 
-		writer(_args) {
+		writer({params}) {
 			return (target: BindingTarget, inValue: Euler) => {
-				target.writeProperty('x', inValue.x);
-				target.writeProperty('y', inValue.y);
-				target.writeProperty('z', inValue.z);
+				target.writeProperty(params.keys?.x ?? 'x', inValue.x);
+				target.writeProperty(params.keys?.y ?? 'y', inValue.y);
+				target.writeProperty(params.keys?.z ?? 'z', inValue.z);
 			};
 		},
 	},
@@ -112,6 +121,7 @@ export const RotationInputPluginEuler: InputBindingPlugin<
 			expanded: expanded ?? false,
 			parser: parseNumber,
 			pickerLayout: picker ?? 'popup',
+			pointerScale: params.pointerScale ?? 1,
 			value,
 			viewProps: viewProps,
 		}) as unknown as ValueController<Euler>; // TODO: resolve type puzzle

@@ -16,4 +16,5 @@ export interface RotationInputControllerConfig {
 	rotationMode: RotationInputRotationMode;
 	value: Value<Rotation>;
 	viewProps: ViewProps;
+	pointerScale: number;
 }

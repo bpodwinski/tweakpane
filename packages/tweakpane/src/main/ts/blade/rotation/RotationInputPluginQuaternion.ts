@@ -14,6 +14,7 @@ import {
 import {createAxisQuaternion} from './createAxisQuaternion.js';
 import {createDimensionConstraint} from './createDimensionConstraint.js';
 import {parseQuaternion} from './parseQuaternion.js';
+import {parseRotationKeys} from './parseRotationKeys.js';
 import {Quaternion} from './Quaternion.js';
 import {QuaternionAssembly} from './QuaternionAssembly.js';
 import {RotationInputController} from './RotationInputController.js';
@@ -41,21 +42,23 @@ export const RotationInputPluginQuaternion: InputBindingPlugin<
 				y: p.optional.custom(parsePointDimensionParams),
 				z: p.optional.custom(parsePointDimensionParams),
 				w: p.optional.custom(parsePointDimensionParams),
+				keys: p.optional.custom(parseRotationKeys),
+				pointerScale: p.optional.number,
 			}),
 		);
 
 		return result
 			? {
-					initialValue: parseQuaternion(exValue),
+					initialValue: parseQuaternion(exValue, result.keys),
 					params: result,
 			  }
 			: null;
 	},
 
 	binding: {
-		reader(_args) {
+		reader({params}) {
 			return (exValue: unknown): Quaternion => {
-				return parseQuaternion(exValue);
+				return parseQuaternion(exValue, params.keys);
 			};
 		},
 
@@ -71,12 +74,12 @@ export const RotationInputPluginQuaternion: InputBindingPlugin<
 			});
 		},
 
-		writer(_args) {
+		writer({params}) {
 			return (target: BindingTarget, inValue: Quaternion) => {
-				target.writeProperty('x', inValue.x);
-				target.writeProperty('y', inValue.y);
-				target.writeProperty('z', inValue.z);
-				target.writeProperty('w', inValue.w);
+				target.writeProperty(params.keys?.x ?? 'x', inValue.x);
+				target.writeProperty(params.keys?.y ?? 'y', inValue.y);
+				target.writeProperty(params.keys?.z ?? 'z', inValue.z);
+				target.writeProperty(params.keys?.w ?? 'w', inValue.w);
 			};
 		},
 	},
@@ -101,6 +104,7 @@ export const RotationInputPluginQuaternion: InputBindingPlugin<
 			expanded: expanded ?? false,
 			parser: parseNumber,
 			pickerLayout: picker ?? 'popup',
+			pointerScale: params.pointerScale ?? 1,
 			value,
 			viewProps: viewProps,
 		}) as unknown as ValueController<Quaternion>; // TODO;

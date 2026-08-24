@@ -42,6 +42,7 @@ export class RotationInputGizmoController
 		'free' | 'angle-x' | 'angle-y' | 'angle-z' | 'angle-r' | 'auto'
 	>;
 	private readonly ptHandler_: PointerHandler;
+	private readonly pointerScale_: number;
 	private px_: number | null;
 	private py_: number | null;
 	private angleState_: {
@@ -62,6 +63,7 @@ export class RotationInputGizmoController
 
 		this.value = config.value;
 		this.viewProps = config.viewProps;
+		this.pointerScale_ = config.pointerScale;
 
 		this.mode_ = createValue('free');
 
@@ -174,7 +176,10 @@ export class RotationInputGizmoController
 				}
 
 				const axis = new Vector3(dy / l, dx / l, 0.0);
-				const quat = Quaternion.fromAxisAngle(axis, l / 68.0);
+				const quat = Quaternion.fromAxisAngle(
+					axis,
+					(l / 68.0) * this.pointerScale_,
+				);
 				this.value.rawValue = this.value.rawValue.premultiply(quat);
 			}
 
