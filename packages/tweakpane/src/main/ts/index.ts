@@ -62,6 +62,11 @@ export {RadioGridApi} from './blade/radio-grid/api/radio-grid.js';
 export {TpRadioGridChangeEvent} from './blade/radio-grid/api/tp-radio-grid-event.js';
 export {RadioGridBladeParams} from './blade/radio-grid/blade-plugin.js';
 
+export {EulerOrder} from './blade/rotation/EulerOrder.js';
+export {EulerUnit} from './blade/rotation/EulerUnit.js';
+export {RotationInputPluginEulerParams} from './blade/rotation/RotationInputPluginEulerParams.js';
+export {RotationInputPluginQuaternionParams} from './blade/rotation/RotationInputPluginQuaternionParams.js';
+
 export {SeparatorBladeApi} from './blade/separator/api/separator.js';
 export {SeparatorBladeParams} from './blade/separator/plugin.js';
 export {SliderBladeApi} from './blade/slider/api/slider.js';

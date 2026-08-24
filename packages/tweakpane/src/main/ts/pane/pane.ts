@@ -24,6 +24,8 @@ import {
 } from '../blade/radio-grid/input-plugin.js';
 import {RootApi} from '../blade/root/api/root.js';
 import {RootController} from '../blade/root/controller/root.js';
+import {RotationInputPluginEuler} from '../blade/rotation/RotationInputPluginEuler.js';
+import {RotationInputPluginQuaternion} from '../blade/rotation/RotationInputPluginQuaternion.js';
 import {SeparatorBladePlugin} from '../blade/separator/plugin.js';
 import {SliderBladePlugin} from '../blade/slider/plugin.js';
 import {TextBladePlugin} from '../blade/text/plugin.js';
@@ -140,6 +142,8 @@ export class Pane extends RootApi {
 				RadioGruidBooleanInputPlugin,
 				RadioGruidNumberInputPlugin,
 				RadioGruidStringInputPlugin,
+				RotationInputPluginEuler,
+				RotationInputPluginQuaternion,
 				SeparatorBladePlugin,
 				SliderBladePlugin,
 				TabBladePlugin,

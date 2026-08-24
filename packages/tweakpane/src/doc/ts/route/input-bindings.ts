@@ -384,6 +384,29 @@ export function initInputBindings() {
 				step: 1,
 			});
 		},
+		rotationeuler: (container) => {
+			const PARAMS = {euler: {x: 0, y: 0, z: 0}};
+			const pane = new Pane({
+				container: container,
+			});
+			pane.addBinding(PARAMS, 'euler', {
+				view: 'rotation',
+				rotationMode: 'euler',
+				order: 'XYZ',
+				unit: 'deg',
+			});
+		},
+		rotationquaternion: (container) => {
+			const PARAMS = {quat: {x: 0, y: 0, z: 0, w: 1}};
+			const pane = new Pane({
+				container: container,
+			});
+			pane.addBinding(PARAMS, 'quat', {
+				view: 'rotation',
+				picker: 'inline',
+				expanded: true,
+			});
+		},
 	};
 	Object.keys(markerToFnMap).forEach((marker) => {
 		const initFn = markerToFnMap[marker];

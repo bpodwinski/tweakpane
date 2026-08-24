@@ -511,5 +511,49 @@ pane.addBinding(PARAMS, 'range', {
 		</div>
 	</div>
 </div>
+
+
+<h2 id="rotation"><a href="#rotation">Rotation</a></h2>
+<p>A 3D rotation picker with a swatch, an editable gizmo and axis text fields, bound to a plain object. Supports two representations via <code>rotationMode</code>: Euler angles (<code>{x, y, z}</code>) or a quaternion (<code>{x, y, z, w}</code>, the default when <code>rotationMode</code> is omitted). Built into this fork by default.</p>
+<div class="main_media">
+	<div class="demo">
+		<div class="demo_code">
+			<div class="codeBlock"><pre><code class="js">const PARAMS = {
+  euler: {x: 0, y: 0, z: 0},
+};
+
+const pane = new Pane();
+pane.addBinding(PARAMS, 'euler', {
+  <strong>view</strong>: <strong>'rotation'</strong>,
+  <strong>rotationMode</strong>: <strong>'euler'</strong>,
+  order: 'XYZ', // extrinsic rotation order, optional, 'XYZ' by default
+  unit: 'deg',  // 'rad' | 'deg' | 'turn', optional, 'rad' by default
+});</code></pre></div>
+		</div>
+		<div class="demo_result">
+			<div class="paneContainer" data-pane-rotationeuler></div>
+		</div>
+	</div>
+</div>
+<p>Without <code>rotationMode</code> (or with <code>rotationMode: 'quaternion'</code>), the bound value is a quaternion:</p>
+<div class="main_media">
+	<div class="demo">
+		<div class="demo_code">
+			<div class="codeBlock"><pre><code class="js">const PARAMS = {
+  quat: {x: 0, y: 0, z: 0, w: 1},
+};
+
+const pane = new Pane();
+pane.addBinding(PARAMS, 'quat', {
+  <strong>view</strong>: <strong>'rotation'</strong>,
+  picker: 'inline', // 'inline' | 'popup', optional, 'popup' by default
+  expanded: true,    // optional, false by default
+});</code></pre></div>
+		</div>
+		<div class="demo_result">
+			<div class="paneContainer" data-pane-rotationquaternion></div>
+		</div>
+	</div>
+</div>
 {% endblock %}
 

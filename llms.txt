@@ -189,9 +189,11 @@ pane.addBlade({view: 'separator'});
 ```
 Built into the `tweakpane` package: `view: 'slider' | 'list' | 'text' | 'separator' | 'tab'` (folder/button/tab also work via `addBlade` with the matching params).
 
-## Built-in "essentials" components (this fork only)
+## Built-in vendored components (this fork only)
 
-This fork vendors `@tweakpane/plugin-essentials` as native built-in components — **no `pane.registerPlugin(...)` call needed**, unlike upstream Tweakpane where these require installing and registering that package separately. Source: `packages/tweakpane/src/main/ts/blade/{button-grid,cubic-bezier,fps-graph,interval,radio-grid}/`. Docs: `/blades/#buttongrid`, `/blades/#cubicbezier`, `/blades/#fpsgraph`, `/input-bindings/#radiogrid`, `/input-bindings/#interval`.
+This fork vendors third-party plugins as native built-in components — **no `pane.registerPlugin(...)` call needed**, unlike upstream Tweakpane where each of these would require installing and registering a separate package. Two sources are vendored so far:
+- `@tweakpane/plugin-essentials` → `packages/tweakpane/src/main/ts/blade/{button-grid,cubic-bezier,fps-graph,interval,radio-grid}/`. Docs: `/blades/#buttongrid`, `/blades/#cubicbezier`, `/blades/#fpsgraph`, `/input-bindings/#radiogrid`, `/input-bindings/#interval`.
+- `@0b5vr/tweakpane-plugin-rotation` → `packages/tweakpane/src/main/ts/blade/rotation/`. Docs: `/input-bindings/#rotation`.
 
 ```js
 // Button grid — addBlade, view: 'buttongrid'
@@ -231,6 +233,21 @@ pane.addBinding(PARAMS, 'scale', {
 // Interval — addBinding, auto-detected from a plain {min, max} value shape (no `view` needed)
 const PARAMS2 = {range: {min: 16, max: 48}};
 pane.addBinding(PARAMS2, 'range', {min: 0, max: 100, step: 1}); // min/max/step here constrain the whole range
+
+// Rotation (vendored from @0b5vr/tweakpane-plugin-rotation) — addBinding, view: 'rotation'
+// Two representations, chosen by `rotationMode`. Quaternion is the DEFAULT if `rotationMode` is omitted.
+pane.addBinding({euler: {x: 0, y: 0, z: 0}}, 'euler', {
+	view: 'rotation',
+	rotationMode: 'euler',   // must be explicit to get Euler angles
+	order: 'XYZ',             // extrinsic rotation order, optional, 'XYZ' by default
+	unit: 'deg',               // 'rad' | 'deg' | 'turn', optional, 'rad' by default
+});
+pane.addBinding({quat: {x: 0, y: 0, z: 0, w: 1}}, 'quat', {
+	view: 'rotation',
+	// rotationMode: 'quaternion' is implied when omitted
+	picker: 'inline',   // 'inline' | 'popup', optional, 'popup' by default
+	expanded: true,      // optional, false by default
+});
 ```
 
 ## Events
@@ -394,7 +411,8 @@ A `TpPluginBundle` is `{id, css?, plugin: TpPlugin}` or `{id, css?, plugins: TpP
 - Forcing `view: 'color'` is required to treat a *numeric* bound value as a color; strings/objects are auto-detected.
 - `options` on any input type turns it into a dropdown/list regardless of the base type.
 - There's no built-in preset API — build save/load on top of `exportState()`/`importState()`.
-- Third-party plugin `view` values only work after `pane.registerPlugin(...)` — using the `view` string without registering silently falls back to the default control (or fails `accept()` and errors). `'fpsgraph'`, `'radiogrid'`, `'cubicbezier'`, `'buttongrid'` are the exception **in this fork**: they're built-in (see "Built-in essentials components" above), no registration needed. On unmodified upstream Tweakpane, they'd still require `@tweakpane/plugin-essentials` + `registerPlugin`.
+- Third-party plugin `view` values only work after `pane.registerPlugin(...)` — using the `view` string without registering silently falls back to the default control (or fails `accept()` and errors). `'fpsgraph'`, `'radiogrid'`, `'cubicbezier'`, `'buttongrid'`, `'rotation'` are the exception **in this fork**: they're built-in (see "Built-in vendored components" above), no registration needed. On unmodified upstream Tweakpane, they'd still require installing the matching plugin package + `registerPlugin`.
+- For `view: 'rotation'`, omitting `rotationMode` does **not** mean "auto-detect" — it silently defaults to `'quaternion'`. Passing a plain `{x,y,z}` (no `w`) without `rotationMode: 'euler'` is a bug, not a valid Euler shorthand.
 - Package is ESM only (`"type": "module"`); there is no CommonJS build.
 
 ## Key source files (this repo, for verification)
@@ -406,6 +424,7 @@ A `TpPluginBundle` is `{id, css?, plugin: TpPlugin}` or `{id, css?, plugins: TpP
 - `packages/core/src/input-binding/*/plugin.ts`, `packages/core/src/monitor-binding/*/plugin.ts` — built-in binding plugins
 - `packages/tweakpane/src/main/ts/blade/{slider,list,text,separator}/plugin.ts` — built-in raw blades
 - `packages/tweakpane/src/main/ts/blade/{button-grid,cubic-bezier,fps-graph,interval,radio-grid}/` — built-in essentials (vendored, this fork only)
+- `packages/tweakpane/src/main/ts/blade/rotation/` — built-in rotation picker (vendored from `@0b5vr/tweakpane-plugin-rotation`, this fork only)
 - `packages/tweakpane/src/main/ts/pane/pane.ts` `setUpDefaultPlugins_()` — the actual list of what's registered by default
 - `packages/core/src/blade/plugin.ts`, `input-binding/plugin.ts`, `monitor-binding/plugin.ts`, `plugin/plugin.ts` — plugin authoring interfaces
 - `packages/tweakpane/src/doc/ts/plugins/counter/` — full working custom-plugin example
