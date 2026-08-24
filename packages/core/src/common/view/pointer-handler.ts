@@ -29,10 +29,10 @@ export interface PointerData {
 function computeOffset(
 	ev: MouseEvent,
 	elem: HTMLElement,
+	rect: DOMRect,
 ): {x: number; y: number} {
 	// NOTE: OffsetX/Y should be computed from page and window properties to capture mouse events
 	const win = elem.ownerDocument.defaultView;
-	const rect = elem.getBoundingClientRect();
 	return {
 		x: ev.pageX - (((win && win.scrollX) ?? 0) + rect.left),
 		y: ev.pageY - (((win && win.scrollY) ?? 0) + rect.top),
@@ -87,8 +87,10 @@ export class PointerHandler {
 		element.addEventListener('mousedown', this.onMouseDown_);
 	}
 
-	private computePosition_(offset?: {x: number; y: number}): PointerData {
-		const rect = this.elem_.getBoundingClientRect();
+	private computePosition_(
+		rect: DOMRect,
+		offset?: {x: number; y: number},
+	): PointerData {
 		return {
 			bounds: {
 				width: rect.width,
@@ -113,18 +115,20 @@ export class PointerHandler {
 		doc.addEventListener('mousemove', this.onDocumentMouseMove_);
 		doc.addEventListener('mouseup', this.onDocumentMouseUp_);
 
+		const rect = this.elem_.getBoundingClientRect();
 		this.emitter.emit('down', {
 			altKey: ev.altKey,
-			data: this.computePosition_(computeOffset(ev, this.elem_)),
+			data: this.computePosition_(rect, computeOffset(ev, this.elem_, rect)),
 			sender: this,
 			shiftKey: ev.shiftKey,
 		});
 	}
 
 	private onDocumentMouseMove_(ev: MouseEvent): void {
+		const rect = this.elem_.getBoundingClientRect();
 		this.emitter.emit('move', {
 			altKey: ev.altKey,
-			data: this.computePosition_(computeOffset(ev, this.elem_)),
+			data: this.computePosition_(rect, computeOffset(ev, this.elem_, rect)),
 			sender: this,
 			shiftKey: ev.shiftKey,
 		});
@@ -135,9 +139,10 @@ export class PointerHandler {
 		doc.removeEventListener('mousemove', this.onDocumentMouseMove_);
 		doc.removeEventListener('mouseup', this.onDocumentMouseUp_);
 
+		const rect = this.elem_.getBoundingClientRect();
 		this.emitter.emit('up', {
 			altKey: ev.altKey,
-			data: this.computePosition_(computeOffset(ev, this.elem_)),
+			data: this.computePosition_(rect, computeOffset(ev, this.elem_, rect)),
 			sender: this,
 			shiftKey: ev.shiftKey,
 		});
@@ -152,6 +157,7 @@ export class PointerHandler {
 		this.emitter.emit('down', {
 			altKey: ev.altKey,
 			data: this.computePosition_(
+				rect,
 				touch
 					? {
 							x: touch.clientX - rect.left,
@@ -171,6 +177,7 @@ export class PointerHandler {
 		this.emitter.emit('move', {
 			altKey: ev.altKey,
 			data: this.computePosition_(
+				rect,
 				touch
 					? {
 							x: touch.clientX - rect.left,
@@ -190,6 +197,7 @@ export class PointerHandler {
 		this.emitter.emit('up', {
 			altKey: ev.altKey,
 			data: this.computePosition_(
+				rect,
 				touch
 					? {
 							x: touch.clientX - rect.left,

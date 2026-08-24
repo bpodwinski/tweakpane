@@ -20,8 +20,8 @@ export class Fpswatch {
 		return this.fps_;
 	}
 
-	public begin(now: Date): void {
-		this.start_ = now.getTime();
+	public begin(now: number): void {
+		this.start_ = now;
 	}
 
 	private calculateFps_(nowTime: number): number | null {
@@ -48,20 +48,19 @@ export class Fpswatch {
 		this.frameCount_ -= df;
 	}
 
-	public end(now: Date): void {
+	public end(now: number): void {
 		if (this.start_ === null) {
 			return;
 		}
 
-		const t = now.getTime();
-		this.duration_ = t - this.start_;
+		this.duration_ = now - this.start_;
 		this.start_ = null;
 
-		this.fps_ = this.calculateFps_(t);
+		this.fps_ = this.calculateFps_(now);
 
 		this.timestamps_.push({
 			frameCount: this.frameCount_,
-			time: t,
+			time: now,
 		});
 		++this.frameCount_;
 

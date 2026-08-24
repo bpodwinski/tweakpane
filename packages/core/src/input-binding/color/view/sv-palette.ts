@@ -24,6 +24,7 @@ export class SvPaletteView implements View {
 	public readonly value: Value<IntColor>;
 	public readonly canvasElement: HTMLCanvasElement;
 	private readonly markerElem_: HTMLDivElement;
+	private lastHue_: number | null = null;
 
 	constructor(doc: Document, config: Config) {
 		this.onValueChange_ = this.onValueChange_.bind(this);
@@ -59,24 +60,32 @@ export class SvPaletteView implements View {
 
 		const c = this.value.rawValue;
 		const hsvComps = c.getComponents('hsv');
-		const width = this.canvasElement.width;
-		const height = this.canvasElement.height;
-		const imgData = ctx.getImageData(0, 0, width, height);
-		const data = imgData.data;
 
-		for (let iy = 0; iy < height; iy++) {
-			for (let ix = 0; ix < width; ix++) {
-				const s = mapRange(ix, 0, width, 0, 100);
-				const v = mapRange(iy, 0, height, 100, 0);
-				const rgbComps = hsvToRgbInt(hsvComps[0], s, v);
-				const i = (iy * width + ix) * 4;
-				data[i] = rgbComps[0];
-				data[i + 1] = rgbComps[1];
-				data[i + 2] = rgbComps[2];
-				data[i + 3] = 255;
+		// The gradient only depends on the hue — skip the redraw (4096 pixels +
+		// getImageData/putImageData) when only saturation/value changed, which is
+		// what happens on every pointermove while dragging inside the palette.
+		if (this.lastHue_ !== hsvComps[0]) {
+			this.lastHue_ = hsvComps[0];
+
+			const width = this.canvasElement.width;
+			const height = this.canvasElement.height;
+			const imgData = ctx.getImageData(0, 0, width, height);
+			const data = imgData.data;
+
+			for (let iy = 0; iy < height; iy++) {
+				for (let ix = 0; ix < width; ix++) {
+					const s = mapRange(ix, 0, width, 0, 100);
+					const v = mapRange(iy, 0, height, 100, 0);
+					const rgbComps = hsvToRgbInt(hsvComps[0], s, v);
+					const i = (iy * width + ix) * 4;
+					data[i] = rgbComps[0];
+					data[i + 1] = rgbComps[1];
+					data[i + 2] = rgbComps[2];
+					data[i + 3] = 255;
+				}
 			}
+			ctx.putImageData(imgData, 0, 0);
 		}
-		ctx.putImageData(imgData, 0, 0);
 
 		const left = mapRange(hsvComps[1], 0, 100, 0, 100);
 		this.markerElem_.style.left = `${left}%`;

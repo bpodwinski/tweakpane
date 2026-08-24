@@ -30,6 +30,7 @@ export class RangeSliderController
 	public readonly viewProps: ViewProps;
 	private grabbing_: Grabbing | null = null;
 	private grabOffset_ = 0;
+	private knobOfs_ = 0;
 
 	constructor(doc: Document, config: Config) {
 		this.onPointerDown_ = this.onPointerDown_.bind(this);
@@ -52,14 +53,18 @@ export class RangeSliderController
 		ptHandler.emitter.on('up', this.onPointerUp_);
 	}
 
-	private ofs_(): number {
+	// Reads the grabbed knob's width once, when the grab starts, instead of on
+	// every pointer move — its width never changes for the duration of a drag.
+	private updateKnobOfs_(): void {
 		if (this.grabbing_ === 'min') {
-			return this.view.knobElements[0].getBoundingClientRect().width / 2;
+			this.knobOfs_ =
+				this.view.knobElements[0].getBoundingClientRect().width / 2;
+		} else if (this.grabbing_ === 'max') {
+			this.knobOfs_ =
+				-this.view.knobElements[1].getBoundingClientRect().width / 2;
+		} else {
+			this.knobOfs_ = 0;
 		}
-		if (this.grabbing_ === 'max') {
-			return -this.view.knobElements[1].getBoundingClientRect().width / 2;
-		}
-		return 0;
 	}
 
 	private valueFromData_(data: PointerData): number | null {
@@ -67,7 +72,7 @@ export class RangeSliderController
 			return null;
 		}
 
-		const p = (data.point.x + this.ofs_()) / data.bounds.width;
+		const p = (data.point.x + this.knobOfs_) / data.bounds.width;
 		const min = this.sliderProps.get('min');
 		const max = this.sliderProps.get('max');
 		return mapRange(p, 0, 1, min, max);
@@ -85,6 +90,7 @@ export class RangeSliderController
 		const pmin = mapRange(v.min, min, max, 0, 1);
 		const pmax = mapRange(v.max, min, max, 0, 1);
 
+		let shouldMove = false;
 		if (Math.abs(pmax - p) <= 0.025) {
 			this.grabbing_ = 'max';
 		} else if (Math.abs(pmin - p) <= 0.025) {
@@ -94,9 +100,15 @@ export class RangeSliderController
 			this.grabOffset_ = mapRange(p - pmin, 0, 1, 0, max - min);
 		} else if (p < pmin) {
 			this.grabbing_ = 'min';
-			this.onPointerMove_(ev);
+			shouldMove = true;
 		} else if (p > pmax) {
 			this.grabbing_ = 'max';
+			shouldMove = true;
+		}
+
+		this.updateKnobOfs_();
+
+		if (shouldMove) {
 			this.onPointerMove_(ev);
 		}
 	}

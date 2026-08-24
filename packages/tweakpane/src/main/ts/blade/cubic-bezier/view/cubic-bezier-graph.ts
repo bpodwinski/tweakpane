@@ -104,13 +104,22 @@ export class CubicBezierGraphView implements View {
 		return h * 0.25;
 	}
 
-	public valueToPosition(x: number, y: number): {x: number; y: number} {
-		const {clientWidth: w, clientHeight: h} = this.element;
+	private valueToPositionWithSize_(
+		x: number,
+		y: number,
+		w: number,
+		h: number,
+	): {x: number; y: number} {
 		const vm = this.getVertMargin_(h);
 		return {
 			x: mapRange(x, 0, 1, 0, w),
 			y: mapRange(y, 0, 1, h - vm, vm),
 		};
+	}
+
+	public valueToPosition(x: number, y: number): {x: number; y: number} {
+		const {clientWidth: w, clientHeight: h} = this.element;
+		return this.valueToPositionWithSize_(x, y, w, h);
 	}
 
 	public positionToValue(x: number, y: number): {x: number; y: number} {
@@ -125,13 +134,20 @@ export class CubicBezierGraphView implements View {
 	}
 
 	public refresh(): void {
+		// clientWidth/clientHeight can't change mid-refresh (JS is single-threaded,
+		// and nothing here resizes the element) — read them once instead of on
+		// every valueToPosition() call below (~25 times per refresh).
+		const {clientWidth: w, clientHeight: h} = this.element;
+		const toPosition = (x: number, y: number) =>
+			this.valueToPositionWithSize_(x, y, w, h);
+
 		this.guideElem_.setAttributeNS(
 			null,
 			'd',
 			[0, 1]
 				.map((index) => {
-					const p1 = this.valueToPosition(0, index);
-					const p2 = this.valueToPosition(1, index);
+					const p1 = toPosition(0, index);
+					const p2 = toPosition(1, index);
 					return [`M ${p1.x},${p1.y}`, `L ${p2.x},${p2.y}`].join(' ');
 				})
 				.join(' '),
@@ -141,7 +157,7 @@ export class CubicBezierGraphView implements View {
 		const points: string[] = [];
 		let t = 0;
 		for (;;) {
-			const p = this.valueToPosition(...bezier.curve(t));
+			const p = toPosition(...bezier.curve(t));
 			points.push([p.x, p.y].join(','));
 			if (t >= 1) {
 				break;
@@ -152,8 +168,8 @@ export class CubicBezierGraphView implements View {
 
 		const obj = bezier.toObject();
 		[0, 1].forEach((index) => {
-			const p1 = this.valueToPosition(index, index);
-			const p2 = this.valueToPosition(obj[index * 2], obj[index * 2 + 1]);
+			const p1 = toPosition(index, index);
+			const p2 = toPosition(obj[index * 2], obj[index * 2 + 1]);
 			const vElem = this.vectorElems_[index];
 			vElem.setAttributeNS(null, 'x1', String(p1.x));
 			vElem.setAttributeNS(null, 'y1', String(p1.y));
