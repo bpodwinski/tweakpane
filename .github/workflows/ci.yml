@@ -9,11 +9,10 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          # https://github.com/npm/cli/issues/3847
-          node-version: '16.1.0'
+          node-version: 'lts/*'
       - run: npm ci
       - run: npm run setup
       - run: npm run test --workspaces

@@ -80,6 +80,11 @@ describe('DomUtil', () => {
 	it('should return null from getCanvasContext when 2D context creation is unsupported', () => {
 		const w = createTestWindow();
 		const canvas = w.document.createElement('canvas');
+		// Whether jsdom's canvas.getContext('2d') itself returns null depends on
+		// whether the optional native `canvas` package happens to be installed
+		// (it differs between environments), so stub it directly to deterministically
+		// exercise getCanvasContext's pass-through of an unsupported 2D context.
+		canvas.getContext = (() => null) as typeof canvas.getContext;
 		assert.strictEqual(getCanvasContext(canvas), null);
 	});
 
