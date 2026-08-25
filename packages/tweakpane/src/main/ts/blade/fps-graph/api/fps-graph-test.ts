@@ -1,3 +1,5 @@
+import * as assert from 'assert';
+import {describe, it} from 'mocha';
 import {
 	createBlade,
 	createValue,
@@ -6,9 +8,7 @@ import {
 	ManualTicker,
 	ValueMap,
 	ViewProps,
-} from '@tweakpane/core';
-import * as assert from 'assert';
-import {describe, it} from 'mocha';
+} from 'tweakpane-reborn-core';
 
 import {createTestWindow} from '../../../misc/test-util.js';
 import {FpsGraphController} from '../controller/fps-graph.js';

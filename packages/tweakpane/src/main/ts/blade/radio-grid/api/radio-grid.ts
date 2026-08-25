@@ -1,4 +1,8 @@
-import {BladeApi, LabeledValueBladeController, Value} from '@tweakpane/core';
+import {
+	BladeApi,
+	LabeledValueBladeController,
+	Value,
+} from 'tweakpane-reborn-core';
 
 import {RadioController} from '../controller/radio.js';
 import {RadioGridController} from '../controller/radio-grid.js';

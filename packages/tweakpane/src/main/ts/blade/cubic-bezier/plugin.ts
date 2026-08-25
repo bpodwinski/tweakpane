@@ -12,7 +12,7 @@ import {
 	PointNdConstraint,
 	RangeConstraint,
 	ValueMap,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {CubicBezierApi} from './api/cubic-bezier.js';
 import {CubicBezierController} from './controller/cubic-bezier.js';

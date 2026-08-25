@@ -1,6 +1,6 @@
-import {RangeConstraint} from '@tweakpane/core';
 import * as assert from 'assert';
 import {describe, it} from 'mocha';
+import {RangeConstraint} from 'tweakpane-reborn-core';
 
 import {Interval} from '../model/interval.js';
 import {IntervalConstraint} from './interval.js';

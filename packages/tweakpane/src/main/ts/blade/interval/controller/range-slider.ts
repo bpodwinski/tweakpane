@@ -8,7 +8,7 @@ import {
 	ValueChangeOptions,
 	ValueController,
 	ViewProps,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {Interval} from '../model/interval.js';
 import {RangeSliderView} from '../view/range-slider.js';

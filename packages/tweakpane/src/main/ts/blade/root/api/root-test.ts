@@ -1,3 +1,5 @@
+import * as assert from 'assert';
+import {describe, it} from 'mocha';
 import {
 	createBlade,
 	createDefaultPluginPool,
@@ -7,9 +9,7 @@ import {
 	TextController,
 	ValueMap,
 	ViewProps,
-} from '@tweakpane/core';
-import * as assert from 'assert';
-import {describe, it} from 'mocha';
+} from 'tweakpane-reborn-core';
 
 import {createTestWindow} from '../../../misc/test-util.js';
 import {RootController} from '../controller/root.js';

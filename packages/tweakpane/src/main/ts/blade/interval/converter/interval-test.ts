@@ -1,6 +1,6 @@
-import {BindingTarget} from '@tweakpane/core';
 import * as assert from 'assert';
 import {describe, it} from 'mocha';
+import {BindingTarget} from 'tweakpane-reborn-core';
 
 import {Interval} from '../model/interval.js';
 import {intervalFromUnknown, writeInterval} from './interval.js';

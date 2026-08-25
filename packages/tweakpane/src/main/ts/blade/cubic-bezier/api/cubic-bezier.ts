@@ -2,7 +2,7 @@ import {
 	BladeApi,
 	LabeledValueBladeController,
 	TpChangeEvent,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {CubicBezierController} from '../controller/cubic-bezier.js';
 import {CubicBezier} from '../model/cubic-bezier.js';

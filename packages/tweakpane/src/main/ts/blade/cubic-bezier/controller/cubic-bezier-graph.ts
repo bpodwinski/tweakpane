@@ -10,7 +10,7 @@ import {
 	ValueChangeOptions,
 	ValueController,
 	ViewProps,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {CubicBezier} from '../model/cubic-bezier.js';
 import {CubicBezierGraphView} from '../view/cubic-bezier-graph.js';

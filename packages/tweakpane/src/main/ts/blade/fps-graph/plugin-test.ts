@@ -1,3 +1,5 @@
+import * as assert from 'assert';
+import {describe, it} from 'mocha';
 import {
 	createBlade,
 	forceCast,
@@ -5,10 +7,8 @@ import {
 	ManualTicker,
 	PluginPool,
 	ViewProps,
-} from '@tweakpane/core';
-import {BladeApiCache} from '@tweakpane/core/dist/plugin/blade-api-cache.js';
-import * as assert from 'assert';
-import {describe, it} from 'mocha';
+} from 'tweakpane-reborn-core';
+import {BladeApiCache} from 'tweakpane-reborn-core/dist/plugin/blade-api-cache.js';
 
 import {createTestWindow} from '../../misc/test-util.js';
 import {FpsGraphBladeApi} from './api/fps-graph.js';

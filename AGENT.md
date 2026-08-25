@@ -6,8 +6,8 @@ Guidance for AI coding agents working in this repository (Tweakpane — a compac
 
 npm-workspaces monorepo (`workspaces: ["packages/*"]`), **npm only** (no pnpm/yarn — `package-lock.json` is authoritative). Two packages:
 
-- `packages/core` (`@tweakpane/core`) — the actual library logic: Blade/API/Controller/View architecture + plugin engine. Built with plain `tsc` (no bundler), consumed as native ESM.
-- `packages/tweakpane` (`tweakpane`) — the published package. Depends on `@tweakpane/core` (aliased to `../core` in dev via Rollup). Also contains the doc site source (`src/doc` → built into `docs/`, gitignored).
+- `packages/core` (`tweakpane-reborn-core`) — the actual library logic: Blade/API/Controller/View architecture + plugin engine. Built with plain `tsc` (no bundler), consumed as native ESM.
+- `packages/tweakpane` (`tweakpane-reborn`) — the published package. Depends on `tweakpane-reborn-core` (aliased to `../core` in dev via Rollup). Also contains the doc site source (`src/doc` → built into `docs/`, gitignored).
 
 ## Setup
 
@@ -15,7 +15,7 @@ npm-workspaces monorepo (`workspaces: ["packages/*"]`), **npm only** (no pnpm/ya
 npm ci
 npm run setup   # builds core, then tweakpane — required before tweakpane will compile/type-check
 ```
-`tweakpane` resolves `@tweakpane/core` through a build alias, so a stale/missing `core` build breaks everything downstream. Rebuild core after touching `packages/core/src`.
+`tweakpane` resolves `tweakpane-reborn-core` through a build alias, so a stale/missing `core` build breaks everything downstream. Rebuild core after touching `packages/core/src`.
 
 ## Dev workflow — every code change must be visually verified
 
@@ -45,7 +45,7 @@ Don't claim a UI fix is done from reading the diff alone — reproduce the origi
 - `npm run coverage` — nyc, merged lcov report
 - `npm run build` — production build (rollup for tweakpane, tsc for core)
 
-CI (`.github/workflows/ci.yml`) runs, in one job: `npm ci` → `npm run setup` → `npm run test --workspaces` → `npm run coverage`. Match this locally before considering work done. Node is pinned to `16.1.0` in CI due to a known npm-workspaces bug — don't rely on newer Node-only APIs without checking.
+CI (`.github/workflows/ci.yml`) runs, in one job: `npm ci` → `npm run setup` → `npm run test --workspaces` → `npm run coverage`. Match this locally before considering work done. Node is pinned to `20` in CI — not floated to the newest LTS, because the `canvas` devDependency (native bindings, gives jsdom a real 2D canvas context in tests) only ships prebuilt binaries up to Node 21's ABI and the runner can't compile it from source (missing pixman/cairo headers).
 
 ## Code conventions
 
@@ -67,7 +67,7 @@ blade/<feature>/
 ```
 `input-binding/` and `monitor-binding/` mirror this for editable/read-only bound values. Plugins are registered in `plugin/plugins.ts`. **When adding a new blade/binding feature, follow this exact api/controller/view/plugin split** — it's also the pattern third-party plugins use, so deviating breaks consistency with the public plugin API.
 
-`packages/tweakpane/src/main/ts/` is thinner: `pane/Pane.ts` is the main entry point, re-exporting/assembling `@tweakpane/core`.
+`packages/tweakpane/src/main/ts/` is thinner: `pane/Pane.ts` is the main entry point, re-exporting/assembling `tweakpane-reborn-core`.
 
 ## Tests
 

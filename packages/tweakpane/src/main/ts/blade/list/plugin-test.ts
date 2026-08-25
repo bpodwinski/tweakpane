@@ -1,11 +1,11 @@
+import * as assert from 'assert';
+import {describe, it} from 'mocha';
 import {
 	BladeController,
 	createBladeController,
 	createDefaultPluginPool,
 	PluginPool,
-} from '@tweakpane/core';
-import * as assert from 'assert';
-import {describe, it} from 'mocha';
+} from 'tweakpane-reborn-core';
 
 import {
 	createEmptyBladeController,

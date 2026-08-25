@@ -1,4 +1,4 @@
-import {Controller, ViewProps} from '@tweakpane/core';
+import {Controller, ViewProps} from 'tweakpane-reborn-core';
 
 import {RadioProps, RadioView} from '../view/radio.js';
 

@@ -8,7 +8,7 @@ import {
 	MicroParser,
 	parseRecord,
 	ValueMap,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {RadioGridApi} from './api/radio-grid.js';
 import {RadioGridController} from './controller/radio-grid.js';

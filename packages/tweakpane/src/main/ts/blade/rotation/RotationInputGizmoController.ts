@@ -10,7 +10,7 @@ import {
 	PointerHandlerEvents,
 	Value,
 	ViewProps,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {Quaternion} from './Quaternion.js';
 import {Rotation} from './Rotation.js';

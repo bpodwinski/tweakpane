@@ -1,4 +1,4 @@
-import {BladeApi} from '@tweakpane/core';
+import {BladeApi} from 'tweakpane-reborn-core';
 
 import {SeparatorController} from '../controller/separator.js';
 

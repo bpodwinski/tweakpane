@@ -14,7 +14,7 @@ import {
 	ValueController,
 	ValueMap,
 	ViewProps,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {
 	cubicBezierFromString,

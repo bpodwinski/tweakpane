@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-env node */
 import {JSDOM as Jsdom} from 'jsdom';
-import {Pane} from 'tweakpane';
+import {Pane} from 'tweakpane-reborn';
 
 import * as TestPlugin from '../dist/bundle.js';
 

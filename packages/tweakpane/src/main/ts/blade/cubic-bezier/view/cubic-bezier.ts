@@ -7,7 +7,7 @@ import {
 	valueToClassName,
 	View,
 	ViewProps,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 interface Config {
 	foldable: Foldable;

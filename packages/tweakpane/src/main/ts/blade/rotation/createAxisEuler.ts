@@ -1,4 +1,8 @@
-import {Constraint, createNumberFormatter, ValueMap} from '@tweakpane/core';
+import {
+	Constraint,
+	createNumberFormatter,
+	ValueMap,
+} from 'tweakpane-reborn-core';
 
 import {RotationInputAxis} from './RotationInputAxis.js';
 

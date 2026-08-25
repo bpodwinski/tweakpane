@@ -11,7 +11,7 @@ import {
 	TpPluginBundle,
 	View,
 	ViewProps,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 const cn = ClassName('ph');
 

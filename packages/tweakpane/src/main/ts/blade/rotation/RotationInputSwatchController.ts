@@ -1,4 +1,4 @@
-import type {Controller, Value, ViewProps} from '@tweakpane/core';
+import type {Controller, Value, ViewProps} from 'tweakpane-reborn-core';
 
 import type {Rotation} from './Rotation.js';
 import type {RotationInputSwatchControllerConfig} from './RotationInputSwatchControllerConfig.js';

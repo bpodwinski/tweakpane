@@ -1,4 +1,4 @@
-import {BindingTarget} from '@tweakpane/core';
+import {BindingTarget} from 'tweakpane-reborn-core';
 
 import {Interval} from '../model/interval.js';
 

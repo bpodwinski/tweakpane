@@ -1,4 +1,4 @@
-import {BladeApi, TpEvent} from '@tweakpane/core';
+import {BladeApi, TpEvent} from 'tweakpane-reborn-core';
 
 import {FpsGraphBladeController} from '../controller/fps-graph-blade.js';
 

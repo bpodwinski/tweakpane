@@ -6,9 +6,9 @@ import {
 	GraphLogController,
 	Ticker,
 	ViewProps,
-} from '@tweakpane/core';
-// TODO: Export GraphLogProps in @tweakpane/core
-import {GraphLogProps} from '@tweakpane/core/dist/monitor-binding/number/view/graph-log.js';
+} from 'tweakpane-reborn-core';
+// TODO: Export GraphLogProps in tweakpane-reborn-core
+import {GraphLogProps} from 'tweakpane-reborn-core/dist/monitor-binding/number/view/graph-log.js';
 
 import {Fpswatch} from '../model/stopwatch.js';
 import {FpsView} from '../view/fps.js';

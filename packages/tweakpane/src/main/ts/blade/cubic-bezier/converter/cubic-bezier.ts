@@ -1,4 +1,4 @@
-import {createNumberFormatter} from '@tweakpane/core';
+import {createNumberFormatter} from 'tweakpane-reborn-core';
 
 import {CubicBezier} from '../model/cubic-bezier.js';
 

@@ -1,4 +1,4 @@
-import type {Foldable, PickerLayout} from '@tweakpane/core';
+import type {Foldable, PickerLayout} from 'tweakpane-reborn-core';
 
 import type {RotationInputRotationMode} from './RotationInputRotationMode.js';
 

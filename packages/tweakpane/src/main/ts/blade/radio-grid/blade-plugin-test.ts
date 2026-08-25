@@ -1,3 +1,5 @@
+import * as assert from 'assert';
+import {describe, it} from 'mocha';
 import {
 	createBlade,
 	createValue,
@@ -7,10 +9,8 @@ import {
 	PluginPool,
 	ValueMap,
 	ViewProps,
-} from '@tweakpane/core';
-import {BladeApiCache} from '@tweakpane/core/dist/plugin/blade-api-cache.js';
-import * as assert from 'assert';
-import {describe, it} from 'mocha';
+} from 'tweakpane-reborn-core';
+import {BladeApiCache} from 'tweakpane-reborn-core/dist/plugin/blade-api-cache.js';
 
 import {createTestWindow} from '../../misc/test-util.js';
 import {RadioGridBladePlugin} from './blade-plugin.js';

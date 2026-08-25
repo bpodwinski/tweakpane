@@ -1,9 +1,9 @@
+import {Pane} from 'tweakpane';
 import {
 	colorToFunctionalRgbaString,
 	IntColor,
 	readIntColorString,
-} from '@tweakpane/core';
-import {Pane} from 'tweakpane';
+} from 'tweakpane-reborn-core';
 
 import {createTheme, ThemeId} from './themes';
 

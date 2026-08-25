@@ -1,7 +1,7 @@
-import {createValue, forceCast, ViewProps} from '@tweakpane/core';
 import * as assert from 'assert';
 import {JSDOM} from 'jsdom';
 import {afterEach, beforeEach, describe, it} from 'mocha';
+import {createValue, forceCast, ViewProps} from 'tweakpane-reborn-core';
 
 import {CubicBezier} from '../model/cubic-bezier.js';
 import {CubicBezierGraphController} from './cubic-bezier-graph.js';

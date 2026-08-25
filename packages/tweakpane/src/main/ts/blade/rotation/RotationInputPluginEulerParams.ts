@@ -2,7 +2,7 @@ import type {
 	BaseInputParams,
 	PickerLayout,
 	PointDimensionParams,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import type {EulerOrder} from './EulerOrder.js';
 import type {EulerUnit} from './EulerUnit.js';

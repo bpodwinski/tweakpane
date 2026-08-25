@@ -1,4 +1,4 @@
-import type {PointNdAssembly} from '@tweakpane/core';
+import type {PointNdAssembly} from 'tweakpane-reborn-core';
 import {
 	bindFoldable,
 	connectValues,
@@ -11,7 +11,7 @@ import {
 	supportsTouch,
 	Value,
 	ViewProps,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import type {Rotation} from './Rotation.js';
 import type {RotationInputControllerConfig} from './RotationInputControllerConfig.js';

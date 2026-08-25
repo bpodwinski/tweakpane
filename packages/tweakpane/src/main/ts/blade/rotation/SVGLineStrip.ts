@@ -1,4 +1,4 @@
-import {SVG_NS} from '@tweakpane/core';
+import {SVG_NS} from 'tweakpane-reborn-core';
 
 import type {PointProjector} from './PointProjector.js';
 import type {Quaternion} from './Quaternion.js';

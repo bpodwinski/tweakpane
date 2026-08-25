@@ -5,7 +5,7 @@ import {
 	ValueController,
 	ValueMap,
 	ViewProps,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {RadioPropsObject} from '../view/radio.js';
 import {RadioController} from './radio.js';

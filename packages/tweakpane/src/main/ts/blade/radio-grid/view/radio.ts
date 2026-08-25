@@ -4,7 +4,7 @@ import {
 	ValueMap,
 	View,
 	ViewProps,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 export type RadioPropsObject = {
 	title: string;

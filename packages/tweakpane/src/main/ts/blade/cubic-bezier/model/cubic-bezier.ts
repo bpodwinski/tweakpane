@@ -3,7 +3,7 @@ import {
 	isEmpty,
 	mapRange,
 	PointNdAssembly,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 export type CubicBezierObject = [number, number, number, number];
 

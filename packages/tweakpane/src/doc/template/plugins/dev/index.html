@@ -26,7 +26,7 @@
 	<div class="demo">
 		<div class="demo_code">
 			<div class="codeBlock">
-				<pre><code class="js">import {Pane} from 'tweakpane';
+				<pre><code class="js">import {Pane} from 'tweakpane-reborn';
 import * as EssentialsPlugin from '@tweakpane/plugin-essentials';
 
 const pane = new Pane();
@@ -57,7 +57,7 @@ const fpsGraph = pane.addBlade({
 	<div class="demo">
 		<div class="demo_code">
 			<div class="codeBlock">
-				<pre><code class="js">import {Pane} from 'tweakpane';
+				<pre><code class="js">import {Pane} from 'tweakpane-reborn';
 
 const PARAMS = {count: 0};
 
@@ -369,7 +369,7 @@ pane.<strong>registerPlugin</strong>(CounterPluginBundle);</code></pre>
 	<div class="demo">
 		<div class="demo_code">
 			<div class="codeBlock codeBlock-compact">
-				<pre><code class="ts">import {Value, ValueController, ViewProps} from '@tweakpane/core';
+				<pre><code class="ts">import {Value, ValueController, ViewProps} from 'tweakpane-reborn-core';
 import {CounterView} from './view';
 
 interface Config {
@@ -411,7 +411,7 @@ export class <strong>CounterController</strong> implements ValueController&lt;nu
 	<div class="demo">
 		<div class="demo_code">
 			<div class="codeBlock codeBlock-compact">
-				<pre><code class="ts">import {Value, View, ViewProps} from '@tweakpane/core';
+				<pre><code class="ts">import {Value, View, ViewProps} from 'tweakpane-reborn-core';
 
 interface Config {
   value: Value&lt;number&gt;;

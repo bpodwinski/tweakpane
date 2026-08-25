@@ -3,7 +3,7 @@ import {
 	BindingTarget,
 	createPlugin,
 	InputBindingPlugin,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {CounterController} from './controller';
 

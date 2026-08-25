@@ -1,4 +1,4 @@
-import type {ValueController} from '@tweakpane/core';
+import type {ValueController} from 'tweakpane-reborn-core';
 import {
 	BindingTarget,
 	createPlugin,
@@ -9,7 +9,7 @@ import {
 	parseRecord,
 	PointNdConstraint,
 	TpError,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {createAxisEuler} from './createAxisEuler.js';
 import {createDimensionConstraint} from './createDimensionConstraint.js';

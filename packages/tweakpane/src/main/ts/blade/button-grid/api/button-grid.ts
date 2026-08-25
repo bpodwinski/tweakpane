@@ -1,4 +1,4 @@
-import {BladeApi, ButtonController, Emitter} from '@tweakpane/core';
+import {BladeApi, ButtonController, Emitter} from 'tweakpane-reborn-core';
 
 import {ButtonGridBladeController} from '../controller/button-grid-blade.js';
 import {ButtonCellApi} from './button-cell.js';

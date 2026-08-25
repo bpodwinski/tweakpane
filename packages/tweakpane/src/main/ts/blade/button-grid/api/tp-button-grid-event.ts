@@ -1,4 +1,4 @@
-import {TpEvent} from '@tweakpane/core';
+import {TpEvent} from 'tweakpane-reborn-core';
 
 import {ButtonCellApi} from './button-cell.js';
 

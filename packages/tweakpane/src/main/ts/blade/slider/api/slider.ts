@@ -6,7 +6,7 @@ import {
 	LabeledValueBladeController,
 	SliderTextController,
 	TpChangeEvent,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 export class SliderBladeApi
 	extends BladeApi<LabeledValueBladeController<number, SliderTextController>>

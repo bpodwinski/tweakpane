@@ -1,3 +1,5 @@
+import * as assert from 'assert';
+import {JSDOM} from 'jsdom';
 import {
 	BladeApi,
 	BladeController,
@@ -12,9 +14,7 @@ import {
 	SliderPropsObject,
 	ValueMap,
 	ViewProps,
-} from '@tweakpane/core';
-import * as assert from 'assert';
-import {JSDOM} from 'jsdom';
+} from 'tweakpane-reborn-core';
 
 export function createTestWindow(): Window {
 	return forceCast(new JSDOM('').window);

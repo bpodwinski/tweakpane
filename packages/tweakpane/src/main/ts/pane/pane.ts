@@ -9,7 +9,7 @@ import {
 	TpPluginBundle,
 	ValueMap,
 	ViewProps,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {ButtonGridBladePlugin} from '../blade/button-grid/plugin.js';
 import {CubicBezierBladePlugin} from '../blade/cubic-bezier/plugin.js';

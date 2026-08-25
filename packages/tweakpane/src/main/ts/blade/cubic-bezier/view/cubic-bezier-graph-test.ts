@@ -1,6 +1,6 @@
-import {createValue, ViewProps} from '@tweakpane/core';
 import * as assert from 'assert';
 import {afterEach, beforeEach, describe, it} from 'mocha';
+import {createValue, ViewProps} from 'tweakpane-reborn-core';
 
 import {createTestWindow} from '../../../misc/test-util.js';
 import {CubicBezier} from '../model/cubic-bezier.js';

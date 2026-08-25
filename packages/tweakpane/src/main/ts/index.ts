@@ -1,4 +1,4 @@
-import {Semver} from '@tweakpane/core';
+import {Semver} from 'tweakpane-reborn-core';
 
 export {
 	ArrayStyleListOptions,
@@ -35,7 +35,7 @@ export {
 	TpChangeEvent,
 	TpPlugin,
 	TpPluginBundle,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 export {ButtonCellApi} from './blade/button-grid/api/button-cell.js';
 export {ButtonGridApi} from './blade/button-grid/api/button-grid.js';

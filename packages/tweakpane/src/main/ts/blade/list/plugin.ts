@@ -13,7 +13,7 @@ import {
 	parseRecord,
 	ValueMap,
 	VERSION,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {ListBladeApi} from './api/list.js';
 

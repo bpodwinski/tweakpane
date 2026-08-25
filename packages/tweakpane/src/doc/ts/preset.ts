@@ -1,4 +1,4 @@
-import {BladeState} from '@tweakpane/core';
+import {BladeState} from 'tweakpane-reborn-core';
 
 export interface PresetObject {
 	[key: string]: unknown;

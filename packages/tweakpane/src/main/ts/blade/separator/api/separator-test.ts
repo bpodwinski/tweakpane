@@ -1,5 +1,5 @@
-import {createBlade, ViewProps} from '@tweakpane/core';
 import {describe, it} from 'mocha';
+import {createBlade, ViewProps} from 'tweakpane-reborn-core';
 
 import {
 	assertInitialState,

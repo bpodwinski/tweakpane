@@ -7,7 +7,7 @@ import {
 	ListController,
 	ListItem,
 	TpChangeEvent,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 export class ListBladeApi<T>
 	extends BladeApi<LabeledValueBladeController<T, ListController<T>>>

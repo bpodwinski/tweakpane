@@ -1,4 +1,4 @@
-import {FolderApi, PluginPool} from '@tweakpane/core';
+import {FolderApi, PluginPool} from 'tweakpane-reborn-core';
 
 import {RootController} from '../controller/root.js';
 

@@ -1,3 +1,5 @@
+import * as assert from 'assert';
+import {describe, it} from 'mocha';
 import {
 	BindingApi,
 	GraphLogController,
@@ -8,9 +10,7 @@ import {
 	SingleLogController,
 	TpChangeEvent,
 	TpError,
-} from '@tweakpane/core';
-import * as assert from 'assert';
-import {describe, it} from 'mocha';
+} from 'tweakpane-reborn-core';
 
 import {createTestWindow} from '../misc/test-util.js';
 import {Pane} from './pane.js';

@@ -1,4 +1,4 @@
-import {Constraint} from '@tweakpane/core';
+import {Constraint} from 'tweakpane-reborn-core';
 
 import {Interval} from '../model/interval.js';
 

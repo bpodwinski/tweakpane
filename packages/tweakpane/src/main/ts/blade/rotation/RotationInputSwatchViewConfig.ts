@@ -1,4 +1,4 @@
-import type {Value, ViewProps} from '@tweakpane/core';
+import type {Value, ViewProps} from 'tweakpane-reborn-core';
 
 import type {Rotation} from './Rotation.js';
 

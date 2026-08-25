@@ -1,4 +1,4 @@
-import type {PointNdAssembly} from '@tweakpane/core/dist/input-binding/common/model/point-nd.js';
+import type {PointNdAssembly} from 'tweakpane-reborn-core/dist/input-binding/common/model/point-nd.js';
 
 import {Euler} from './Euler.js';
 import type {EulerOrder} from './EulerOrder.js';

@@ -1,3 +1,5 @@
+import * as assert from 'assert';
+import {describe, it} from 'mocha';
 import {
 	createBlade,
 	createSliderTextProps,
@@ -9,9 +11,7 @@ import {
 	SliderTextController,
 	ValueMap,
 	ViewProps,
-} from '@tweakpane/core';
-import * as assert from 'assert';
-import {describe, it} from 'mocha';
+} from 'tweakpane-reborn-core';
 
 import {
 	assertDisposes,

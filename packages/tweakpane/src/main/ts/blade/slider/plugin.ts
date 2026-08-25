@@ -15,7 +15,7 @@ import {
 	SliderTextController,
 	ValueMap,
 	VERSION,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {SliderBladeApi} from './api/slider.js';
 

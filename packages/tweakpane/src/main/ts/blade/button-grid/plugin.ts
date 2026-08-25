@@ -6,7 +6,7 @@ import {
 	MicroParser,
 	parseRecord,
 	ValueMap,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {ButtonGridApi} from './api/button-grid.js';
 import {ButtonGridController} from './controller/button-grid.js';

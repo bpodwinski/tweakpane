@@ -1,4 +1,4 @@
-import {ClassName, Value, View} from '@tweakpane/core';
+import {ClassName, Value, View} from 'tweakpane-reborn-core';
 
 export class TestView implements View {
 	public readonly element: HTMLElement;

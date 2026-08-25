@@ -6,7 +6,7 @@ import {
 	Value,
 	View,
 	ViewProps,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {Interval} from '../model/interval.js';
 

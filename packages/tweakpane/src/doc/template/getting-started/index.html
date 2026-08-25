@@ -19,14 +19,14 @@
 
 {% block content %}
 <h2>1. Add Tweakpane to a project</h2>
-<p>Using <a href="https://www.jsdelivr.com/package/npm/tweakpane" target="_blank">CDN</a> is the easiest way to add Tweakpane:</p>
+<p>Using <a href="https://www.jsdelivr.com/package/npm/tweakpane-reborn" target="_blank">CDN</a> is the easiest way to add Tweakpane:</p>
 
 <div class="main_media">
 	<div class="demo">
 		<div class="demo_code">
 			<div class="codeBlock">
 				<pre><code class="html">&lt;script type=&quot;<strong>module</strong>&quot;&gt;
-  import {Pane} from '<strong>https://cdn.jsdelivr.net/npm/tweakpane@{{ version }}/dist/tweakpane.min.js</strong>';
+  import {Pane} from '<strong>https://cdn.jsdelivr.net/npm/tweakpane-reborn@{{ version }}/dist/tweakpane.min.js</strong>';
   // ...
 &lt;/script&gt;</code></pre>
 			</div>
@@ -35,7 +35,7 @@
 	</div>
 </div>
 
-<p>Or, <a href="https://github.com/cocopon/tweakpane/releases">download the latest Tweakpane</a> and import it to your web page:</p>
+<p>Or, <a href="https://github.com/bpodwinski/tweakpane/releases">download the latest Tweakpane</a> and import it to your web page:</p>
 
 <div class="main_media">
 	<div class="demo">
@@ -51,16 +51,16 @@
 	</div>
 </div>
 
-<p>You can also install, import it as <a href="https://www.npmjs.com/package/tweakpane" target="_blank">npm package</a>:</p>
+<p>You can also install, import it as <a href="https://www.npmjs.com/package/tweakpane-reborn" target="_blank">npm package</a>:</p>
 
 <div class="main_media">
 	<div class="demo">
 		<div class="demo_code">
 			<div class="codeBlock">
-				<pre><code class="sh">$ npm install --save tweakpane
+				<pre><code class="sh">$ npm install --save tweakpane-reborn
 
 # Additional type definitions for development in TypeScript
-$ npm install --save-dev @tweakpane/core</code></pre>
+$ npm install --save-dev tweakpane-reborn-core</code></pre>
 			</div>
 		</div>
 	</div>
@@ -70,7 +70,7 @@ $ npm install --save-dev @tweakpane/core</code></pre>
 	<div class="demo">
 		<div class="demo_code">
 			<div class="codeBlock">
-				<pre><code class="js">import {Pane} from 'tweakpane';
+				<pre><code class="js">import {Pane} from 'tweakpane-reborn';
 // ...</code></pre>
 			</div>
 		</div>

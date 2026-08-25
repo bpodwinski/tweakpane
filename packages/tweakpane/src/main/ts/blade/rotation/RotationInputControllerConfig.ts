@@ -1,5 +1,10 @@
-import type {Parser, PickerLayout, Value, ViewProps} from '@tweakpane/core';
-import type {PointNdAssembly} from '@tweakpane/core/dist/input-binding/common/model/point-nd.js';
+import type {
+	Parser,
+	PickerLayout,
+	Value,
+	ViewProps,
+} from 'tweakpane-reborn-core';
+import type {PointNdAssembly} from 'tweakpane-reborn-core/dist/input-binding/common/model/point-nd.js';
 
 import type {Euler} from './Euler.js';
 import type {Quaternion} from './Quaternion.js';

@@ -8,7 +8,7 @@ import {
 	parseRecord,
 	stringFromUnknown,
 	writePrimitive,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {RadioGridController} from './controller/radio-grid.js';
 

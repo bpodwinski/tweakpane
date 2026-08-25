@@ -1,3 +1,5 @@
+import * as assert from 'assert';
+import {describe, it} from 'mocha';
 import {
 	createBlade,
 	createValue,
@@ -5,9 +7,7 @@ import {
 	LabeledValueBladeController,
 	LabelPropsObject,
 	ValueMap,
-} from '@tweakpane/core';
-import * as assert from 'assert';
-import {describe, it} from 'mocha';
+} from 'tweakpane-reborn-core';
 
 import {createTestWindow} from '../../../misc/test-util.js';
 import {RadioGridController} from '../controller/radio-grid.js';

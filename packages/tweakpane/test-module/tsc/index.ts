@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 
-import {TpChangeEvent} from '@tweakpane/core';
+import {TpChangeEvent} from 'tweakpane-reborn-core';
 import {JSDOM} from 'jsdom';
-import {Pane} from 'tweakpane';
+import {Pane} from 'tweakpane-reborn';
 
 interface V2dObj {
 	x: number;

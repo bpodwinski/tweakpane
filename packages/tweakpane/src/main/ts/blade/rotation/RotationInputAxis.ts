@@ -1,5 +1,5 @@
-import type {Constraint} from '@tweakpane/core';
-import type {NumberTextProps} from '@tweakpane/core';
+import type {Constraint} from 'tweakpane-reborn-core';
+import type {NumberTextProps} from 'tweakpane-reborn-core';
 
 export interface RotationInputAxis {
 	baseStep: number;

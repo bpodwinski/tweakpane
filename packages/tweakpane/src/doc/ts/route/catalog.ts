@@ -1,8 +1,3 @@
-import {
-	ButtonBladeParams,
-	FolderBladeParams,
-	TabBladeParams,
-} from '@tweakpane/core';
 import {toCss} from 'ts/panepaint';
 import {createTheme, ThemeId} from 'ts/themes';
 import {
@@ -12,6 +7,11 @@ import {
 	SliderBladeParams,
 	TextBladeParams,
 } from 'tweakpane';
+import {
+	ButtonBladeParams,
+	FolderBladeParams,
+	TabBladeParams,
+} from 'tweakpane-reborn-core';
 
 import {selectContainer, wave} from '../util.js';
 

@@ -1,7 +1,12 @@
-import {createBlade, forceCast, PluginPool, ViewProps} from '@tweakpane/core';
-import {BladeApiCache} from '@tweakpane/core/dist/plugin/blade-api-cache.js';
 import * as assert from 'assert';
 import {describe, it} from 'mocha';
+import {
+	createBlade,
+	forceCast,
+	PluginPool,
+	ViewProps,
+} from 'tweakpane-reborn-core';
+import {BladeApiCache} from 'tweakpane-reborn-core/dist/plugin/blade-api-cache.js';
 
 import {createTestWindow} from '../../misc/test-util.js';
 import {ButtonGridBladeController} from './controller/button-grid-blade.js';

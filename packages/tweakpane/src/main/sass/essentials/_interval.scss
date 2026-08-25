@@ -1,5 +1,5 @@
 @use 'sass:math';
-@use '../../../../../../node_modules/@tweakpane/core/lib/sass/tp';
+@use '../../../../../../node_modules/tweakpane-reborn-core/lib/sass/tp';
 
 .#{tp.$prefix}-rslv {
 	$slider-knob-width: 8px;

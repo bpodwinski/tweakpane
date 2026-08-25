@@ -7,7 +7,7 @@
   "scripts": {
     "test": " run-p test:*",
     "test:node": "node node/index.js",
-    "test:sass": "test -f node_modules/@tweakpane/core/lib/sass/_tp.scss",
+    "test:sass": "test -f node_modules/tweakpane-reborn-core/lib/sass/_tp.scss",
     "test:tsc": "tsc --build --clean tsc/tsconfig.json && tsc --build tsc/tsconfig.json && node tsc/dist/index.js",
     "test:plugin": "rollup --config plugin/rollup.config.js && node plugin/test/node.js"
   },
@@ -17,13 +17,13 @@
     "@rollup/plugin-alias": "^3.1.2",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@rollup/plugin-typescript": "^8.2.0",
-    "@tweakpane/core": "file:../../core/tweakpane-core.tgz",
+    "tweakpane-reborn-core": "file:../../core/tweakpane-core.tgz",
     "@types/jsdom": "^16.2.13",
     "@types/node": "^20.0.0",
     "jsdom": "^16.7.0",
     "npm-run-all": "^4.1.5",
     "rollup": "^2.39.0",
-    "tweakpane": "file:../tweakpane.tgz",
+    "tweakpane-reborn": "file:../tweakpane.tgz",
     "typescript": "~5.9.0"
   }
 }

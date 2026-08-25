@@ -1,4 +1,4 @@
-import {Blade, BladeController, ViewProps} from '@tweakpane/core';
+import {Blade, BladeController, ViewProps} from 'tweakpane-reborn-core';
 
 import {SeparatorView} from '../view/separator.js';
 

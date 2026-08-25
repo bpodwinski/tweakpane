@@ -27,8 +27,8 @@ function getPlugins(css, shouldMinify) {
 		Alias({
 			entries: [
 				{
-					find: '@tweakpane/core',
-					replacement: '../../node_modules/@tweakpane/core/dist/index.js',
+					find: 'tweakpane-reborn-core',
+					replacement: '../../node_modules/tweakpane-reborn-core/dist/index.js',
 				},
 			],
 		}),

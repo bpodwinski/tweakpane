@@ -7,13 +7,13 @@ All snippets below are copied from real source/doc files in this repo (not inven
 ## Install & basic setup
 
 ```sh
-npm install --save tweakpane
+npm install --save tweakpane-reborn
 # Type defs used during development (peer dep of the public types):
-npm install --save-dev @tweakpane/core
+npm install --save-dev tweakpane-reborn-core
 ```
 
 ```js
-import {Pane} from 'tweakpane';
+import {Pane} from 'tweakpane-reborn';
 
 const pane = new Pane(); // appends itself to document.body
 ```
@@ -308,11 +308,11 @@ Typical pattern: export on every `'change'` event to persist live, import once a
 
 ## Writing a custom plugin
 
-Tweakpane's built-in controls and third-party packages (`@tweakpane/plugin-camerakit`, ...) all use the same public plugin API from `@tweakpane/core`. A plugin bundle is registered with `pane.registerPlugin(bundle)` before it's used. (`@tweakpane/plugin-essentials` is the one common exception in this fork — its components are vendored in as built-ins, see above, no registration needed.)
+Tweakpane's built-in controls and third-party packages (`@tweakpane/plugin-camerakit`, ...) all use the same public plugin API from `tweakpane-reborn-core`. A plugin bundle is registered with `pane.registerPlugin(bundle)` before it's used. (`@tweakpane/plugin-essentials` is the one common exception in this fork — its components are vendored in as built-ins, see above, no registration needed.)
 
 ### Registering an existing plugin package
 ```js
-import {Pane} from 'tweakpane';
+import {Pane} from 'tweakpane-reborn';
 import * as CamerakitPlugin from '@tweakpane/plugin-camerakit';
 
 const pane = new Pane();
@@ -324,7 +324,7 @@ pane.addBinding({flen: 55}, 'flen', {view: 'cameraring', series: 0});
 ### Writing your own input-binding plugin (minimal, verified pattern)
 ```ts
 // plugin.ts
-import {BaseInputParams, BindingTarget, createPlugin, InputBindingPlugin} from '@tweakpane/core';
+import {BaseInputParams, BindingTarget, createPlugin, InputBindingPlugin} from 'tweakpane-reborn-core';
 import {CounterController} from './controller';
 
 type CounterParams = BaseInputParams; // extend with your own custom params here
@@ -348,7 +348,7 @@ export const CounterInputPlugin: InputBindingPlugin<number, number, CounterParam
 ```
 ```ts
 // controller.ts
-import {Value, ValueController, ViewProps} from '@tweakpane/core';
+import {Value, ValueController, ViewProps} from 'tweakpane-reborn-core';
 import {CounterView} from './view';
 
 export class CounterController implements ValueController<number, CounterView> {
@@ -370,7 +370,7 @@ export class CounterController implements ValueController<number, CounterView> {
 
 ```ts
 // bundle.ts
-import {TpPluginBundle} from '@tweakpane/core';
+import {TpPluginBundle} from 'tweakpane-reborn-core';
 import {CounterInputPlugin} from './plugin';
 
 export const CounterPluginBundle: TpPluginBundle = {

@@ -1,4 +1,4 @@
-import {PointNdAssembly} from '@tweakpane/core';
+import {PointNdAssembly} from 'tweakpane-reborn-core';
 
 export interface IntervalObject {
 	max: number;

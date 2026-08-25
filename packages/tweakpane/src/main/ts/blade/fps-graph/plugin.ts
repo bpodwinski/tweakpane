@@ -11,7 +11,7 @@ import {
 	parseRecord,
 	Ticker,
 	ValueMap,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {FpsGraphBladeApi} from './api/fps-graph.js';
 import {FpsGraphController} from './controller/fps-graph.js';

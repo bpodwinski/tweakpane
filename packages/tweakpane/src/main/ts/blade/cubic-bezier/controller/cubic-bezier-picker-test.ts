@@ -1,3 +1,6 @@
+import * as assert from 'assert';
+import {JSDOM} from 'jsdom';
+import {afterEach, beforeEach, describe, it} from 'mocha';
 import {
 	createNumberFormatter,
 	createValue,
@@ -5,10 +8,7 @@ import {
 	NumberTextPropsObject,
 	ValueMap,
 	ViewProps,
-} from '@tweakpane/core';
-import * as assert from 'assert';
-import {JSDOM} from 'jsdom';
-import {afterEach, beforeEach, describe, it} from 'mocha';
+} from 'tweakpane-reborn-core';
 
 import {CubicBezier} from '../model/cubic-bezier.js';
 import {CubicBezierPickerController} from './cubic-bezier-picker.js';

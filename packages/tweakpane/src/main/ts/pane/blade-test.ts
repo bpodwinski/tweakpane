@@ -1,5 +1,5 @@
-import {TpError} from '@tweakpane/core';
 import * as assert from 'assert';
+import {TpError} from 'tweakpane-reborn-core';
 
 import {SliderBladeApi} from '../blade/slider/api/slider.js';
 import {createTestWindow} from '../misc/test-util.js';

@@ -1,4 +1,4 @@
-import {TpChangeEvent} from '@tweakpane/core';
+import {TpChangeEvent} from 'tweakpane-reborn-core';
 
 import {RadioCellApi} from './radio-cell-api.js';
 

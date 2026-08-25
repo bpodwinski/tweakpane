@@ -1,6 +1,6 @@
-import {createValue, forceCast} from '@tweakpane/core';
 import * as assert from 'assert';
 import {describe, it} from 'mocha';
+import {createValue, forceCast} from 'tweakpane-reborn-core';
 
 import {createTestWindow} from '../../misc/test-util.js';
 import {RadioGridController} from './controller/radio-grid.js';

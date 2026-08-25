@@ -1,4 +1,4 @@
-import {ClassName, PointNdTextController, View} from '@tweakpane/core';
+import {ClassName, PointNdTextController, View} from 'tweakpane-reborn-core';
 
 import {Interval} from '../model/interval.js';
 import {RangeSliderView} from './range-slider.js';

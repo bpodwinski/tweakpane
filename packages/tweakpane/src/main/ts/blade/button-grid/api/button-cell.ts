@@ -1,4 +1,4 @@
-import {ButtonController, TpEvent} from '@tweakpane/core';
+import {ButtonController, TpEvent} from 'tweakpane-reborn-core';
 
 interface ButtonCellApiEvents {
 	click: {

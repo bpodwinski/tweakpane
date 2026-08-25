@@ -17,7 +17,7 @@ import {
 	PointNdTextController,
 	TpError,
 	ValueMap,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {IntervalConstraint} from './constraint/interval.js';
 import {RangeSliderTextController} from './controller/range-slider-text.js';

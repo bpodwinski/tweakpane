@@ -1,11 +1,11 @@
+import {presetToState, stateToPreset} from 'ts/preset';
+import {Pane} from 'tweakpane';
 import {
 	colorToFunctionalRgbaString,
 	IntColor,
 	mapRange,
 	readIntColorString,
-} from '@tweakpane/core';
-import {presetToState, stateToPreset} from 'ts/preset';
-import {Pane} from 'tweakpane';
+} from 'tweakpane-reborn-core';
 
 import {Sketch} from '../sketch.js';
 import {Environment} from '../sketch.js';

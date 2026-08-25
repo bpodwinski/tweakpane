@@ -1,4 +1,4 @@
-import {ClassName, SVG_NS, Value, View} from '@tweakpane/core';
+import {ClassName, SVG_NS, Value, View} from 'tweakpane-reborn-core';
 
 import {createArcRotation} from './createArcRotation.js';
 import {createArcVerticesArray} from './createArcVerticesArray.js';

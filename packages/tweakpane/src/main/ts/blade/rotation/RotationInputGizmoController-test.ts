@@ -1,7 +1,7 @@
-import {createValue, forceCast, ViewProps} from '@tweakpane/core';
 import * as assert from 'assert';
 import {JSDOM} from 'jsdom';
 import {describe, it} from 'mocha';
+import {createValue, forceCast, ViewProps} from 'tweakpane-reborn-core';
 
 import {createTestWindow} from '../../misc/test-util.js';
 import {Quaternion} from './Quaternion.js';

@@ -4,7 +4,7 @@
 import Fs from 'fs';
 import {JSDOM as Jsdom} from 'jsdom';
 // Require default module
-import {Pane, VERSION} from 'tweakpane';
+import {Pane, VERSION} from 'tweakpane-reborn';
 
 const Package = JSON.parse(
 	Fs.readFileSync(new URL('../../package.json', import.meta.url)),

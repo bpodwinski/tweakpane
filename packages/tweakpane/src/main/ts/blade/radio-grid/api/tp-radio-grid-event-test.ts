@@ -1,6 +1,6 @@
-import {ValueMap, ViewProps} from '@tweakpane/core';
 import * as assert from 'assert';
 import {describe, it} from 'mocha';
+import {ValueMap, ViewProps} from 'tweakpane-reborn-core';
 
 import {createTestWindow} from '../../../misc/test-util.js';
 import {RadioController} from '../controller/radio.js';

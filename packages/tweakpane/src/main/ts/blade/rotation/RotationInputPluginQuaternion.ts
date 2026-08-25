@@ -9,7 +9,7 @@ import {
 	PointNdConstraint,
 	TpError,
 	ValueController,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {createAxisQuaternion} from './createAxisQuaternion.js';
 import {createDimensionConstraint} from './createDimensionConstraint.js';

@@ -4,7 +4,7 @@ import {
 	LabelController,
 	LabelProps,
 	LabelView,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {ButtonGridController} from './button-grid.js';
 

@@ -6,7 +6,7 @@ import {
 	RangeConstraint,
 	Value,
 	ViewProps,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {CubicBezier, CubicBezierAssembly} from '../model/cubic-bezier.js';
 import {CubicBezierPickerView} from '../view/cubic-bezier-picker.js';

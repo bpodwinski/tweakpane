@@ -1,4 +1,4 @@
-import {ClassName, View, ViewProps} from '@tweakpane/core';
+import {ClassName, View, ViewProps} from 'tweakpane-reborn-core';
 
 const cn = ClassName('spr');
 

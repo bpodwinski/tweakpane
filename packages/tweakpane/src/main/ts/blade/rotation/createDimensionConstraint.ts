@@ -5,7 +5,7 @@ import {
 	PointDimensionParams,
 	RangeConstraint,
 	StepConstraint,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 export function createDimensionConstraint(
 	params: PointDimensionParams | undefined,

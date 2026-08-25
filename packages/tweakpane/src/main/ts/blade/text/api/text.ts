@@ -7,7 +7,7 @@ import {
 	LabeledValueBladeController,
 	TextController,
 	TpChangeEvent,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 export class TextBladeApi<T>
 	extends BladeApi<LabeledValueBladeController<T, TextController<T>>>

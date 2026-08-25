@@ -1,4 +1,4 @@
-import {Value, ValueController, ViewProps} from '@tweakpane/core';
+import {Value, ValueController, ViewProps} from 'tweakpane-reborn-core';
 
 import {CounterView} from './view';
 

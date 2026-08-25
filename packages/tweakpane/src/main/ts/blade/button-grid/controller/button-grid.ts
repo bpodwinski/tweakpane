@@ -5,7 +5,7 @@ import {
 	PlainView,
 	ValueMap,
 	ViewProps,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 interface CellConfig {
 	title: string;

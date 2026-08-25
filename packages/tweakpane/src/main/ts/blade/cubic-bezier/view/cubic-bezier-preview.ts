@@ -6,7 +6,7 @@ import {
 	Value,
 	View,
 	ViewProps,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {CubicBezier} from '../model/cubic-bezier.js';
 import {waitToBeAddedToDom} from './util.js';

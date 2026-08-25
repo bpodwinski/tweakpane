@@ -13,7 +13,7 @@ const panePackage = JSON.parse(
 // Remove version of core tgz file
 process.chdir('../core');
 
-const coreTgz = `tweakpane-core-${corePackage.version}.tgz`;
+const coreTgz = `tweakpane-reborn-core-${corePackage.version}.tgz`;
 if (Fs.existsSync(coreTgz)) {
 	Fs.renameSync(coreTgz, 'tweakpane-core.tgz');
 }
@@ -21,7 +21,7 @@ if (Fs.existsSync(coreTgz)) {
 // Remove version of tweakpane tgz file
 process.chdir('../tweakpane');
 
-const paneTgz = `tweakpane-${panePackage.version}.tgz`;
+const paneTgz = `tweakpane-reborn-${panePackage.version}.tgz`;
 if (Fs.existsSync(paneTgz)) {
 	Fs.renameSync(paneTgz, 'tweakpane.tgz');
 }

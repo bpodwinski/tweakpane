@@ -1,6 +1,6 @@
-import {Foldable} from '@tweakpane/core/dist/blade/common/model/foldable.js';
 import * as assert from 'assert';
 import {describe, it} from 'mocha';
+import {Foldable} from 'tweakpane-reborn-core/dist/blade/common/model/foldable.js';
 
 import {createTestWindow} from '../../misc/test-util.js';
 import {RotationInputView} from './RotationInputView.js';

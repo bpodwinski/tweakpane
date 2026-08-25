@@ -11,7 +11,7 @@ import {
 	TextController,
 	ValueMap,
 	VERSION,
-} from '@tweakpane/core';
+} from 'tweakpane-reborn-core';
 
 import {TextBladeApi} from './api/text.js';
 

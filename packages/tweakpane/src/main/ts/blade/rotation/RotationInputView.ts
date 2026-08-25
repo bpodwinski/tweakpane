@@ -1,4 +1,9 @@
-import {bindValueMap, ClassName, valueToClassName, View} from '@tweakpane/core';
+import {
+	bindValueMap,
+	ClassName,
+	valueToClassName,
+	View,
+} from 'tweakpane-reborn-core';
 
 import type {RotationInputViewConfig} from './RotationInputViewConfig.js';
 

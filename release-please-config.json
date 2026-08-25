@@ -4,7 +4,7 @@
   "separate-pull-requests": false,
   "packages": {
     "packages/core": {
-      "package-name": "@tweakpane/core",
+      "package-name": "tweakpane-reborn-core",
       "component": "core",
       "include-component-in-tag": true,
       "include-v-in-tag": false,
@@ -12,7 +12,7 @@
       "changelog-path": "CHANGELOG.md"
     },
     "packages/tweakpane": {
-      "package-name": "tweakpane",
+      "package-name": "tweakpane-reborn",
       "component": "tweakpane",
       "include-component-in-tag": false,
       "include-v-in-tag": false,
