@@ -31,6 +31,8 @@
     "setup:tweakpane": "(cd packages/tweakpane && npm run main:build)"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.2",
+    "@commitlint/config-conventional": "^21.2.2",
     "@types/assert": "^1.5.4",
     "@types/jsdom": "^16.2.13",
     "@types/mocha": "^9.1.1",

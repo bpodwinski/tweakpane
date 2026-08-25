@@ -78,7 +78,7 @@ blade/<feature>/
 
 ## Commits / PRs
 
-No CONTRIBUTING.md, no enforced conventional-commits. Existing style: short imperative or descriptive messages, occasionally referencing an issue (`, #630`). Workflow is PR + merge commit. Don't invent a stricter convention unless asked.
+Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`, `refactor:`, `build(deps):`, ...), enforced on PRs by `commitlint` (`.github/workflows/commitlint.yml`). This isn't stylistic — `release-please` (`.github/workflows/release-please.yml`) parses commit messages to bump `packages/core`/`packages/tweakpane` versions and generate each package's `CHANGELOG.md`; a non-conforming commit silently drops out of that changelog. Use `!` after the type or a `BREAKING CHANGE:` footer for a breaking change. Workflow is PR + merge commit — publishing to npm stays a manual step after a release PR is merged.
 
 ## Things to avoid
 

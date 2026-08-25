@@ -1,0 +1,18 @@
+name: Commitlint
+
+# Enforces Conventional Commits on PR commits, since release-please derives
+# version bumps and CHANGELOG.md entries from commit messages
+# (release-please-config.json / .github/workflows/release-please.yml) —
+# a non-conforming commit silently drops out of that changelog.
+
+on:
+  pull_request:
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: wagoid/commitlint-github-action@v6

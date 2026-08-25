@@ -1,0 +1,30 @@
+name: Release Please
+
+# Opens/updates a release PR (version bump + per-package CHANGELOG.md derived
+# from Conventional Commits). Release-PR-only: npm publishing stays manual
+# via `npm publish` in each package (prepack/prepublishOnly already run the
+# build + full test suite) — no NPM_TOKEN needed here.
+#
+# Config: release-please-config.json (independent versioning for
+# @tweakpane/core and tweakpane, tags: core-<x.y.z> / <x.y.z>).
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: release-please-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: googleapis/release-please-action@v5
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
