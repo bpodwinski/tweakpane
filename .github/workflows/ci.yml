@@ -9,10 +9,15 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
-          node-version: 'lts/*'
+          # Pinned rather than 'lts/*': the `canvas` devDependency (native
+          # bindings, used so jsdom can render real 2D canvas contexts in
+          # tests) only ships prebuilt binaries up to Node 21's ABI, and the
+          # Linux runner lacks the pixman/cairo headers needed to compile it
+          # from source, so floating to the newest LTS breaks `npm ci`.
+          node-version: '20'
       - run: npm ci
       - run: npm run setup
       - run: npm run test --workspaces
