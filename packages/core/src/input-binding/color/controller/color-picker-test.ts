@@ -23,6 +23,30 @@ describe(ColorPickerController.name, () => {
 		assert.strictEqual(c.textsController.view.modeSelectElement.value, 'hsv');
 	});
 
+	it('should sync the alpha text input with the value when supportsAlpha is true', () => {
+		const value = createValue(new IntColor([0, 0, 0, 0.5], 'hsv'));
+		const win = createTestWindow();
+		const doc = win.document;
+		const c = new ColorPickerController(doc, {
+			colorType: value.rawValue.type,
+			supportsAlpha: true,
+			value: value,
+			viewProps: ViewProps.create(),
+		});
+
+		const alphaInput = c.view.allFocusableElements[
+			c.view.allFocusableElements.length - 1
+		] as HTMLInputElement;
+		assert.strictEqual(alphaInput.value, '0.50');
+
+		value.rawValue = new IntColor([0, 0, 0, 0.8], 'hsv');
+		assert.strictEqual(alphaInput.value, '0.80');
+
+		alphaInput.value = '0.30';
+		alphaInput.dispatchEvent(TestUtil.createEvent(win, 'change'));
+		assert.ok(Math.abs(value.rawValue.getComponents('hsv')[3] - 0.3) < 1e-6);
+	});
+
 	it('should change hue of black in HSL', () => {
 		const value = createValue(new IntColor([0, 0, 0], 'rgb'));
 		const win = createTestWindow();

@@ -68,6 +68,17 @@ describe(RadioGridController.name, () => {
 		assert.strictEqual(value.rawValue, '0,1');
 	});
 
+	it('should ignore a change event whose target is not a known cell input', () => {
+		const doc = createTestWindow().document;
+		const {c, value} = createController(doc);
+
+		const foreignInput = doc.createElement('input');
+		const ev = {currentTarget: foreignInput} as unknown as Event;
+		(c as any).onCellInputChange_(ev);
+
+		assert.strictEqual(value.rawValue, 'a');
+	});
+
 	it('should namespace the native radio "name" per instance to avoid cross-instance collisions', () => {
 		const doc = createTestWindow().document;
 		const {c: c1} = createController(doc, 'shared');

@@ -56,4 +56,20 @@ describe(Point3d.name, () => {
 			});
 		});
 	});
+
+	describe('equals', () => {
+		it('should be true for equal points', () => {
+			assert.strictEqual(
+				Point3d.equals(new Point3d(1, 2, 3), new Point3d(1, 2, 3)),
+				true,
+			);
+		});
+
+		it('should be false for differing points', () => {
+			assert.strictEqual(
+				Point3d.equals(new Point3d(1, 2, 3), new Point3d(1, 2, 4)),
+				false,
+			);
+		});
+	});
 });

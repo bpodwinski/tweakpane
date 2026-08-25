@@ -64,4 +64,20 @@ describe(Point4d.name, () => {
 			});
 		});
 	});
+
+	describe('equals', () => {
+		it('should be true for equal points', () => {
+			assert.strictEqual(
+				Point4d.equals(new Point4d(1, 2, 3, 4), new Point4d(1, 2, 3, 4)),
+				true,
+			);
+		});
+
+		it('should be false for differing points', () => {
+			assert.strictEqual(
+				Point4d.equals(new Point4d(1, 2, 3, 4), new Point4d(1, 2, 3, 5)),
+				false,
+			);
+		});
+	});
 });

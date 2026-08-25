@@ -5,6 +5,7 @@ import {ValueMap} from '../../../common/model/value-map.js';
 import {ViewProps} from '../../../common/model/view-props.js';
 import {createTestWindow} from '../../../misc/dom-test-util.js';
 import {createBlade} from '../../common/model/blade.js';
+import {createEmptyBladeController} from '../../test-util.js';
 import {TabItemPropsObject} from '../view/tab-item.js';
 import {TabController} from './tab.js';
 import {TabPageController, TabPagePropsObject} from './tab-page.js';
@@ -85,6 +86,26 @@ describe(TabController.name, () => {
 			c.view.contentsElement.contains(pcs[1].view.element),
 			false,
 		);
+	});
+
+	it('should ignore a non-root removal bubbling from a nested rack', () => {
+		const win = createTestWindow();
+		const doc = win.document;
+		const c = new TabController(doc, {
+			blade: createBlade(),
+			viewProps: ViewProps.create(),
+		});
+		const pc = createTabPage(doc, 'foo');
+		c.add(pc);
+
+		const child = createEmptyBladeController(doc);
+		pc.rackController.rack.add(child);
+
+		assert.doesNotThrow(() => {
+			pc.rackController.rack.remove(child);
+		});
+		// Removing a non-root nested blade must not affect the tab's own pages.
+		assert.deepStrictEqual(c.rackController.rack.children, [pc]);
 	});
 
 	it('should apply parent disabled', () => {

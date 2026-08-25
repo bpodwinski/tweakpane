@@ -132,4 +132,27 @@ describe(APaletteController.name, () => {
 		const [, , , a] = value.rawValue.getComponents('hsv');
 		assert.strictEqual(a, 0.5);
 	});
+
+	it('should ignore a touch event with no matching touch', () => {
+		const win = createTestWindow();
+		const doc = win.document;
+		const value = createValue(new IntColor([0, 50, 50, 0.5], 'hsv'));
+		const c = new APaletteController(doc, {
+			value,
+			viewProps: ViewProps.create(),
+		});
+
+		const winRef = win as unknown as typeof window;
+		const ev = new winRef.TouchEvent('touchstart', {
+			bubbles: true,
+			cancelable: true,
+			targetTouches: [] as unknown as Touch[],
+		});
+		(ev as any).targetTouches.item = (i: number) =>
+			(ev as any).targetTouches[i];
+		c.view.element.dispatchEvent(ev);
+
+		const [, , , a] = value.rawValue.getComponents('hsv');
+		assert.strictEqual(a, 0.5);
+	});
 });

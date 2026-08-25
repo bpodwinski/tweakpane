@@ -66,10 +66,10 @@ export const RotationInputPluginQuaternion: InputBindingPlugin<
 			return new PointNdConstraint({
 				assembly: QuaternionAssembly,
 				components: [
-					createDimensionConstraint('x' in params ? params.x : undefined),
-					createDimensionConstraint('y' in params ? params.y : undefined),
-					createDimensionConstraint('z' in params ? params.z : undefined),
-					createDimensionConstraint('w' in params ? params.w : undefined),
+					createDimensionConstraint(params.x),
+					createDimensionConstraint(params.y),
+					createDimensionConstraint(params.z),
+					createDimensionConstraint(params.w),
 				],
 			});
 		},
@@ -89,8 +89,8 @@ export const RotationInputPluginQuaternion: InputBindingPlugin<
 			throw TpError.shouldNeverHappen();
 		}
 
-		const expanded = 'expanded' in params ? params.expanded : undefined;
-		const picker = 'picker' in params ? params.picker : undefined;
+		const expanded = params.expanded;
+		const picker = params.picker;
 
 		return new RotationInputController(document, {
 			axes: [

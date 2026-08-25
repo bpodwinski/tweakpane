@@ -124,4 +124,22 @@ describe(SliderController.name, () => {
 
 		assert.strictEqual(value.rawValue, 0);
 	});
+
+	it('should ignore a touch event with no matching touch', () => {
+		const win = createTestWindow();
+		const doc = win.document;
+		const {c, value} = createController(doc);
+
+		const winRef = win as unknown as typeof window;
+		const ev = new winRef.TouchEvent('touchstart', {
+			bubbles: true,
+			cancelable: true,
+			targetTouches: [] as unknown as Touch[],
+		});
+		(ev as any).targetTouches.item = (i: number) =>
+			(ev as any).targetTouches[i];
+		c.view.trackElement.dispatchEvent(ev);
+
+		assert.strictEqual(value.rawValue, 0);
+	});
 });

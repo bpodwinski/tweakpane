@@ -70,3 +70,15 @@ describe(createSliderTextProps.name, () => {
 		);
 	});
 });
+
+describe(`${SliderTextController.name} sub-controllers`, () => {
+	it('should expose the slider and text sub-controllers', () => {
+		const doc = createTestWindow().document;
+		const c = createController(doc);
+
+		assert.ok(c.sliderController);
+		assert.ok(c.textController);
+		assert.strictEqual(c.sliderController.value, c.value);
+		assert.strictEqual(c.textController.value, c.value);
+	});
+});

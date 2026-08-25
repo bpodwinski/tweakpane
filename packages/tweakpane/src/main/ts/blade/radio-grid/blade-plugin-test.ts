@@ -1,8 +1,11 @@
 import {
 	createBlade,
+	createValue,
 	forceCast,
 	LabeledValueBladeController,
+	LabelPropsObject,
 	PluginPool,
+	ValueMap,
 	ViewProps,
 } from '@tweakpane/core';
 import {BladeApiCache} from '@tweakpane/core/dist/plugin/blade-api-cache.js';
@@ -114,6 +117,28 @@ describe('RadioGridBladePlugin', () => {
 		const pool = new PluginPool(new BladeApiCache());
 		const result = RadioGridBladePlugin.api({
 			controller: forceCast({}),
+			pool,
+		});
+		assert.strictEqual(result, null);
+	});
+
+	it('should return null from api() when the wrapped value controller is foreign', () => {
+		const doc = createTestWindow().document;
+		const value = createValue('x');
+		const foreignValueController = {
+			value,
+			viewProps: ViewProps.create(),
+			view: {element: doc.createElement('div')},
+		};
+		const controller = new LabeledValueBladeController(doc, {
+			blade: createBlade(),
+			props: ValueMap.fromObject({label: undefined} as LabelPropsObject),
+			value: value as unknown as never,
+			valueController: foreignValueController as unknown as never,
+		});
+		const pool = new PluginPool(new BladeApiCache());
+		const result = RadioGridBladePlugin.api({
+			controller: forceCast(controller),
 			pool,
 		});
 		assert.strictEqual(result, null);

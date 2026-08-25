@@ -180,4 +180,29 @@ describe(Point2dPickerController.name, () => {
 		assert.strictEqual(value.rawValue.x, 3);
 		assert.strictEqual(value.rawValue.y, 4);
 	});
+
+	it('should ignore a touch event with no matching touch', () => {
+		const win = createTestWindow();
+		const doc = win.document;
+		const value = createValue(new Point2d(3, 4));
+		const c = new Point2dPickerController(doc, {
+			layout: 'inline',
+			props: createProps(),
+			value,
+			viewProps: ViewProps.create(),
+		});
+
+		const winRef = win as unknown as typeof window;
+		const ev = new winRef.TouchEvent('touchstart', {
+			bubbles: true,
+			cancelable: true,
+			targetTouches: [] as unknown as Touch[],
+		});
+		(ev as any).targetTouches.item = (i: number) =>
+			(ev as any).targetTouches[i];
+		c.view.padElement.dispatchEvent(ev);
+
+		assert.strictEqual(value.rawValue.x, 3);
+		assert.strictEqual(value.rawValue.y, 4);
+	});
 });

@@ -34,4 +34,17 @@ describe(Fpswatch.name, () => {
 		assert.ok(sw.fps !== null);
 		assert.ok(Math.abs((sw.fps as number) - 1000 / 16) < 1e-9);
 	});
+
+	it('should compact old timestamps once more than 20 frames have accumulated', () => {
+		const sw = new Fpswatch();
+
+		// 25 frames, 16ms apart, forces compactTimestamps_() to trim the buffer.
+		for (let i = 0; i < 25; i++) {
+			sw.begin(i * 16);
+			sw.end(i * 16 + 16);
+		}
+
+		assert.ok(sw.fps !== null);
+		assert.ok(Math.abs((sw.fps as number) - 1000 / 16) < 1e-6);
+	});
 });

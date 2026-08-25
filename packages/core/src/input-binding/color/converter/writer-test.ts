@@ -3,7 +3,11 @@ import {describe, it} from 'mocha';
 
 import {BindingTarget} from '../../../common/binding/target.js';
 import {IntColor} from '../model/int-color.js';
-import {writeRgbaColorObject, writeRgbColorObject} from './writer.js';
+import {
+	createColorObjectWriter,
+	writeRgbaColorObject,
+	writeRgbColorObject,
+} from './writer.js';
 
 describe('writer/color', () => {
 	it('should write RGBA color object value without destruction', () => {
@@ -35,5 +39,27 @@ describe('writer/color', () => {
 		assert.strictEqual(obj.foo.b, 0, 'b');
 		// should not overwrite alpha component
 		assert.strictEqual(obj.foo.a, 0.5, 'a');
+	});
+
+	describe('createColorObjectWriter', () => {
+		it('should write alpha when supportsAlpha is true', () => {
+			const obj = {foo: {r: 0, g: 0, b: 0, a: 0}};
+			const writer = createColorObjectWriter(true, 'int');
+			writer(
+				new BindingTarget(obj, 'foo'),
+				new IntColor([1, 2, 3, 0.5], 'rgb'),
+			);
+			assert.strictEqual(obj.foo.a, 0.5);
+		});
+
+		it('should not write alpha when supportsAlpha is false', () => {
+			const obj = {foo: {r: 0, g: 0, b: 0, a: 0.9}};
+			const writer = createColorObjectWriter(false, 'int');
+			writer(
+				new BindingTarget(obj, 'foo'),
+				new IntColor([1, 2, 3, 0.5], 'rgb'),
+			);
+			assert.strictEqual(obj.foo.a, 0.9);
+		});
 	});
 });

@@ -17,10 +17,58 @@ import {
 	colorToHexRgbString,
 	colorToObjectRgbString,
 	createColorStringParser,
+	detectStringColorFormat,
 	readIntColorString,
 } from './color-string.js';
 
 const DELTA = 1e-5;
+
+describe(detectStringColorFormat.name, () => {
+	it('should detect a functional rgb() format', () => {
+		const r = detectStringColorFormat('rgb(0, 0, 0)');
+		assert.strictEqual(r?.notation, 'func');
+	});
+
+	it('should return null for an object-notation string (unsupported by detection)', () => {
+		assert.strictEqual(detectStringColorFormat('{r: 1, g: 1, b: 1}'), null);
+	});
+
+	it('should return null when hex notation is requested as float', () => {
+		assert.strictEqual(detectStringColorFormat('#ff0000', 'float'), null);
+	});
+
+	it('should return null for an unrecognized string', () => {
+		assert.strictEqual(detectStringColorFormat('not-a-color'), null);
+	});
+});
+
+describe(`${createColorStringParser.name} (object notation)`, () => {
+	it('should parse a float object rgb string', () => {
+		const c = createColorStringParser('float')('{r: 1, g: 0.5, b: 0}');
+		assert.ok(c);
+		assert.strictEqual(c?.getComponents('rgb')[0], 1);
+	});
+
+	it('should parse a float object rgba string', () => {
+		const c = createColorStringParser('float')('{r: 1, g: 0.5, b: 0, a: 0.5}');
+		assert.ok(c);
+		assert.strictEqual(c?.getComponents('rgb')[3], 0.5);
+	});
+
+	it('should reject an object rgb string with a non-numeric (but hex-charset) component', () => {
+		assert.strictEqual(
+			createColorStringParser('int')('{r: ab, g: 1, b: 1}'),
+			null,
+		);
+	});
+
+	it('should reject an object rgba string with a non-numeric (but hex-charset) component', () => {
+		assert.strictEqual(
+			createColorStringParser('int')('{r: ab, g: 1, b: 1, a: 1}'),
+			null,
+		);
+	});
+});
 
 describe(createColorStringParser.name, () => {
 	[

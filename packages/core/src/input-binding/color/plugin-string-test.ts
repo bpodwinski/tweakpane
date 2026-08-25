@@ -119,4 +119,9 @@ describe(StringColorInputPlugin.id, () => {
 			});
 		});
 	});
+
+	it('should reject a string value when view is explicitly "text"', () => {
+		const result = StringColorInputPlugin.accept('#112233', {view: 'text'});
+		assert.strictEqual(result, null);
+	});
 });

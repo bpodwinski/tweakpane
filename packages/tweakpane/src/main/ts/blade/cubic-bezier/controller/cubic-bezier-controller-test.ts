@@ -135,4 +135,120 @@ describe(CubicBezierController.name, () => {
 
 		assert.ok(!popup.classList.contains('tp-popv-v'));
 	});
+
+	it('should keep the popup open when blur moves within the graph or to the trigger button', () => {
+		const win = createVisualTestWindow();
+		const {c} = createController(win, 'popup');
+		const winRef = win as unknown as typeof window;
+
+		c.view.buttonElement.dispatchEvent(
+			new winRef.MouseEvent('click', {bubbles: true}),
+		);
+		const popup = c.view.element.querySelector('.tp-popv') as HTMLElement;
+		const graph = popup.querySelector('.tp-cbzgv') as HTMLElement;
+
+		const blurToGraph = new winRef.FocusEvent('blur', {bubbles: true});
+		Object.defineProperty(blurToGraph, 'relatedTarget', {value: graph});
+		graph.dispatchEvent(blurToGraph);
+		assert.ok(popup.classList.contains('tp-popv-v'));
+
+		const blurToButton = new winRef.FocusEvent('blur', {bubbles: true});
+		Object.defineProperty(blurToButton, 'relatedTarget', {
+			value: c.view.buttonElement,
+		});
+		graph.dispatchEvent(blurToButton);
+		assert.ok(popup.classList.contains('tp-popv-v'));
+	});
+
+	it('should close the popup on blur to an unrelated element from within the graph', () => {
+		const win = createVisualTestWindow();
+		const {c} = createController(win, 'popup');
+		const winRef = win as unknown as typeof window;
+
+		c.view.buttonElement.dispatchEvent(
+			new winRef.MouseEvent('click', {bubbles: true}),
+		);
+		const popup = c.view.element.querySelector('.tp-popv') as HTMLElement;
+		const graph = popup.querySelector('.tp-cbzgv') as HTMLElement;
+
+		const outside = win.document.createElement('div');
+		win.document.body.appendChild(outside);
+		const blurEvent = new winRef.FocusEvent('blur', {bubbles: true});
+		Object.defineProperty(blurEvent, 'relatedTarget', {value: outside});
+		graph.dispatchEvent(blurEvent);
+
+		assert.ok(!popup.classList.contains('tp-popv-v'));
+	});
+
+	it('should close the popup when the trigger button blurs to an unrelated element', () => {
+		const win = createVisualTestWindow();
+		const {c} = createController(win, 'popup');
+		const winRef = win as unknown as typeof window;
+
+		c.view.buttonElement.dispatchEvent(
+			new winRef.MouseEvent('click', {bubbles: true}),
+		);
+		const popup = c.view.element.querySelector('.tp-popv') as HTMLElement;
+		assert.ok(popup.classList.contains('tp-popv-v'));
+
+		const outside = win.document.createElement('div');
+		win.document.body.appendChild(outside);
+		const blurEvent = new winRef.FocusEvent('blur', {bubbles: true});
+		Object.defineProperty(blurEvent, 'relatedTarget', {value: outside});
+		c.view.buttonElement.dispatchEvent(blurEvent);
+
+		assert.ok(!popup.classList.contains('tp-popv-v'));
+	});
+
+	it('should keep the popup open when the trigger button blurs into the popup', () => {
+		const win = createVisualTestWindow();
+		const {c} = createController(win, 'popup');
+		const winRef = win as unknown as typeof window;
+
+		c.view.buttonElement.dispatchEvent(
+			new winRef.MouseEvent('click', {bubbles: true}),
+		);
+		const popup = c.view.element.querySelector('.tp-popv') as HTMLElement;
+		const graph = popup.querySelector('.tp-cbzgv') as HTMLElement;
+		assert.ok(popup.classList.contains('tp-popv-v'));
+
+		const blurEvent = new winRef.FocusEvent('blur', {bubbles: true});
+		Object.defineProperty(blurEvent, 'relatedTarget', {value: graph});
+		c.view.buttonElement.dispatchEvent(blurEvent);
+
+		assert.ok(popup.classList.contains('tp-popv-v'));
+	});
+
+	it('should no-op on button blur in inline layout (no popup to close)', () => {
+		const win = createVisualTestWindow();
+		const {c} = createController(win, 'inline');
+		const winRef = win as unknown as typeof window;
+
+		assert.doesNotThrow(() => {
+			c.view.buttonElement.dispatchEvent(
+				new winRef.FocusEvent('blur', {bubbles: true}),
+			);
+		});
+	});
+
+	it('should no-op on graph blur/Escape in inline layout (no popup to close)', () => {
+		const win = createVisualTestWindow();
+		const {c} = createController(win, 'inline');
+		const winRef = win as unknown as typeof window;
+
+		const graph = c.view.pickerElement?.querySelector(
+			'.tp-cbzgv',
+		) as HTMLElement;
+
+		assert.doesNotThrow(() => {
+			graph.dispatchEvent(new winRef.FocusEvent('blur', {bubbles: true}));
+			graph.dispatchEvent(
+				new winRef.KeyboardEvent('keydown', {
+					bubbles: true,
+					cancelable: true,
+					key: 'Escape',
+				}),
+			);
+		});
+	});
 });

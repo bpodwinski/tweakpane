@@ -1,6 +1,7 @@
 import {
 	createBlade,
 	forceCast,
+	IntervalTicker,
 	ManualTicker,
 	PluginPool,
 	ViewProps,
@@ -82,6 +83,49 @@ describe('FpsGraphBladePlugin', () => {
 		api.begin();
 		api.end();
 		assert.strictEqual(typeof api.fps, 'number');
+	});
+
+	it('should build an IntervalTicker with the default interval when interval is omitted', () => {
+		const doc = createTestWindow().document;
+		const accepted = FpsGraphBladePlugin.accept({
+			view: 'fpsgraph',
+		});
+		if (!accepted) {
+			throw new Error('unexpected null result');
+		}
+		const viewProps = ViewProps.create();
+		const controller = FpsGraphBladePlugin.controller({
+			blade: createBlade(),
+			document: doc,
+			params: forceCast(accepted.params),
+			viewProps,
+		});
+		assert.ok(controller instanceof FpsGraphBladeController);
+		const vc = (controller as FpsGraphBladeController).valueController;
+		assert.ok(vc.ticker instanceof IntervalTicker);
+		viewProps.set('disposed', true);
+	});
+
+	it('should build an IntervalTicker with the given interval when provided', () => {
+		const doc = createTestWindow().document;
+		const accepted = FpsGraphBladePlugin.accept({
+			view: 'fpsgraph',
+			interval: 250,
+		});
+		if (!accepted) {
+			throw new Error('unexpected null result');
+		}
+		const viewProps = ViewProps.create();
+		const controller = FpsGraphBladePlugin.controller({
+			blade: createBlade(),
+			document: doc,
+			params: forceCast(accepted.params),
+			viewProps,
+		});
+		assert.ok(controller instanceof FpsGraphBladeController);
+		const vc = (controller as FpsGraphBladeController).valueController;
+		assert.ok(vc.ticker instanceof IntervalTicker);
+		viewProps.set('disposed', true);
 	});
 
 	it('should return null from api() for a foreign controller', () => {

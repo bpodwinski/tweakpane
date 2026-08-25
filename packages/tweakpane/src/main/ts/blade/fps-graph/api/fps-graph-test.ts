@@ -68,4 +68,20 @@ describe(FpsGraphBladeApi.name, () => {
 		assert.strictEqual(api.max, 120);
 		assert.strictEqual(api.min, 10);
 	});
+
+	it('should invoke the tick handler when the ticker ticks', () => {
+		const doc = createTestWindow().document;
+		const {api, valueController} = createApi(doc);
+
+		let calls = 0;
+		api.on('tick', () => {
+			calls++;
+		});
+
+		valueController.ticker.emitter.emit('tick', {
+			sender: valueController.ticker,
+		});
+
+		assert.strictEqual(calls, 1);
+	});
 });

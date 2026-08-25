@@ -43,6 +43,8 @@ export const StringColorInputPlugin: InputBindingPlugin<
 			return null;
 		}
 		const stringifier = findColorStringifier(format);
+		/* istanbul ignore if -- findColorStringifier always has an entry for a format that detectStringColorFormat produced */
+		/* c8 ignore next 3 -- findColorStringifier always has an entry for a format that detectStringColorFormat produced */
 		if (!stringifier) {
 			return null;
 		}
@@ -64,6 +66,8 @@ export const StringColorInputPlugin: InputBindingPlugin<
 		equals: equalsColor,
 		writer: (args) => {
 			const writer = createColorStringWriter(args.params.format);
+			/* istanbul ignore if -- accept() already guarantees a stringifier exists for this format */
+			/* c8 ignore next 3 -- accept() already guarantees a stringifier exists for this format */
 			if (!writer) {
 				throw TpError.notBindable();
 			}

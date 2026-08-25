@@ -160,4 +160,28 @@ describe(SvPaletteController.name, () => {
 		assert.strictEqual(s, 50);
 		assert.strictEqual(v, 50);
 	});
+
+	it('should ignore a touch event with no matching touch', () => {
+		const win = createTestWindow();
+		const doc = win.document;
+		const value = createValue(new IntColor([0, 50, 50, 1], 'hsv'));
+		const c = new SvPaletteController(doc, {
+			value,
+			viewProps: ViewProps.create(),
+		});
+
+		const winRef = win as unknown as typeof window;
+		const ev = new winRef.TouchEvent('touchstart', {
+			bubbles: true,
+			cancelable: true,
+			targetTouches: [] as unknown as Touch[],
+		});
+		(ev as any).targetTouches.item = (i: number) =>
+			(ev as any).targetTouches[i];
+		c.view.element.dispatchEvent(ev);
+
+		const [, s, v] = value.rawValue.getComponents('hsv');
+		assert.strictEqual(s, 50);
+		assert.strictEqual(v, 50);
+	});
 });

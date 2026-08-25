@@ -98,6 +98,7 @@ export const TestValueBladePlugin: BladePlugin<TestBladeParams> = {
 			return null;
 		}
 		const vc = args.controller.valueController;
+		/* c8 ignore next 3 -- test-only plugin; its own controller() always builds a CheckboxController */
 		if (!(vc instanceof CheckboxController)) {
 			return null;
 		}
@@ -125,6 +126,7 @@ export function createAppropriateBladeApi(doc: Document): BladeApi {
 		controller: createAppropriateBladeController(doc),
 		pool: createDefaultPluginPool(),
 	});
+	/* c8 ignore next 3 -- test-only helper; TestValueBladePlugin.api() always succeeds for its own controller() output */
 	if (!api) {
 		throw TpError.shouldNeverHappen();
 	}

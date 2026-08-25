@@ -103,6 +103,8 @@ export class CubicBezierPreviewView implements View {
 	}
 
 	private onTimer_(): void {
+		/* istanbul ignore if -- @preserve: startTime_ is a number (initialized to -1), never null; this check is dead defensive code */
+		/* c8 ignore next 3 -- startTime_ is a number (initialized to -1), never null; this check is dead defensive code */
 		if (this.startTime_ === null) {
 			return;
 		}

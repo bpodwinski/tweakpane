@@ -181,4 +181,18 @@ describe(ObjectColorInputPlugin.id, () => {
 			});
 		});
 	});
+
+	it('should format without alpha when the target object has no "a" key', () => {
+		const bc = createInputBindingController(ObjectColorInputPlugin, {
+			document: createTestWindow().document,
+			params: {},
+			target: new BindingTarget({color: {r: 0, g: 127, b: 255}}, 'color'),
+		});
+		const c = bc?.valueController as ColorController;
+
+		assert.strictEqual(
+			c.textController.view.inputElement.value,
+			'{r: 0, g: 127, b: 255}',
+		);
+	});
 });

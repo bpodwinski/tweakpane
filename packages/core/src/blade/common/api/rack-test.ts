@@ -187,4 +187,11 @@ describe(RackApi.name, () => {
 		api.refresh();
 		assert.strictEqual(bapi.controller.value.rawValue, 2);
 	});
+
+	it('should throw when addBinding is given a non-bindable object', () => {
+		const api = createApi();
+		assert.throws(() => {
+			api.addBinding(forceCast<any>(null), 'foo' as never);
+		});
+	});
 });

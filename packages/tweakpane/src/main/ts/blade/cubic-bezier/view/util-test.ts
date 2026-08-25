@@ -63,4 +63,27 @@ describe('waitToBeAddedToDom', () => {
 			}, 10);
 		}, 10);
 	});
+
+	it('should ignore attribute-only mutations (no childList change)', (done) => {
+		const win = createTestWindow();
+		const doc = win.document;
+		(
+			globalThis as {MutationObserver?: typeof MutationObserver}
+		).MutationObserver = (
+			win as unknown as {MutationObserver: typeof MutationObserver}
+		).MutationObserver;
+
+		const elem = doc.createElement('div');
+		let calls = 0;
+		waitToBeAddedToDom(elem, () => {
+			calls++;
+		});
+
+		doc.body.setAttribute('data-test', '1');
+
+		setTimeout(() => {
+			assert.strictEqual(calls, 0);
+			done();
+		}, 10);
+	});
 });

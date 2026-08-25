@@ -28,4 +28,44 @@ describe(BladeApi.name, () => {
 		const api = new BladeApi(c);
 		assert.strictEqual(api.element, v.element);
 	});
+
+	function createApi(doc: Document): BladeApi {
+		const v = new TestView(doc);
+		const c = new BladeController({
+			blade: createBlade(),
+			view: v,
+			viewProps: ViewProps.create(),
+		});
+		return new BladeApi(c);
+	}
+
+	it('should get/set disabled', () => {
+		const doc = createTestWindow().document;
+		const api = createApi(doc);
+		assert.strictEqual(api.disabled, false);
+		api.disabled = true;
+		assert.strictEqual(api.disabled, true);
+	});
+
+	it('should get/set hidden', () => {
+		const doc = createTestWindow().document;
+		const api = createApi(doc);
+		assert.strictEqual(api.hidden, false);
+		api.hidden = true;
+		assert.strictEqual(api.hidden, true);
+	});
+
+	it('should dispose the underlying controller', () => {
+		const doc = createTestWindow().document;
+		const api = createApi(doc);
+		api.dispose();
+		assert.strictEqual(api.controller.viewProps.get('disposed'), true);
+	});
+
+	it('should import/export state', () => {
+		const doc = createTestWindow().document;
+		const api = createApi(doc);
+		const state = api.exportState();
+		assert.strictEqual(api.importState(state), true);
+	});
 });

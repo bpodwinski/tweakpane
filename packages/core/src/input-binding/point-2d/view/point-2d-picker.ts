@@ -126,6 +126,7 @@ export class Point2dPickerView implements View {
 		this.update_();
 	}
 
+	/* c8 ignore next 3 -- bound but never attached to an emitter; dead code left over from a copy-paste */
 	private onFoldableChange_(): void {
 		this.update_();
 	}

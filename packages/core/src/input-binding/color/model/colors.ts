@@ -95,5 +95,6 @@ export function mapColorType(c: Color, type: ColorType): Color {
 		return convertFloatToInt(c);
 	}
 	/* istanbul ignore next */
+	/* c8 ignore next -- unreachable: c and type are always one of int/float, and equal-type is handled above */
 	throw TpError.shouldNeverHappen();
 }

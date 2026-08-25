@@ -55,6 +55,41 @@ describe(Pane.name, () => {
 		}, TpError);
 	});
 
+	it('should default to the global document and an empty config when none is given', () => {
+		const doc = createTestWindow().document;
+		const g = globalThis as any;
+		const prevDocument = g.document;
+		g.document = doc;
+		try {
+			const c = new Pane();
+			assert.strictEqual(c.document, doc);
+			c.dispose();
+		} finally {
+			g.document = prevDocument;
+		}
+	});
+
+	it('should default registerPlugin() to an empty plugin list for an unrecognized bundle shape', () => {
+		const doc = createTestWindow().document;
+		const c = new Pane({document: doc});
+		assert.doesNotThrow(() => {
+			c.registerPlugin({id: 'empty'} as any);
+		});
+		c.dispose();
+	});
+
+	it("should throw 'alreadyDisposed' when accessing document after dispose", () => {
+		const doc = createTestWindow().document;
+		const c = new Pane({
+			document: doc,
+		});
+		c.dispose();
+		assert.throws(() => {
+			// eslint-disable-next-line @typescript-eslint/no-unused-expressions
+			c.document;
+		}, TpError);
+	});
+
 	it('should expanded by default', () => {
 		const doc = createTestWindow().document;
 		const c = new Pane({

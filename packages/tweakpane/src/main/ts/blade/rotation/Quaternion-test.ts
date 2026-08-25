@@ -89,11 +89,66 @@ describe(Quaternion.name, () => {
 		assert.ok(closeTo(mid.length, 1));
 	});
 
+	it('should format any Rotation by returning its .quat', () => {
+		const e = new Euler(0.1, 0.2, 0.3, 'XYZ', 'rad');
+		const q = new Quaternion();
+		const formatted = q.format(e);
+		assert.deepStrictEqual(formatted.getComponents(), e.quat.getComponents());
+	});
+
 	it('should build a look rotation with orthonormal basis vectors', () => {
 		const q = Quaternion.lookRotation(
 			new Vector3(0, 0, 1),
 			new Vector3(0, 1, 0),
 		);
 		assert.ok(closeTo(q.length, 1));
+	});
+
+	it('should build a valid look rotation for various look/up combinations (all lookRotation branches)', () => {
+		const cases: [Vector3, Vector3][] = [
+			[new Vector3(1, 0, 0), new Vector3(0, 1, 0)],
+			[new Vector3(-1, 0, 0), new Vector3(0, 1, 0)],
+			[new Vector3(0, -1, 0), new Vector3(0, 0, 1)],
+			[new Vector3(0, 0, -1), new Vector3(1, 0, 0)],
+			[new Vector3(0, 1, 0), new Vector3(1, 0, 0)],
+		];
+		cases.forEach(([look, up]) => {
+			const q = Quaternion.lookRotation(look, up);
+			assert.ok(
+				closeTo(q.length, 1),
+				`length for look=${JSON.stringify(look)}`,
+			);
+		});
+	});
+
+	it('should build a look rotation via the "m11 is largest diagonal" branch', () => {
+		// Chosen so the resulting basis has trace <= 0 and m11 (binormal.x)
+		// strictly greater than both m22 (tangent.y) and m33 (normal.z),
+		// exercising the `m11 > m22 && m11 > m33` branch of lookRotation.
+		const q = Quaternion.lookRotation(
+			new Vector3(0, 0, -1),
+			new Vector3(0, -1, 0),
+		);
+		assert.ok(closeTo(q.length, 1));
+	});
+
+	it('should negate the second quaternion when the shortest-path dot product is negative', () => {
+		const a = Quaternion.fromAxisAngle(
+			new Vector3(1, 0, 0),
+			(170 * Math.PI) / 180,
+		);
+		const b = Quaternion.fromAxisAngle(
+			new Vector3(1, 0, 0),
+			(-170 * Math.PI) / 180,
+		);
+		const mid = a.slerp(b, 0.5);
+		assert.ok(closeTo(mid.length, 1));
+	});
+
+	it('should fall back to lerp exactly at the sqrSinHalfTheta === EPSILON boundary', () => {
+		const a = new Quaternion(0, 0, 0, 1);
+		const b = new Quaternion(0, 0, 0, 1 - Number.EPSILON / 2);
+		const mid = a.slerp(b, 0.5);
+		assert.ok(closeTo(mid.length, 1));
 	});
 });

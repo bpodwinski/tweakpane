@@ -4,7 +4,7 @@ import {describe, it} from 'mocha';
 import {ReadonlyBinding} from '../readonly.js';
 import {BindingTarget} from '../target.js';
 import {ManualTicker} from '../ticker/manual.js';
-import {MonitorBindingValue} from './monitor-binding.js';
+import {isMonitorBindingValue, MonitorBindingValue} from './monitor-binding.js';
 
 describe(MonitorBindingValue.name, () => {
 	it('should set up initial value', () => {
@@ -100,5 +100,47 @@ describe(MonitorBindingValue.name, () => {
 
 		obj.foo = 1;
 		v.fetch();
+	});
+
+	it('should identify a MonitorBindingValue via isMonitorBindingValue', () => {
+		const v = new MonitorBindingValue({
+			binding: new ReadonlyBinding({
+				reader: (v) => Number(v),
+				target: new BindingTarget({foo: 0}, 'foo'),
+			}),
+			bufferSize: 1,
+			ticker: new ManualTicker(),
+		});
+
+		assert.strictEqual(isMonitorBindingValue(v as any), true);
+		assert.strictEqual(isMonitorBindingValue([0] as any), false);
+	});
+
+	it('should set rawValue directly', () => {
+		const v = new MonitorBindingValue({
+			binding: new ReadonlyBinding({
+				reader: (v) => Number(v),
+				target: new BindingTarget({foo: 0}, 'foo'),
+			}),
+			bufferSize: 2,
+			ticker: new ManualTicker(),
+		});
+
+		v.rawValue = [5, 6];
+		assert.deepStrictEqual(v.rawValue, [5, 6]);
+	});
+
+	it('should set rawValue via setRawValue with options', () => {
+		const v = new MonitorBindingValue({
+			binding: new ReadonlyBinding({
+				reader: (v) => Number(v),
+				target: new BindingTarget({foo: 0}, 'foo'),
+			}),
+			bufferSize: 2,
+			ticker: new ManualTicker(),
+		});
+
+		v.setRawValue([5, 6], {forceEmit: true, last: true});
+		assert.deepStrictEqual(v.rawValue, [5, 6]);
 	});
 });

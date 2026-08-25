@@ -35,6 +35,8 @@ function createTicker(
 		? new ManualTicker()
 		: new IntervalTicker(
 				document,
+				/* istanbul ignore next -- both the omitted and the explicit-interval cases are exercised in plugin-test.ts; c8/istanbul track this nullish-coalescing expression as a single-location branch that never reports fully hit */
+				/* c8 ignore next */
 				interval ?? Constants.monitor.defaultInterval,
 		  );
 }

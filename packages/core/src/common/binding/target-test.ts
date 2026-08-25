@@ -40,4 +40,32 @@ describe(BindingTarget.name, () => {
 
 		assert.strictEqual(BindingTarget.isBindable(Test), true);
 	});
+
+	it('should not consider null bindable', () => {
+		assert.strictEqual(BindingTarget.isBindable(null), false);
+	});
+
+	it('should not consider a primitive bindable', () => {
+		assert.strictEqual(BindingTarget.isBindable('foo'), false);
+		assert.strictEqual(BindingTarget.isBindable(42), false);
+	});
+
+	it('should write a nested property via writeProperty', () => {
+		const obj = {nested: {foo: 'bar'}};
+		const target = new BindingTarget(obj, 'nested');
+		target.writeProperty('foo', 'updated');
+		assert.strictEqual(obj.nested.foo, 'updated');
+	});
+
+	it('should throw notBindable when writing a property on a non-bindable value', () => {
+		const obj = {foo: 'bar'};
+		const target = new BindingTarget(obj, 'foo');
+		assert.throws(() => target.writeProperty('length', 1));
+	});
+
+	it('should throw propertyNotFound when the property does not exist', () => {
+		const obj = {nested: {foo: 'bar'}};
+		const target = new BindingTarget(obj, 'nested');
+		assert.throws(() => target.writeProperty('missing', 1));
+	});
 });

@@ -1,4 +1,9 @@
-import {BindingTarget, createValue, ViewProps} from '@tweakpane/core';
+import {
+	BindingTarget,
+	createValue,
+	forceCast,
+	ViewProps,
+} from '@tweakpane/core';
 import * as assert from 'assert';
 import {describe, it} from 'mocha';
 
@@ -28,6 +33,16 @@ describe('IntervalInputPlugin', () => {
 		assert.strictEqual(result, null);
 	});
 
+	it('should reject a value shaped like an interval with malformed params', () => {
+		// `readonly` only accepts the constant `false`; anything else fails
+		// parseRecord and takes the `null` branch even though exValue is valid.
+		const result = IntervalInputPlugin.accept(
+			{min: 2, max: 8},
+			{readonly: true},
+		);
+		assert.strictEqual(result, null);
+	});
+
 	it('should build a reader that re-parses the raw exValue', () => {
 		const accepted = accept({min: 2, max: 8}, {});
 		const reader = IntervalInputPlugin.binding.reader({
@@ -38,6 +53,16 @@ describe('IntervalInputPlugin', () => {
 		const interval = reader({min: 5, max: 15});
 		assert.strictEqual(interval.min, 5);
 		assert.strictEqual(interval.max, 15);
+	});
+
+	it('should build an IntervalConstraint including a step constraint when step is provided', () => {
+		const accepted = accept({min: 2, max: 8}, {min: 0, max: 10, step: 2});
+		const constraint = IntervalInputPlugin.binding.constraint?.({
+			initialValue: accepted.initialValue,
+			params: accepted.params,
+			target: new BindingTarget({}, 'interval'),
+		});
+		assert.ok(constraint instanceof IntervalConstraint);
 	});
 
 	it('should build an IntervalConstraint from min/max params', () => {
@@ -107,5 +132,23 @@ describe('IntervalInputPlugin', () => {
 
 		assert.ok(!(controller instanceof RangeSliderTextController));
 		assert.ok(controller.view.element);
+	});
+
+	it('should throw when controller() is given a non-IntervalConstraint constraint', () => {
+		const accepted = accept({min: 2, max: 8}, {});
+		const doc = createTestWindow().document;
+
+		assert.throws(() => {
+			IntervalInputPlugin.controller({
+				document: doc,
+				initialValue: accepted.initialValue,
+				value: createValue(
+					new Interval(accepted.initialValue.min, accepted.initialValue.max),
+				),
+				constraint: forceCast({}),
+				params: accepted.params,
+				viewProps: ViewProps.create(),
+			});
+		});
 	});
 });

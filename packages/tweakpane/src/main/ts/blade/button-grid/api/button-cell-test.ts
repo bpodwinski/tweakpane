@@ -40,6 +40,17 @@ describe(ButtonCellApi.name, () => {
 		assert.strictEqual(c.props.get('title'), 'Go');
 	});
 
+	it('should fall back to an empty string when title is not set', () => {
+		const doc = createTestWindow().document;
+		const c = new ButtonController(doc, {
+			props: ValueMap.fromObject<ButtonPropsObject>({title: undefined}),
+			viewProps: ViewProps.create(),
+		});
+		const api = new ButtonCellApi(c);
+
+		assert.strictEqual(api.title, '');
+	});
+
 	it('should invoke the click handler when the button is clicked', () => {
 		const doc = createTestWindow().document;
 		const c = createController(doc);

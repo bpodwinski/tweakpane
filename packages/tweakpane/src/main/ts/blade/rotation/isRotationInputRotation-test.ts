@@ -19,9 +19,25 @@ describe('isRotationInputRotation', () => {
 		assert.strictEqual(isRotationInputRotation({x: 0, y: 0, z: 0}), false);
 	});
 
+	it('should reject an array (an object whose components are all undefined)', () => {
+		assert.strictEqual(isRotationInputRotation([]), false);
+	});
+
 	it('should reject an object with a non-numeric component', () => {
 		assert.strictEqual(
 			isRotationInputRotation({x: 0, y: 0, z: 0, w: '1'}),
+			false,
+		);
+		assert.strictEqual(
+			isRotationInputRotation({x: '0', y: 0, z: 0, w: 1}),
+			false,
+		);
+		assert.strictEqual(
+			isRotationInputRotation({x: 0, y: '0', z: 0, w: 1}),
+			false,
+		);
+		assert.strictEqual(
+			isRotationInputRotation({x: 0, y: 0, z: '0', w: 1}),
 			false,
 		);
 	});

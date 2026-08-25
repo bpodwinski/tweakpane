@@ -4,6 +4,7 @@ import {describe, it} from 'mocha';
 
 import {createTestWindow} from '../../../misc/test-util.js';
 import {RadioController} from '../controller/radio.js';
+import {RadioPropsObject} from '../view/radio.js';
 import {RadioCellApi} from './radio-cell-api.js';
 
 function createController(doc: Document): RadioController {
@@ -35,5 +36,19 @@ describe(RadioCellApi.name, () => {
 		api.title = 'B';
 		assert.strictEqual(api.title, 'B');
 		assert.strictEqual(c.props.get('title'), 'B');
+	});
+
+	it('should fall back to an empty string when title is not set', () => {
+		const doc = createTestWindow().document;
+		const c = new RadioController(doc, {
+			name: 'group',
+			props: ValueMap.fromObject({
+				title: undefined,
+			} as unknown as RadioPropsObject),
+			viewProps: ViewProps.create(),
+		});
+		const api = new RadioCellApi(c);
+
+		assert.strictEqual(api.title, '');
 	});
 });

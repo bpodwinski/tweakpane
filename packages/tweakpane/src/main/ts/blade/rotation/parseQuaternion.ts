@@ -12,6 +12,8 @@ export function parseQuaternion(
 
 	if (
 		typeof (exValue as any)?.[kx] === 'number' &&
+		/* istanbul ignore next -- once the kx check above passes, exValue is proven non-nullish, so the `?.` null-guard on ky/kz/kw below can never itself short-circuit */
+		/* c8 ignore next 3 */
 		typeof (exValue as any)?.[ky] === 'number' &&
 		typeof (exValue as any)?.[kz] === 'number' &&
 		typeof (exValue as any)?.[kw] === 'number'

@@ -117,4 +117,117 @@ describe(RotationInputController.name, () => {
 
 		assert.ok(!popup.classList.contains('tp-popv-v'));
 	});
+
+	it('should keep the popup open when blur moves within it or to the trigger button', () => {
+		const doc = createTestWindow().document;
+		const {c} = createController(doc, 'popup');
+		const winRef = doc.defaultView as any;
+
+		const button = c.view.swatchElement.querySelector(
+			'button',
+		) as HTMLButtonElement;
+		button.dispatchEvent(new winRef.MouseEvent('click', {bubbles: true}));
+
+		const popup = c.view.element.querySelector('.tp-popv') as HTMLElement;
+		const gizmoPad = popup.querySelector('.tp-rotationgizmov_p') as HTMLElement;
+
+		const blurToPad = new winRef.FocusEvent('blur', {bubbles: true});
+		Object.defineProperty(blurToPad, 'relatedTarget', {value: gizmoPad});
+		gizmoPad.dispatchEvent(blurToPad);
+		assert.ok(popup.classList.contains('tp-popv-v'));
+
+		const blurToButton = new winRef.FocusEvent('blur', {bubbles: true});
+		Object.defineProperty(blurToButton, 'relatedTarget', {value: button});
+		gizmoPad.dispatchEvent(blurToButton);
+		assert.ok(popup.classList.contains('tp-popv-v'));
+	});
+
+	it('should close the popup on blur to an unrelated element from within it', () => {
+		const doc = createTestWindow().document;
+		const {c} = createController(doc, 'popup');
+		const winRef = doc.defaultView as any;
+
+		const button = c.view.swatchElement.querySelector(
+			'button',
+		) as HTMLButtonElement;
+		button.dispatchEvent(new winRef.MouseEvent('click', {bubbles: true}));
+
+		const popup = c.view.element.querySelector('.tp-popv') as HTMLElement;
+		const gizmoPad = popup.querySelector('.tp-rotationgizmov_p') as HTMLElement;
+
+		const outside = doc.createElement('div');
+		doc.body.appendChild(outside);
+		const blurEvent = new winRef.FocusEvent('blur', {bubbles: true});
+		Object.defineProperty(blurEvent, 'relatedTarget', {value: outside});
+		gizmoPad.dispatchEvent(blurEvent);
+
+		assert.ok(!popup.classList.contains('tp-popv-v'));
+	});
+
+	it('should close the popup when the trigger button itself blurs to an outside element', () => {
+		const doc = createTestWindow().document;
+		const {c} = createController(doc, 'popup');
+		const winRef = doc.defaultView as any;
+
+		const button = c.view.swatchElement.querySelector(
+			'button',
+		) as HTMLButtonElement;
+		button.dispatchEvent(new winRef.MouseEvent('click', {bubbles: true}));
+
+		const popup = c.view.element.querySelector('.tp-popv') as HTMLElement;
+		assert.ok(popup.classList.contains('tp-popv-v'));
+
+		const outside = doc.createElement('div');
+		doc.body.appendChild(outside);
+		const blurEvent = new winRef.FocusEvent('blur', {bubbles: true});
+		Object.defineProperty(blurEvent, 'relatedTarget', {value: outside});
+		button.dispatchEvent(blurEvent);
+
+		assert.ok(!popup.classList.contains('tp-popv-v'));
+	});
+
+	it('should no-op on a gizmo blur in inline layout (no popup to close)', () => {
+		const doc = createTestWindow().document;
+		const {c} = createController(doc, 'inline');
+		const winRef = doc.defaultView as any;
+
+		const gizmoPad = c.view.pickerElement?.querySelector(
+			'.tp-rotationgizmov_p',
+		) as HTMLElement;
+
+		assert.doesNotThrow(() => {
+			gizmoPad.dispatchEvent(new winRef.FocusEvent('blur', {bubbles: true}));
+		});
+	});
+
+	it('should no-op on button/gizmo blur and focus the button on Escape in inline layout', () => {
+		const doc = createTestWindow().document;
+		const {c} = createController(doc, 'inline');
+		const winRef = doc.defaultView as any;
+
+		const button = c.view.swatchElement.querySelector(
+			'button',
+		) as HTMLButtonElement;
+		const gizmoPad = c.view.pickerElement?.querySelector(
+			'.tp-rotationgizmov_p',
+		) as HTMLElement;
+
+		let focused = false;
+		button.focus = () => {
+			focused = true;
+		};
+
+		assert.doesNotThrow(() => {
+			button.dispatchEvent(new winRef.FocusEvent('blur', {bubbles: true}));
+		});
+
+		gizmoPad.dispatchEvent(
+			new winRef.KeyboardEvent('keydown', {
+				bubbles: true,
+				cancelable: true,
+				key: 'Escape',
+			}),
+		);
+		assert.strictEqual(focused, true);
+	});
 });

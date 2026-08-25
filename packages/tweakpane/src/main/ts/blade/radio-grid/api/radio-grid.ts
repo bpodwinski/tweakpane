@@ -50,6 +50,11 @@ export class RadioGridApi<T> extends BladeApi<
 				return;
 			}
 			const capi = this.cellToApiMap_.get(cc);
+			/* istanbul ignore if -- @preserve: cellToApiMap_ is populated for every
+			 * cell controller in the constructor, and `cc` above always comes from
+			 * `gc.findCellByValue`, which only returns controllers from that same
+			 * set — so `capi` can never be undefined here. */
+			/* c8 ignore next 3 */
 			if (!capi) {
 				return;
 			}

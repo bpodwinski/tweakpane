@@ -218,10 +218,12 @@ export class PluginPool {
 			return this.createInputBindingApi_(bc);
 		}
 		/* istanbul ignore else */
+		/* c8 ignore else -- bc is always either an input or a monitor binding controller */
 		if (isMonitorBindingController(bc)) {
 			return this.createMonitorBindingApi_(bc) as BindingApi;
 		}
 		/* istanbul ignore next */
+		/* c8 ignore next -- unreachable, see istanbul ignore above */
 		throw TpError.shouldNeverHappen();
 	}
 
@@ -244,6 +246,7 @@ export class PluginPool {
 			null,
 		);
 		/* istanbul ignore next */
+		/* c8 ignore next 3 -- unreachable: createBlade() already throws nomatchingview if no blade plugin can build a controller for these params */
 		if (!api) {
 			throw TpError.shouldNeverHappen();
 		}

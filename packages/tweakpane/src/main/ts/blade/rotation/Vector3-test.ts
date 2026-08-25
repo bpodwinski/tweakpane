@@ -64,9 +64,16 @@ describe(Vector3.name, () => {
 		assert.ok(closeTo(normal.dot(tangent), 0));
 	});
 
-	it('should orthonormalize even when the tangent is parallel to the normal', () => {
+	it('should orthonormalize even when the tangent is parallel to the normal (|y| <= |z|)', () => {
 		const {normal, tangent} = new Vector3(0, 0, 1).orthoNormalize(
 			new Vector3(0, 0, 1),
+		);
+		assert.ok(closeTo(normal.dot(tangent), 0));
+	});
+
+	it('should orthonormalize even when the tangent is parallel to the normal (|y| > |z|)', () => {
+		const {normal, tangent} = new Vector3(0, 1, 0).orthoNormalize(
+			new Vector3(0, 1, 0),
 		);
 		assert.ok(closeTo(normal.dot(tangent), 0));
 	});

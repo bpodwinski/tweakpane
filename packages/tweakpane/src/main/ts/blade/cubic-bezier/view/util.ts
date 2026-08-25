@@ -9,6 +9,8 @@ export function waitToBeAddedToDom(
 			}
 
 			m.addedNodes.forEach((elem) => {
+				/* istanbul ignore if -- @preserve: a node always contains itself; this check is dead defensive code */
+				/* c8 ignore next 3 -- a node always contains itself; this check is dead defensive code */
 				if (!elem.contains(elem)) {
 					return;
 				}

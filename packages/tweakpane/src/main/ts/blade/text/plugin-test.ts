@@ -87,4 +87,21 @@ describe(TextBladePlugin.id, () => {
 			'hello',
 		);
 	});
+
+	it('should use a String()-based default formatter when format is omitted', () => {
+		const doc = createTestWindow().document;
+		const params = {
+			parse: (v: string) => v,
+			value: 42,
+			view: 'text',
+		} as unknown as TextBladeParams<number>;
+
+		const bc = createBladeController(TextBladePlugin, {
+			document: doc,
+			params: params,
+		}) as BladeController;
+		const pool = createPluginPool();
+		const api = pool.createApi(bc) as TextBladeApi<number>;
+		assert.strictEqual(api.formatter(42), '42');
+	});
 });

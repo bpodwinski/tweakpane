@@ -49,4 +49,22 @@ describe(IntervalTicker.name, () => {
 
 		setTimeout(done, 10);
 	});
+
+	it("should skip emitting 'tick' if disabled_ becomes true without clearing the timer", (done) => {
+		// Exercises the defensive `if (this.disabled_) return;` guard inside the
+		// timer callback itself, distinct from the public `disabled` setter
+		// (which also cancels the timer, so this branch is otherwise unreachable).
+		const doc = createTestWindow().document;
+		const t = new IntervalTicker(doc, 1);
+		(t as any).disabled_ = true;
+
+		t.emitter.on('tick', () => {
+			assert.fail('should not be called');
+		});
+
+		setTimeout(() => {
+			t.dispose();
+			done();
+		}, 10);
+	});
 });

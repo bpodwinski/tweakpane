@@ -211,4 +211,15 @@ describe(Point2dInputPlugin.id, () => {
 			});
 		});
 	});
+
+	it('should not throw when no y-axis params are given (invertsY defaults to false)', () => {
+		const doc = createTestWindow().document;
+		assert.doesNotThrow(() => {
+			createInputBindingController(Point2dInputPlugin, {
+				document: doc,
+				params: {},
+				target: new BindingTarget({p: {x: 1, y: 2}}, 'p'),
+			});
+		});
+	});
 });

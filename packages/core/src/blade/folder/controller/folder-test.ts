@@ -190,4 +190,10 @@ describe(FolderController.name, () => {
 		assert.strictEqual(c.props.get('title'), 'renamed');
 		assert.strictEqual(c.foldable.get('expanded'), false);
 	});
+
+	it('should expose the owner document', () => {
+		const doc = createTestWindow().document;
+		const c = createController(doc, {title: ''});
+		assert.strictEqual(c.document, doc);
+	});
 });

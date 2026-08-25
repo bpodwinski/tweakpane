@@ -134,4 +134,27 @@ describe(HPaletteController.name, () => {
 		const [h] = value.rawValue.getComponents('hsv');
 		assert.strictEqual(h, 180);
 	});
+
+	it('should ignore a touch event with no matching touch', () => {
+		const win = createTestWindow();
+		const doc = win.document;
+		const value = createValue(new IntColor([180, 50, 50, 1], 'hsv'));
+		const c = new HPaletteController(doc, {
+			value,
+			viewProps: ViewProps.create(),
+		});
+
+		const winRef = win as unknown as typeof window;
+		const ev = new winRef.TouchEvent('touchstart', {
+			bubbles: true,
+			cancelable: true,
+			targetTouches: [] as unknown as Touch[],
+		});
+		(ev as any).targetTouches.item = (i: number) =>
+			(ev as any).targetTouches[i];
+		c.view.element.dispatchEvent(ev);
+
+		const [h] = value.rawValue.getComponents('hsv');
+		assert.strictEqual(h, 180);
+	});
 });

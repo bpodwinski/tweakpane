@@ -139,4 +139,14 @@ describe(createMonitorBindingController.name, () => {
 		assert.strictEqual(bc.labelController.props.get('label'), null);
 		bc.viewProps.set('disposed', true);
 	});
+
+	it('should return null when the plugin rejects the target value', () => {
+		const bc = createMonitorBindingController(TestPlugin, {
+			document: createTestWindow().document,
+			params: {},
+			target: new BindingTarget({foo: 42}, 'foo'),
+		});
+
+		assert.strictEqual(bc, null);
+	});
 });

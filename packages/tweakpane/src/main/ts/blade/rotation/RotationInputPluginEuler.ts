@@ -79,9 +79,9 @@ export const RotationInputPluginEuler: InputBindingPlugin<
 					params.unit ?? 'rad',
 				),
 				components: [
-					createDimensionConstraint('x' in params ? params.x : undefined),
-					createDimensionConstraint('y' in params ? params.y : undefined),
-					createDimensionConstraint('z' in params ? params.z : undefined),
+					createDimensionConstraint(params.x),
+					createDimensionConstraint(params.y),
+					createDimensionConstraint(params.z),
 				],
 			});
 		},
@@ -100,8 +100,8 @@ export const RotationInputPluginEuler: InputBindingPlugin<
 			throw TpError.shouldNeverHappen();
 		}
 
-		const expanded = 'expanded' in params ? params.expanded : undefined;
-		const picker = 'picker' in params ? params.picker : undefined;
+		const expanded = params.expanded;
+		const picker = params.picker;
 
 		const unit = params.unit ?? 'rad';
 		const digits = {

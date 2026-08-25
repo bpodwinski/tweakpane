@@ -87,6 +87,19 @@ describe('RotationInputPluginEuler', () => {
 		assert.strictEqual(obj.z, 3);
 	});
 
+	it('should build a PointNdConstraint with unconstrained components when x/y/z params are absent', () => {
+		const accepted = accept(
+			{x: 0, y: 0, z: 0},
+			{view: 'rotation', rotationMode: 'euler'},
+		);
+		const constraint = RotationInputPluginEuler.binding.constraint?.({
+			initialValue: accepted.initialValue,
+			params: accepted.params,
+			target: new BindingTarget({}, 'rotation'),
+		});
+		assert.ok(constraint instanceof PointNdConstraint);
+	});
+
 	it('should create a controller wired to a Value<Euler>', () => {
 		const accepted = accept(
 			{x: 0.1, y: 0.2, z: 0.3},
@@ -109,5 +122,87 @@ describe('RotationInputPluginEuler', () => {
 		});
 
 		assert.ok(controller.view.element);
+	});
+
+	it('should honor explicit order/unit/keys/expanded/picker/pointerScale params', () => {
+		const accepted = accept(
+			{a: 90, b: 0, c: 0},
+			{
+				view: 'rotation',
+				rotationMode: 'euler',
+				order: 'ZYX',
+				unit: 'deg',
+				keys: {x: 'a', y: 'b', z: 'c'},
+				expanded: true,
+				picker: 'inline',
+				pointerScale: 2,
+				x: {min: -180, max: 180},
+				y: {min: -180, max: 180},
+				z: {min: -180, max: 180},
+			},
+		);
+		assert.strictEqual(accepted.initialValue.order, 'ZYX');
+		assert.strictEqual(accepted.initialValue.unit, 'deg');
+		assert.strictEqual(accepted.initialValue.x, 90);
+
+		const reader = RotationInputPluginEuler.binding.reader({
+			initialValue: accepted.initialValue,
+			params: accepted.params,
+			target: new BindingTarget({}, 'rotation'),
+		});
+		const euler = reader({a: 4, b: 5, c: 6});
+		assert.deepStrictEqual(euler.getComponents(), [4, 5, 6]);
+		assert.strictEqual(euler.order, 'ZYX');
+		assert.strictEqual(euler.unit, 'deg');
+
+		const writer = RotationInputPluginEuler.binding.writer({
+			initialValue: accepted.initialValue,
+			params: accepted.params,
+			target: new BindingTarget({}, 'rotation'),
+		});
+		const obj: Record<string, number> = {a: 0, b: 0, c: 0};
+		writer(
+			new BindingTarget({rotation: obj}, 'rotation'),
+			new Euler(1, 2, 3, 'ZYX', 'deg'),
+		);
+		assert.strictEqual(obj.a, 1);
+		assert.strictEqual(obj.b, 2);
+		assert.strictEqual(obj.c, 3);
+
+		const constraint = RotationInputPluginEuler.binding.constraint?.({
+			initialValue: accepted.initialValue,
+			params: accepted.params,
+			target: new BindingTarget({}, 'rotation'),
+		});
+		assert.ok(constraint instanceof PointNdConstraint);
+
+		const doc = createTestWindow().document;
+		const controller = RotationInputPluginEuler.controller({
+			document: doc,
+			initialValue: accepted.initialValue,
+			value: createValue(accepted.initialValue),
+			constraint,
+			params: accepted.params,
+			viewProps: ViewProps.create(),
+		});
+		assert.ok(controller.view.element);
+	});
+
+	it('should throw when controller() is given a non-PointNdConstraint constraint', () => {
+		const accepted = accept(
+			{x: 0, y: 0, z: 0},
+			{view: 'rotation', rotationMode: 'euler'},
+		);
+		const doc = createTestWindow().document;
+		assert.throws(() => {
+			RotationInputPluginEuler.controller({
+				document: doc,
+				initialValue: accepted.initialValue,
+				value: createValue(accepted.initialValue),
+				constraint: undefined,
+				params: accepted.params,
+				viewProps: ViewProps.create(),
+			});
+		});
 	});
 });

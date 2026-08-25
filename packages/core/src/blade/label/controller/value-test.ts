@@ -217,4 +217,27 @@ describe(LabeledValueBladeController.name, () => {
 			opacity: 0.25,
 		});
 	});
+
+	it('should throw when value does not match valueController.value', () => {
+		const doc = createTestWindow().document;
+		const value = createValue(0);
+		const otherValue = createValue(0);
+		const controller = new TextController(doc, {
+			parser: parseNumber,
+			props: ValueMap.fromObject({
+				formatter: createNumberFormatter(0),
+			}),
+			value: otherValue,
+			viewProps: ViewProps.create(),
+		});
+
+		assert.throws(() => {
+			new LabeledValueBladeController<number>(doc, {
+				blade: createBlade(),
+				props: ValueMap.fromObject<LabelPropsObject>({label: 'label'}),
+				value: value,
+				valueController: controller,
+			});
+		});
+	});
 });

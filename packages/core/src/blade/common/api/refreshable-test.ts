@@ -21,4 +21,10 @@ describe(isRefreshable.name, () => {
 			false,
 		);
 	});
+
+	it('should not determine a non-object as Refreshable', () => {
+		assert.strictEqual(isRefreshable(null), false);
+		assert.strictEqual(isRefreshable(undefined), false);
+		assert.strictEqual(isRefreshable('foo'), false);
+	});
 });

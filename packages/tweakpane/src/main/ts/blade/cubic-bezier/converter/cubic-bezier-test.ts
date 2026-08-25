@@ -30,6 +30,14 @@ describe('cubicBezierFromString', () => {
 		assert.deepStrictEqual(cb.toObject(), [0, 0.5, 0.5, 1]);
 	});
 
+	it('should fall back to the default curve when a component is not a valid number', () => {
+		// A lone "." matches the [0-9.]+ component pattern but is NaN, so this
+		// exercises both the isNaN short-circuit and the already-null
+		// short-circuit on the following reduce iteration.
+		const cb = cubicBezierFromString('cubic-bezier(., ., 0.6, 0.1)');
+		assert.deepStrictEqual(cb.toObject(), [0, 0.5, 0.5, 1]);
+	});
+
 	it('should round-trip through toString/fromString', () => {
 		const original = new CubicBezier(0.25, 0.1, 0.25, 1);
 		const roundTripped = cubicBezierFromString(cubicBezierToString(original));

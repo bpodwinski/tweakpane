@@ -435,6 +435,8 @@ export class RotationInputGizmoView implements View {
 		this.update_();
 	}
 
+	/* istanbul ignore next -- @preserve: bound but never attached to an emitter; dead code left over from a copy-paste */
+	/* c8 ignore next 3 -- bound but never attached to an emitter; dead code left over from a copy-paste */
 	private onFoldableChange_(): void {
 		this.update_();
 	}

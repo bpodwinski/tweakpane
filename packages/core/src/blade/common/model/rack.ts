@@ -53,6 +53,7 @@ function findValueBladeController(
 			return bc;
 		}
 	}
+	/* c8 ignore next -- see the c8 ignore note at the only call site in onChildValueChange_ */
 	return null;
 }
 
@@ -246,6 +247,7 @@ export class Rack {
 			this.find(isValueBladeController),
 			ev.sender,
 		);
+		/* c8 ignore next 3 -- defensive: add()/remove() keep this listener in lockstep with bcSet_, so the owning blade controller is always found here */
 		if (!bc) {
 			throw TpError.alreadyDisposed();
 		}
