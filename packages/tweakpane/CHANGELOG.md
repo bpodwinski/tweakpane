@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.0](https://github.com/bpodwinski/tweakpane/compare/4.1.0...4.2.0) (2026-08-25)
+
+
+### Features
+
+* add GitHub Actions workflow for documentation deployment and update links in README and templates ([ada57a2](https://github.com/bpodwinski/tweakpane/commit/ada57a262c29a76d92a780d72171fce8655a6844))
+
 ## [4.1.0](https://github.com/bpodwinski/tweakpane/compare/4.0.5...4.1.0) (2026-08-25)
 
 
