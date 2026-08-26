@@ -28,7 +28,7 @@ jobs:
           key: playwright-${{ matrix.browser }}-${{ hashFiles('package-lock.json') }}
       - run: npx playwright install --with-deps ${{ matrix.browser }}
         working-directory: packages/tweakpane
-      - run: npx playwright test --project=${{ matrix.browser }}
+      - run: npx playwright test -c playwright.config.ts --project=${{ matrix.browser }}
         working-directory: packages/tweakpane/test-visual
       - name: Upload Playwright report
         if: failure()
