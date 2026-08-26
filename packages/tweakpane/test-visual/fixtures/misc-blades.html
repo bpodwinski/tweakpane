@@ -28,7 +28,9 @@
 
       const PARAMS = {
         boolean: true,
-        point: { x: 0.3, y: -0.4 },
+        point2d: { x: 0.3, y: -0.4 },
+        point3d: { x: 0, y: 20, z: -10 },
+        point4d: { x: 0, y: 0, z: 0, w: 1 },
       };
       const radioParams = { scale: 100 };
       const scales = [25, 50, 75, 100, 150, 200];
@@ -39,13 +41,14 @@
       });
 
       pane.addBinding(PARAMS, 'boolean', { label: 'checkbox' });
-      pane.addBinding(PARAMS, 'point', {
-        label: 'point2d',
+      pane.addBinding(PARAMS, 'point2d', {
         expanded: true,
         picker: 'inline',
         x: { min: -1, max: 1 },
         y: { min: -1, max: 1 },
       });
+      pane.addBinding(PARAMS, 'point3d');
+      pane.addBinding(PARAMS, 'point4d');
       pane.addBlade({ view: 'separator' });
       pane.addBlade({
         view: 'cubicbezier',
