@@ -1,4 +1,4 @@
-# Tweakpane
+# Tweakpane Reborn
 ![CI](https://github.com/bpodwinski/tweakpane-reborn/workflows/CI/badge.svg)
 [![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bpodwinski/c4ed268357a3d741d67b9d4eb0ac6256/raw/tweakpane-coverage.json)](https://github.com/bpodwinski/tweakpane-reborn/actions)
 [![npm version](https://badge.fury.io/js/tweakpane-reborn.svg)](https://badge.fury.io/js/tweakpane-reborn)
