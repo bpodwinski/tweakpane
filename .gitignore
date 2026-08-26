@@ -5,6 +5,8 @@
 /packages/tweakpane/dist/
 /packages/tweakpane/docs/
 /packages/tweakpane/test-module/*/dist/
+/packages/tweakpane/test-visual/test-results/
+/packages/tweakpane/test-visual/playwright-report/
 
 *.tgz
 *.zip

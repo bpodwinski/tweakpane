@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Visual test — bindings</title>
+    <style>
+      * {
+        animation-duration: 0s !important;
+        animation-delay: 0s !important;
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+        caret-color: transparent !important;
+      }
+      body {
+        margin: 0;
+        padding: 16px;
+        background: #f0f0f0;
+      }
+      #pane {
+        width: 256px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="pane"></div>
+    <script type="module">
+      import { Pane } from '../../docs/assets/tweakpane.js';
+
+      // Static values only — no random/time-based data, so captures stay
+      // deterministic across runs.
+      const PARAMS = {
+        text: 'Hello',
+        number: 12.5,
+        color: '#ff8800',
+        monitor: 0.75,
+      };
+
+      const pane = new Pane({
+        container: document.getElementById('pane'),
+        title: 'Bindings',
+      });
+
+      pane.addBinding(PARAMS, 'text');
+      pane.addBinding(PARAMS, 'number', { min: 0, max: 100 });
+      pane.addBinding(PARAMS, 'color');
+      pane.addBinding(PARAMS, 'monitor', {
+        readonly: true,
+        interval: 0,
+        view: 'graph',
+        min: 0,
+        max: 1,
+      });
+
+      document.fonts.ready.then(() => {
+        document.body.dataset.ready = 'true';
+      });
+    </script>
+  </body>
+</html>
