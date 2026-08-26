@@ -1,6 +1,6 @@
 # Tweakpane
-![CI](https://github.com/bpodwinski/tweakpane/workflows/CI/badge.svg)
-[![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bpodwinski/c4ed268357a3d741d67b9d4eb0ac6256/raw/tweakpane-coverage.json)](https://github.com/bpodwinski/tweakpane/actions)
+![CI](https://github.com/bpodwinski/tweakpane-reborn/workflows/CI/badge.svg)
+[![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bpodwinski/c4ed268357a3d741d67b9d4eb0ac6256/raw/tweakpane-coverage.json)](https://github.com/bpodwinski/tweakpane-reborn/actions)
 [![npm version](https://badge.fury.io/js/tweakpane-reborn.svg)](https://badge.fury.io/js/tweakpane-reborn)
 
 ![cover](https://user-images.githubusercontent.com/602961/146529897-38829c6f-56df-46f6-81fe-d65fb2027eaa.png)
@@ -12,44 +12,44 @@ value changes, inspired by [dat.GUI][].
 - Dependency-free
 - Extensible
 
-(dat.GUI user? The [migration guide](https://bpodwinski.github.io/tweakpane/migration/#datgui) can be helpful)
+(dat.GUI user? The [migration guide](https://bpodwinski.github.io/tweakpane-reborn/migration/#datgui) can be helpful)
 
 
 ## Installation
-Refer to the [Getting Started](https://bpodwinski.github.io/tweakpane/getting-started/) section for concrete steps. Remember to install `tweakpane-reborn-core` if you are developing with TypeScript.
+Refer to the [Getting Started](https://bpodwinski.github.io/tweakpane-reborn/getting-started/) section for concrete steps. Remember to install `tweakpane-reborn-core` if you are developing with TypeScript.
 
 
 ## Features
 See the [official page][documents] for details.
 
 
-### [Bindings](https://bpodwinski.github.io/tweakpane/input-bindings/)
+### [Bindings](https://bpodwinski.github.io/tweakpane-reborn/input-bindings/)
 Number, String, Boolean, Color, Point 2D/3D/4D
 
 ![Bindings](https://user-images.githubusercontent.com/602961/184479032-38f50be3-e235-4914-85c0-dce316b33ed2.png)
 
 
-### [Readonly bindings](https://bpodwinski.github.io/tweakpane/monitor-bindings/)
+### [Readonly bindings](https://bpodwinski.github.io/tweakpane-reborn/monitor-bindings/)
 Number, String, Boolean
 
 ![Readonly bindings](https://user-images.githubusercontent.com/602961/184479060-44fda993-9f40-4ef1-b363-18e9f9deff7f.png)
 
 
-### [UI components](https://bpodwinski.github.io/tweakpane/ui-components/)
+### [UI components](https://bpodwinski.github.io/tweakpane-reborn/ui-components/)
 Folder, Tab, Button, Separator
 
 ![UI components](https://user-images.githubusercontent.com/602961/184479079-84ee5436-b5f6-4c35-92eb-94cc8709ff12.png)
 
 
-### [Theming](https://bpodwinski.github.io/tweakpane/theming/)
+### [Theming](https://bpodwinski.github.io/tweakpane-reborn/theming/)
 ![Theming](https://user-images.githubusercontent.com/602961/115102105-e6676500-9f83-11eb-8a74-ae4f76122000.png)
 
 
-### [Plugins](https://bpodwinski.github.io/tweakpane/plugins/)
+### [Plugins](https://bpodwinski.github.io/tweakpane-reborn/plugins/)
 ![Plugins](https://user-images.githubusercontent.com/602961/184479086-cc8c72c2-c958-4e4e-8ae4-2690f721c544.png)
 
 
-### [Misc](https://bpodwinski.github.io/tweakpane/misc/)
+### [Misc](https://bpodwinski.github.io/tweakpane-reborn/misc/)
 - Mobile support
 - TypeScript type definitions
 - JSON import / export
@@ -89,4 +89,4 @@ MIT License. See `LICENSE.txt` for more information.
 
 
 [dat.GUI]: https://github.com/dataarts/dat.gui
-[documents]: https://bpodwinski.github.io/tweakpane/
+[documents]: https://bpodwinski.github.io/tweakpane-reborn/

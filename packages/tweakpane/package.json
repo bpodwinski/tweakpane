@@ -4,14 +4,14 @@
   "description": "A compact pane for fine-tuning parameters and monitoring value changes",
   "author": "cocopon",
   "license": "MIT",
-  "homepage": "https://bpodwinski.github.io/tweakpane/",
+  "homepage": "https://bpodwinski.github.io/tweakpane-reborn/",
   "main": "dist/tweakpane.js",
   "type": "module",
   "types": "dist/types/index.d.ts",
   "prettier": "../../prettier.config.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bpodwinski/tweakpane.git"
+    "url": "https://github.com/bpodwinski/tweakpane-reborn.git"
   },
   "files": [
     "dist"
