@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Visual test — misc blades</title>
+    <style>
+      * {
+        animation-duration: 0s !important;
+        animation-delay: 0s !important;
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+        caret-color: transparent !important;
+      }
+      body {
+        margin: 0;
+        padding: 16px;
+        background: #f0f0f0;
+      }
+      #pane {
+        width: 256px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="pane"></div>
+    <script type="module">
+      import { Pane } from '../../docs/assets/tweakpane.js';
+
+      const PARAMS = {
+        boolean: true,
+        point: { x: 0.3, y: -0.4 },
+      };
+      const radioParams = { scale: 100 };
+      const scales = [25, 50, 75, 100, 150, 200];
+
+      const pane = new Pane({
+        container: document.getElementById('pane'),
+        title: 'Misc',
+      });
+
+      pane.addBinding(PARAMS, 'boolean', { label: 'checkbox' });
+      pane.addBinding(PARAMS, 'point', {
+        label: 'point2d',
+        expanded: true,
+        picker: 'inline',
+        x: { min: -1, max: 1 },
+        y: { min: -1, max: 1 },
+      });
+      pane.addBlade({ view: 'separator' });
+      pane.addBlade({
+        view: 'cubicbezier',
+        value: [0.5, 0, 0.5, 1],
+        expanded: true,
+        label: 'easing',
+        picker: 'inline',
+      });
+      pane.addBinding(radioParams, 'scale', {
+        view: 'radiogrid',
+        groupName: 'scale',
+        label: 'radiogrid',
+        size: [3, 2],
+        cells: (x, y) => ({
+          title: `${scales[y * 3 + x]}%`,
+          value: scales[y * 3 + x],
+        }),
+      });
+
+      document.fonts.ready.then(() => {
+        document.body.dataset.ready = 'true';
+      });
+    </script>
+  </body>
+</html>

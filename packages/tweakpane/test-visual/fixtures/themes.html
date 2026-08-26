@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Visual test — theme variants</title>
+    <style>
+      * {
+        animation-duration: 0s !important;
+        animation-delay: 0s !important;
+        transition-duration: 0s !important;
+        transition-delay: 0s !important;
+        caret-color: transparent !important;
+      }
+      body {
+        margin: 0;
+        padding: 16px;
+        background: #f0f0f0;
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+      }
+      .pane {
+        width: 256px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="pane-light" class="pane"></div>
+    <div id="pane-jetblack" class="pane"></div>
+    <script type="module">
+      import { Pane } from '../../docs/assets/tweakpane.js';
+
+      // Copied verbatim from packages/tweakpane/src/doc/ts/themes.ts (the
+      // doc site's theme-builder presets) — that file is TS-only and not
+      // part of the published bundle, so it can't be imported at runtime
+      // here. Two contrasting presets are enough to catch a CSS custom
+      // property regression without needing every preset covered.
+      const THEMES = {
+        light: {
+          'base-background-color': 'hsla(230, 5%, 90%, 1)',
+          'base-shadow-color': 'hsla(0, 0%, 0%, 0.1)',
+          'button-background-color': 'hsla(230, 7%, 75%, 1)',
+          'button-background-color-active': 'hsla(230, 7%, 60%, 1)',
+          'button-background-color-focus': 'hsla(230, 7%, 65%, 1)',
+          'button-background-color-hover': 'hsla(230, 7%, 70%, 1)',
+          'button-foreground-color': 'hsla(230, 10%, 30%, 1)',
+          'container-background-color': 'hsla(230, 15%, 30%, 0.2)',
+          'container-background-color-active': 'hsla(230, 15%, 30%, 0.32)',
+          'container-background-color-focus': 'hsla(230, 15%, 30%, 0.28)',
+          'container-background-color-hover': 'hsla(230, 15%, 30%, 0.24)',
+          'container-foreground-color': 'hsla(230, 10%, 30%, 1)',
+          'groove-foreground-color': 'hsla(230, 15%, 30%, 0.1)',
+          'input-background-color': 'hsla(230, 15%, 30%, 0.1)',
+          'input-background-color-active': 'hsla(230, 15%, 30%, 0.22)',
+          'input-background-color-focus': 'hsla(230, 15%, 30%, 0.18)',
+          'input-background-color-hover': 'hsla(230, 15%, 30%, 0.14)',
+          'input-foreground-color': 'hsla(230, 10%, 30%, 1)',
+          'label-foreground-color': 'hsla(230, 10%, 30%, 0.7)',
+          'monitor-background-color': 'hsla(230, 15%, 30%, 0.1)',
+          'monitor-foreground-color': 'hsla(230, 10%, 30%, 0.5)',
+        },
+        jetblack: {
+          'base-background-color': 'hsla(0, 0%, 0%, 1)',
+          'base-shadow-color': 'hsla(0, 0%, 0%, 0.2)',
+          'button-background-color': 'hsla(0, 0%, 70%, 1)',
+          'button-background-color-active': 'hsla(0, 0%, 85%, 1)',
+          'button-background-color-focus': 'hsla(0, 0%, 80%, 1)',
+          'button-background-color-hover': 'hsla(0, 0%, 75%, 1)',
+          'button-foreground-color': 'hsla(0, 0%, 0%, 1)',
+          'container-background-color': 'hsla(0, 0%, 10%, 1)',
+          'container-background-color-active': 'hsla(0, 0%, 25%, 1)',
+          'container-background-color-focus': 'hsla(0, 0%, 20%, 1)',
+          'container-background-color-hover': 'hsla(0, 0%, 15%, 1)',
+          'container-foreground-color': 'hsla(0, 0%, 50%, 1)',
+          'groove-foreground-color': 'hsla(0, 0%, 10%, 1)',
+          'input-background-color': 'hsla(0, 0%, 10%, 1)',
+          'input-background-color-active': 'hsla(0, 0%, 25%, 1)',
+          'input-background-color-focus': 'hsla(0, 0%, 20%, 1)',
+          'input-background-color-hover': 'hsla(0, 0%, 15%, 1)',
+          'input-foreground-color': 'hsla(0, 0%, 70%, 1)',
+          'label-foreground-color': 'hsla(0, 0%, 50%, 1)',
+          'monitor-background-color': 'hsla(0, 0%, 8%, 1)',
+          'monitor-foreground-color': 'hsla(0, 0%, 48%, 1)',
+        },
+      };
+
+      function applyTheme(el, theme) {
+        for (const [key, value] of Object.entries(theme)) {
+          el.style.setProperty(`--tp-${key}`, value);
+        }
+      }
+
+      function buildPanel(containerId, theme) {
+        const container = document.getElementById(containerId);
+        applyTheme(container, theme);
+
+        const pane = new Pane({ container, title: 'Theme' });
+        const folder = pane.addFolder({ title: 'Folder', expanded: true });
+        folder.addBlade({
+          view: 'slider',
+          label: 'value',
+          min: 0,
+          max: 1,
+          value: 0.5,
+        });
+        pane.addBinding({ color: '#3fa7d6' }, 'color');
+        pane.addButton({ title: 'Action' });
+      }
+
+      buildPanel('pane-light', THEMES.light);
+      buildPanel('pane-jetblack', THEMES.jetblack);
+
+      document.fonts.ready.then(() => {
+        document.body.dataset.ready = 'true';
+      });
+    </script>
+  </body>
+</html>
