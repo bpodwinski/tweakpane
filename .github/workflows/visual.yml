@@ -22,7 +22,7 @@ jobs:
       - run: npm ci
       - run: npm run setup
       - name: Cache Playwright browser binaries
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: playwright-${{ matrix.browser }}-${{ hashFiles('package-lock.json') }}
@@ -32,7 +32,7 @@ jobs:
         working-directory: packages/tweakpane
       - name: Upload Playwright report
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report-${{ matrix.browser }}
           path: packages/tweakpane/test-visual/playwright-report/
